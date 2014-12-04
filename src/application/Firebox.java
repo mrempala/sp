@@ -1,5 +1,9 @@
 package application;
 
-public class Firebox {
+import java.util.ArrayList;
+import java.util.List;
 
+public class Firebox {
+	List<Lunchbox> lunchboxList = new ArrayList<Lunchbox>();
+	
 }
