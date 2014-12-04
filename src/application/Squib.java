@@ -8,8 +8,18 @@ public class Squib implements Iterable {
 	private int squib;
 	private int firecount;
 	//private bool health;
-	//test
 	
+	Squib () {
+		firecount = 0;
+	}
+	
+	Squib(int firebox, int lunchbox, int squib) {
+		this.firebox = firebox;
+		this.lunchbox = lunchbox;
+		this.squib = squib;
+		
+		firecount = 0;
+	}
 	
 	// Getters & Setters
 	// TODO: Set up constraints on sets, make sure value isn't out of bounds
