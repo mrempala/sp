@@ -6,6 +6,7 @@ public class Squib {
 	private int squib;
 	private int firecount;
 	//private bool health;
+	//test
 	
 	
 	// Getters & Setters
