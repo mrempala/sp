@@ -1,19 +1,16 @@
 package application;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 
-public class TimeStep implements Iterator<Squib> {
-
+public class TimeStep implements Iterable<Squib> {
+    ArrayList<Squib> list;
+    
 	@Override
-	public boolean hasNext() {
+	public Iterator<Squib> iterator() {
 		// TODO Auto-generated method stub
-		return false;
+		return list.iterator();
 	}
 
-	@Override
-	public Squib next() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 	
 }
