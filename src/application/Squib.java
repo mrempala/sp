@@ -1,8 +1,6 @@
 package application;
 
-import java.util.Iterator;
-
-public class Squib implements Iterable {
+public class Squib {
 	private int firebox;
 	private int lunchbox;
 	private int squib;
@@ -53,12 +51,6 @@ public class Squib implements Iterable {
 	
 	public void setFirecount(int firecount){
 		this.firecount = firecount;
-	}
-
-	@Override
-	public Iterator iterator() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 	
 }
