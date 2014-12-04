@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="500.0" 
+fx:controller="application.SecondaryController" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label layoutX="47.0" layoutY="51.0" text="Load Recent Project:" />
+      <Hyperlink layoutX="58.0" layoutY="78.0" text="Scene 1" />
+      <Hyperlink layoutX="58.0" layoutY="101.0" text="Scene 2" />
+      <Hyperlink layoutX="58.0" layoutY="124.0" text="Scene 3" />
+      <Hyperlink layoutX="58.0" layoutY="148.0" text="Scene 4" />
+      <Hyperlink layoutX="58.0" layoutY="173.0" text="Scene 5" />
+      <Separator layoutX="247.0" layoutY="47.0" orientation="VERTICAL" prefHeight="200.0" />
+      <Button layoutX="93.0" layoutY="209.0" mnemonicParsing="false" text="Browse..." />
+      <Button fx:id="button_newproject" onAction="#openNewProjectDetails" layoutX="299.0" layoutY="118.0" mnemonicParsing="false" prefHeight="61.0" prefWidth="145.0" text="New Project" />
+   </children>
+</Pane>

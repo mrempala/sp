@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="320.0" prefWidth="300.0" 
+xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.TreeController">
+   <children>
+      <Label fx:id="label_setTreeNode" layoutX="20.0" layoutY="31.0" text="Number of Fireboxes:">
+      </Label>
+      <TextField fx:id="text_inputValue" layoutX="160.0" layoutY="27.0" prefHeight="25.0" prefWidth="48.0" />
+      <Button layoutX="220" layoutY="27" prefHeight="25.0" prefWidth="70" mnemonicParsing="false" text="Set" onAction="#setValue" />
+      
+      <!-- 	Good TreeView Info:
+      		https://docs.oracle.com/javafx/2/ui_controls/tree-view.htm
+      		http://stackoverflow.com/questions/21889697/how-can-i-set-a-graphic-for-a-treeitem-in-fxml
+      		http://stackoverflow.com/questions/16658856/java-fx-2-treeview-model-reference
+       -->
+       
+      <Button fx:id="button_openVisualOrganizer" onAction="#openVisualOrganizer" layoutX="250" layoutY="290" mnemonicParsing="false" text="Next"/>
+      
+      <VBox layoutX="20.0" layoutY="75.0">
+      	<children>
+      		<TreeView fx:id="mainTreeView" prefHeight="200" prefWidth="270">
+      			<TreeItem fx:id="rootTreeNode" expanded="true" value="Universe">
+	      			<children>
+	      			<!-- <TreeItem fx:id="FB1" expanded="false" value="Firebox 1">
+	      				<children>
+	      					<TreeItem expanded="false" value="LB1" >
+	      						<children>
+	      							<TreeItem expanded="false" value="Squibs"></TreeItem>
+	      						</children>
+	      					</TreeItem>
+	      					<TreeItem expanded="false" value="LB2">
+	      						<children>
+	      							<TreeItem expanded="false" value="Squibs"></TreeItem>
+	      						</children>
+	      					</TreeItem>
+	      					<TreeItem expanded="false" value="LB3">
+	      						<children>
+	      							<TreeItem expanded="false" value="Squibs"></TreeItem>
+	      						</children>
+	      					</TreeItem>
+	      				</children>
+	      			</TreeItem>
+	      			<TreeItem expanded="false" value="Firebox 2">
+	      				<children>
+	      					<TreeItem expanded="false" value="LB1" />
+	      				</children>
+	      			</TreeItem>
+	      			<TreeItem expanded="false" value="Firebox 3">
+	      				<children>
+	      					<TreeItem expanded="false" value="LB1" />
+	      				</children>
+	      			</TreeItem>-->
+	      			</children>
+      			</TreeItem>
+     	 	</TreeView>
+     	 </children>
+      </VBox>
+   </children>
+</Pane>
