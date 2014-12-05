@@ -21,7 +21,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 
-public class UniverseLayoutController implements Initializable {
+public class VcSetupVisualLayout implements Initializable {
 
 	@FXML Pane sceneContainer;
 	@FXML AnchorPane squibsToPlace;

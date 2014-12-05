@@ -5,9 +5,10 @@
 <?import javafx.scene.layout.*?>
 
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="1000.0" 
+fx:controller="application.VcSequenceEditor" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <top>
-      <fx:include source="UI-Menu.fxml" />
+      <fx:include source="UI-Part-Menu.fxml" />
    </top>
    <center>
       <SplitPane dividerPositions="0.22645290581162325" prefHeight="160.0" prefWidth="200.0" BorderPane.alignment="CENTER">
@@ -21,7 +22,7 @@
                <children>
                   <Pane layoutX="39.0" layoutY="381.0" prefHeight="53.0" prefWidth="705.0" style="-fx-background-color: red;">
                      <children>
-                        <fx:include source="UI-Timeline.fxml" />
+                        <fx:include source="UI-Part-Timeline.fxml" />
                      </children>
                   </Pane>
                   <Pane layoutX="39.0" layoutY="25.0" prefHeight="341.0" prefWidth="702.0" style="-fx-background-color: aqua;">

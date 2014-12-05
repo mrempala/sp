@@ -13,7 +13,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 
-public class SequencePreviewController implements Initializable {
+public class VcSequencePreview implements Initializable {
 
 	//@FXML AnchorPane visualContainer;
 	//@FXML AnchorPane schematicContainer;
@@ -27,7 +27,7 @@ public class SequencePreviewController implements Initializable {
 	protected void openSequenceEditor(ActionEvent event) throws IOException{
 		Parent root;
     	// Load the next window
-        root = FXMLLoader.load(getClass().getResource("Views/UI-Universe-Visual-Layout.fxml"));
+        root = FXMLLoader.load(getClass().getResource("Views/UI-SequenceEditor.fxml"));
         Scene scene = new Scene(root, 1000, 500);
         Stage stage = new Stage();
         stage.setTitle("New Project - Details");

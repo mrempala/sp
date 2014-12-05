@@ -20,7 +20,7 @@ import javafx.scene.control.TreeView;
 import javafx.stage.Stage;
 
 
-public class TreeController implements Initializable {
+public class VcSetupManualLoad implements Initializable {
 
     @FXML private TreeView<String> mainTreeView;
     @FXML private TreeItem<String> rootTreeNode;
@@ -83,10 +83,10 @@ public class TreeController implements Initializable {
 		
 		Parent root;
     	// Load the next window
-        root = FXMLLoader.load(getClass().getResource("Views/UI-Universe-Visual-Layout.fxml"));
+        root = FXMLLoader.load(getClass().getResource("Views/UI-Setup-VisualLayout.fxml"));
         Scene scene = new Scene(root, 1000, 500);
         Stage stage = new Stage();
-        stage.setTitle("New Project - Details");
+        stage.setTitle("New Project - Visual Organization");
         stage.setScene(scene);
         stage.show();
         

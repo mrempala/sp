@@ -6,7 +6,7 @@
 
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="500.0" 
-fx:controller="application.SecondaryController" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+fx:controller="application.VcNewProjectSetup" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Label layoutX="47.0" layoutY="51.0" text="Load Recent Project:" />
       <Hyperlink layoutX="58.0" layoutY="78.0" text="Scene 1" />

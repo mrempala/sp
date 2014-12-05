@@ -13,7 +13,7 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
  
-public class SecondaryController {
+public class VcNewProjectSetup {
     @FXML private Text actiontarget;
     @FXML private Button button_newproject;
     @FXML private Button button_universeconfig;
@@ -27,7 +27,7 @@ public class SecondaryController {
         Parent root;
         try {
         	// Load the next window
-            root = FXMLLoader.load(getClass().getResource("Views/UI-New-Project-Details.fxml"));
+            root = FXMLLoader.load(getClass().getResource("Views/UI-Setup.fxml"));
             Scene scene = new Scene(root, 500, 300);
             Stage stage = new Stage();
             stage.setTitle("New Project - Details");
@@ -49,7 +49,7 @@ public class SecondaryController {
         Parent root;
         try {
         	// Load the next window
-            root = FXMLLoader.load(getClass().getResource("Views/UI-New-Project-Universe-Manual.fxml"));
+            root = FXMLLoader.load(getClass().getResource("Views/UI-Setup-ManualLoad.fxml"));
             //TreeItem<String> newNode = new TreeItem<String>("Test Node");
             //FB1.getChildren().add(newNode);
             Scene scene = new Scene(root, 300, 330);

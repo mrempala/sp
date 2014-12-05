@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" fx:controller="application.SequencePreviewController"
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" fx:controller="application.VcSequencePreview"
 prefHeight="500.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
 styleClass="root" id="Container">
    <center>
@@ -22,10 +22,10 @@ styleClass="root" id="Container">
                     <items>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" style="-fx-background-color: green;">
                            <children>
-                              <fx:include source="UI-Universe-Visual.fxml" />
+                              <fx:include source="UI-Part-VisualSchematicView.fxml" />
                               <HBox layoutX="19.0" layoutY="324.0" prefHeight="35.0" prefWidth="759.0" style="-fx-background-color: aqua;">
                                  <children>
-                                    <fx:include source="UI-Timeline.fxml" />
+                                    <fx:include source="UI-Part-Timeline.fxml" />
                                     <Button mnemonicParsing="false" text="Send to Universe" />
                                  </children>
                               </HBox>
@@ -44,6 +44,6 @@ styleClass="root" id="Container">
       </SplitPane>
    </center>
    <top>
-		<fx:include source="UI-Menu.fxml" />
+		<fx:include source="UI-Part-Menu.fxml" />
    </top>
 </BorderPane>

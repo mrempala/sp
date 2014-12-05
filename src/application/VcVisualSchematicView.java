@@ -23,7 +23,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 
-public class UniverseVisualController implements Initializable {
+public class VcVisualSchematicView implements Initializable {
 
 	@FXML AnchorPane visualContainer;
 	@FXML AnchorPane schematicContainer;

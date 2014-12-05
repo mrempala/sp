@@ -3,7 +3,7 @@
 <?import javafx.scene.layout.* ?>
 <?import javafx.scene.control.* ?>
 
-<HBox>
+<HBox fx:controller="application.VcTimeline" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
 	<Button mnemonicParsing="false" text="Play" />
 	<Button mnemonicParsing="false" text="Pause" />
 	<Pane prefHeight="35.0" prefWidth="564.0" style="-fx-background-color: pink;" />

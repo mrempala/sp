@@ -6,5 +6,8 @@ import java.util.List;
 public class Universe {
 	List<Firebox> fireboxList = new ArrayList<Firebox>();
 	
+	Universe (List<Firebox> fireboxList) {
+		this.fireboxList = fireboxList;
+	}
 	
 }

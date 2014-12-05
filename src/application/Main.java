@@ -12,12 +12,12 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("Views/UI-Sequence-Preview.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("Views/UI-Setup-ManualLoad.fxml"));
         
         //Rectangle2D r = Screen.getPrimary().getBounds();
         
         stage.setTitle("E-Squib Controller");
-        stage.setScene(new Scene(root,1000, 500));
+        stage.setScene(new Scene(root,300, 320));
         //stage.setMaximized(true);
         stage.show();
     }

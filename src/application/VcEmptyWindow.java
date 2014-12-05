@@ -13,7 +13,7 @@ import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
 
-public class MainController implements Initializable {
+public class VcEmptyWindow implements Initializable {
 
 	@FXML Button button_newproject;
 
@@ -22,7 +22,7 @@ public class MainController implements Initializable {
 		// Load the next window
 		Parent root;
         try {
-			root = FXMLLoader.load(getClass().getResource("Views/UI-New-Project.fxml"));
+			root = FXMLLoader.load(getClass().getResource("Views/UI-NewProject.fxml"));
 			Scene scene = new Scene(root, 500, 300);
 			Stage stage = new Stage();
 			stage.setTitle("New Project");
