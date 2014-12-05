@@ -1,5 +1,5 @@
 package application;
 
-public class VcSetupAutoload {
+public class VcSetupAutoLoad {
 
 }

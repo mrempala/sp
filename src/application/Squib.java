@@ -52,5 +52,9 @@ public class Squib {
 	public void setFirecount(int firecount){
 		this.firecount = firecount;
 	}
+
+	public void traverseUniverse() {
+		System.out.println("\t\t\tSquib " + squib);
+	}
 	
 }

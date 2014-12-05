@@ -28,37 +28,52 @@ public class VcSetupManualLoad implements Initializable {
     @FXML private TextField text_inputValue;
     @FXML private Label label_setTreeNode;
     private TreeItem<String> currentTreeNode;
-    private String propertyToSet;
+    private String elementToSet;	//This defines which universe element to set, num set by elementNum
+    //private String elementNum;		//This defines the element number, ex. Firebox 1 or Squib 1-2-3
+    private Universe universe;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		//TreeItem<String> newNode = new TreeItem<String>("Dynamic Node");
         //FB1.getChildren().add(newNode);
+		
+		// Set currentTreeNode to the root node defined in fxml file
 		currentTreeNode = rootTreeNode;
-		propertyToSet = "Firebox";
+		elementToSet = "Firebox";
+		
+		// Make the treeview in the fxml file observable
         mainTreeView.getSelectionModel().selectedItemProperty().addListener( new ChangeListener<TreeItem<String>>() {
-
             @Override
-            public void changed(ObservableValue<? extends TreeItem<String>> observable, TreeItem<String> oldValue, TreeItem<String> newValue) {
-
-                currentTreeNode = newValue;
-                System.out.println("Selected Text : " + currentTreeNode.getValue());
-                String test = currentTreeNode.getValue();
-   
-                if (test.indexOf("Firebox") != -1){
-                	propertyToSet = "Lunchbox";
+            public void changed(ObservableValue<? extends TreeItem<String>> observable, TreeItem<String> oldTreeNode, TreeItem<String> newTreeNode) {
+            	// Handle the tree selection change event
+            	currentTreeNode = newTreeNode;
+                String element = currentTreeNode.getValue();
+                String elements[] = element.split(" ");
+                
+                //System.out.println("Selected Text : " + elements[0]);
+                
+                // Set the selected element number
+                // TODO: Wrap in try/catch block so don't need Universe 0
+                //elementNum = elements[1];
+                
+                // Update the element to be set as well as the label based on element value of currentTreeNode
+                if (elements[0].equals("Firebox")){
+                	elementToSet = "Lunchbox";
                 	label_setTreeNode.setText("Number of Lunchboxes:");
                 }
-                else if (test.indexOf("Lunchbox") != -1){
-                	propertyToSet = "Squib";
+                else if (elements[0].equals("Lunchbox")){
+                	elementToSet = "Squib";
                 	label_setTreeNode.setText("Number of Squibs:");
                 }
-                else if (test.indexOf("Universe") != -1){
-                	propertyToSet = "Firebox";
+                else if (elements[0].equals("Universe")){
+                	elementToSet = "Firebox";
                 	label_setTreeNode.setText("Number of Fireboxes:");
                 }
-                //propertyToSet = currentTreeNode.getValue();
-                //selectedItem.setValue("New Value");
+                else if (elements[0].equals("Squib")){
+                	// We don't want to add children to squibs!
+                	currentTreeNode = oldTreeNode;
+                }
+                //System.out.println(elementToSet);
             }
 
           });
@@ -70,14 +85,23 @@ public class VcSetupManualLoad implements Initializable {
 		currentTreeNode.getChildren().clear();
 		
 		for (int i = 0; i < value; i++) {
-			TreeItem<String> item = new TreeItem<String> (propertyToSet + " " + String.valueOf(i+1));
+			TreeItem<String> item = new TreeItem<String> (elementToSet + " " +  String.valueOf(i+1));
 			item.setExpanded(true);
 			currentTreeNode.getChildren().add(item);
 		}
+		
+		// Check created tree
+		//traverseTree(rootTreeNode);
+		
+		// Populate the universe based on users setting
+		// TODO: Move this call to openVisualOrganizer once testing done.
+		populateUniverse(rootTreeNode, 0);
 	}
 	
 	@FXML 
 	protected void openVisualOrganizer(ActionEvent event) throws IOException{
+		universe.traverseUniverse();
+		/*
 		// Traverse user created tree for now, later will need to set these values
 		traverseTree(rootTreeNode);
 		
@@ -95,6 +119,8 @@ public class VcSetupManualLoad implements Initializable {
         Stage currentstage = (Stage) button_openVisualOrganizer.getScene().getWindow();
         // and close it
         currentstage.close();
+        
+        */
 	}
 	
 	@FXML
@@ -106,6 +132,42 @@ public class VcSetupManualLoad implements Initializable {
 		System.out.println(t.getValue());
 		for(TreeItem<String> s : t.getChildren()){
 			traverseTree(s);
+		}
+	}
+	
+	private void populateUniverse(TreeItem<String> tree, int elementNum) {	
+		universe = new Universe();
+		for(TreeItem<String> s : tree.getChildren()){
+			Firebox firebox = new Firebox(elementNum);
+			String universeItem = s.getValue();
+			
+			System.out.println("Adding element: " + universeItem + "  " + elementNum);
+			universe.addFirebox(firebox);
+			populateFirebox(s, 0, elementNum);
+			elementNum++;
+		}
+	}
+	
+	private void populateFirebox(TreeItem<String> tree, int elementNum, int parentNum) {
+		for(TreeItem<String> s : tree.getChildren()){
+			String universeItem = s.getValue();
+			Lunchbox lunchbox = new Lunchbox(elementNum, parentNum);
+			
+			System.out.println("Adding element: " + universeItem + "  " + elementNum + "  " + parentNum);
+			universe.fireboxList.get(parentNum).addLunchbox(lunchbox);
+			populateLunchbox(s, 0, elementNum, parentNum);
+			elementNum++;
+		}
+	}
+	
+	private void populateLunchbox(TreeItem<String> tree, int elementNum, int parentNum, int grandparentNum) {
+		for(TreeItem<String> s : tree.getChildren()){
+			String universeItem = s.getValue();
+			Squib squib = new Squib(grandparentNum, parentNum, elementNum);
+			
+			System.out.println("Adding element: " + universeItem + "  " + elementNum + "  " + parentNum + "  " + grandparentNum);
+			universe.fireboxList.get(grandparentNum).lunchboxList.get(parentNum).addSquib(squib);
+			elementNum++;
 		}
 	}
 }
