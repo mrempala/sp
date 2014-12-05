@@ -4,13 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Firebox {
-	List<Lunchbox> lunchboxList;
+	public List<Lunchbox> lunchboxList;
 	// TODO: Do we want to store the firebox universe ID number here?
-	private int id;
+	public int id;
+	public int timeStepSleepNumber;
 	
 	// Constructor
 	Firebox(int id){
 		this.id = id;
+		this.timeStepSleepNumber = 0;
 		this.lunchboxList = new ArrayList<Lunchbox>();
 	}
 	

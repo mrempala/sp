@@ -57,4 +57,10 @@ public class Squib {
 		System.out.println("\t\t\tSquib " + squib);
 	}
 	
+	@Override
+	public String toString() {
+		return firebox + "-" + lunchbox
+				+ "-" + squib;
+	}
+	
 }

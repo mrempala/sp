@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Universe {
-	List<Firebox> fireboxList;
+	public List<Firebox> fireboxList;
 	
 	Universe (){
 		this.fireboxList = new ArrayList<Firebox>();

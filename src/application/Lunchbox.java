@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Lunchbox {
-	List<Squib> squibList;
+	public List<Squib> squibList;
 	private int id;
 	@SuppressWarnings("unused")
 	private int grandParent;

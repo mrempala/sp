@@ -100,7 +100,10 @@ public class VcSetupManualLoad implements Initializable {
 	
 	@FXML 
 	protected void openVisualOrganizer(ActionEvent event) throws IOException{
-		universe.traverseUniverse();
+		Sequence sequence = new Sequence(universe);
+		sequence.loadUniverseSweep();
+		
+		//universe.traverseUniverse();
 		/*
 		// Traverse user created tree for now, later will need to set these values
 		traverseTree(rootTreeNode);
