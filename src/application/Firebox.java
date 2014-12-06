@@ -26,4 +26,12 @@ public class Firebox {
 			l.traverseUniverse();
 		}
 	}
+
+	public List<Lunchbox> getLunchboxList() {
+		return lunchboxList;
+	}
+
+	public int getId() {
+		return id;
+	}
 }

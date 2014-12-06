@@ -15,6 +15,18 @@ public class Lunchbox {
 		this.squibList = squibList;
 	}
 	
+	public List<Squib> getSquibList() {
+		return squibList;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public int getGrandParent() {
+		return grandParent;
+	}
+
 	Lunchbox(int id, int grandParent){
 		this.id = id;
 		this.grandParent = grandParent;
