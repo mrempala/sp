@@ -32,6 +32,7 @@ public class VcSequencePreview implements Initializable, Observer {
 	@FXML VcTimeline timeLineController;
 	
 	Sequence sequence;
+	SequentialTransition animationTimeline = new SequentialTransition();
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -42,40 +43,44 @@ public class VcSequencePreview implements Initializable, Observer {
 		this.sequence = sequence;
 	}
 	
-	// Temporarily draw all squibs in time line from sequence to be fired
-	/*public void drawFiredSquibs(){
-		for (TimeStep t : sequence.timeLine){
-			for (Squib s : t.squibList){
-				visualSchematicController.drawFiringSquib(s, new TimeStep());
-			}
-		}
-	}*/
-	
-	public void playTimelineAnimation(){
-		SequentialTransition animationTimeline = new SequentialTransition();
+	public void buildTimelineAnimation(){
+		// Reset timeline
+		animationTimeline.getChildren().clear();
 		
+		// Build new animation timeline
 		int i = 0;
 		for (TimeStep t : sequence.timeLine){
-				TimeStep previousTimestep;
-				if (i != 0) {
-					previousTimestep = sequence.timeLine.get(i-1);
-				}
-				else {
-					previousTimestep = null;
-				}
-				KeyFrame kf = new KeyFrame(Duration.millis(35), new EventHandler<ActionEvent>() {
-		            @Override
-		            public void handle(ActionEvent actionEvent) {
-		                visualSchematicController.drawFiringSquib(t, previousTimestep);
-		                System.out.println("Timeline time step");
-		            }
-		        });
-				Timeline tempTimeline = new Timeline();
-				tempTimeline.getKeyFrames().add(kf);
-				animationTimeline.getChildren().add(tempTimeline);
-				i++;
+			// Use previous timestep to redraw previously fired squibs to green
+			TimeStep previousTimestep;
+			if (i != 0) {
+				previousTimestep = sequence.timeLine.get(i-1);
+			}
+			else {
+				previousTimestep = null;
+			}
+			
+			// Create a keyframe to color in fired squibs.  Currently we are just redrawing over the top of old universe
+			// TODO: May create memory problems in the future?
+			KeyFrame kf = new KeyFrame(Duration.millis(35), new EventHandler<ActionEvent>() {
+	            @Override
+	            public void handle(ActionEvent actionEvent) {
+	                visualSchematicController.drawFiringSquib(t, previousTimestep);
+	                System.out.println("Timeline time step");
+	            }
+	        });
+			Timeline tempTimeline = new Timeline();
+			tempTimeline.getKeyFrames().add(kf);
+			animationTimeline.getChildren().add(tempTimeline);
+			i++;
 		}
+	}
+	
+	public void playTimelineAnimation(){
 		animationTimeline.play();
+	}
+	
+	public void pauseTimelineAnimation(){
+		animationTimeline.pause();
 	}
 
 	@Override
@@ -84,6 +89,8 @@ public class VcSequencePreview implements Initializable, Observer {
 			System.out.println("Play button pressed");
 			playTimelineAnimation();
 		}
-		
+		else if (arg1.equals("Pause")){
+			pauseTimelineAnimation();
+		}
 	}
 }

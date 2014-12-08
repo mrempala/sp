@@ -102,7 +102,6 @@ public class VcSetupManualLoad implements Initializable {
 	protected void openVisualOrganizer(ActionEvent event) throws IOException{
 		Sequence sequence = new Sequence(universe);
 		sequence.loadUniverseSweep();
-	
 
 		Parent root;
     	// Load the next window
@@ -113,14 +112,15 @@ public class VcSetupManualLoad implements Initializable {
         VcSequencePreview seqPreviewController = loader.<VcSequencePreview>getController();
         seqPreviewController.visualSchematicController.setUniverse(universe);
         seqPreviewController.visualSchematicController.drawUniverseSchematic();
-        //seqPreviewController.visualSchematicController.drawFiringSquib();
         
         // Hack to get sequence into the sequence previewer
         seqPreviewController.setSequence(sequence);
-        //seqPreviewController.visualSchematicController.drawFiringSquib(seqPreviewController.sequence.timeLine.get(1).squibList.get(0));
-        //seqPreviewController.drawFiredSquibs();
-        seqPreviewController.timeLineController.addObserver(seqPreviewController);
         
+        // Build the time line animation
+        seqPreviewController.buildTimelineAnimation();
+        
+        // Register the sequence preview as an observer of the time line to get play and pause events
+        seqPreviewController.timeLineController.addObserver(seqPreviewController);
         
         Scene scene = new Scene(root, 1000, 500);
         Stage stage = new Stage();
