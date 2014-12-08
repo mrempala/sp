@@ -27,10 +27,22 @@ public class VcVisualSchematicView implements Initializable {
 
 	@FXML AnchorPane visualContainer;
 	@FXML AnchorPane schematicContainer;
+	
+	public Universe universe;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		
+		drawUniverseVisual();
+	}
+	
+	public void setUniverse (Universe universe){
+		this.universe = universe;
+	}
+	
+	public void drawUniverseVisual(){
+		//TODO: Hard coded drawing of a rough visual view, this needs
+		//		to be updated once we figure out how to store the visual
+		//		configuration of the world.
 		// Draw some visual layout stuff
         Group g = new Group();
         g.setBlendMode(BlendMode.SRC_OVER);
@@ -70,27 +82,111 @@ public class VcVisualSchematicView implements Initializable {
         }
         
         visualContainer.getChildren().add(g);
-        
-        //Draw some schematic layout stuff
-        Group f = new Group();
-        
+	}
+	
+	public void drawFiringSquib(TimeStep timestep, TimeStep previousTimestep){
+		//Draw squibs to be fired
+		for (Squib squib : timestep.squibList) {
+			Group f = new Group();
+			int x=50, y=50;
+			
+			Rectangle squibRectangle = new Rectangle();
+	        squibRectangle.setX(x + 93 + (squib.getLunchbox() * 93) + (squib.getSquib()*10));
+	        squibRectangle.setY(y + 7 + (squib.getFirebox() * 52));
+	        squibRectangle.setWidth(10);
+	        squibRectangle.setHeight(15);
+	        squibRectangle.setStroke(Color.BLACK);
+	        // TODO: Change color here when simulating firing
+	        squibRectangle.setFill(Color.ORANGE);
+	        
+	        Text t = new Text();
+	        t.setFill(Color.BLACK);
+	        t.setX(x + 95 + (squib.getLunchbox() * 93) + (squib.getSquib() * 10));
+	        t.setY(y + 19 + (squib.getFirebox() * 52));
+	        t.setText("F");
+	        //t.setText(Integer.toString(s.getSquib()));
+	        f.getChildren().add(squibRectangle);
+	        f.getChildren().add(t);
+	        
+	        schematicContainer.getChildren().add(f);
+		}
+		
+		//Redraw previously drawn squibs to their old state
+		if (previousTimestep != null){
+			for (Squib squib : previousTimestep.squibList){
+				Group f = new Group();
+				int x=50, y=50;
+				
+				Rectangle squibRectangle = new Rectangle();
+		        squibRectangle.setX(x + 93 + (squib.getLunchbox() * 93) + (squib.getSquib()*10));
+		        squibRectangle.setY(y + 7 + (squib.getFirebox() * 52));
+		        squibRectangle.setWidth(10);
+		        squibRectangle.setHeight(15);
+		        squibRectangle.setStroke(Color.BLACK);
+		        // TODO: Change color here when simulating firing
+		        squibRectangle.setFill(Color.GREEN);
+		        
+		        Text t = new Text();
+		        t.setFill(Color.BLACK);
+		        t.setX(x + 95 + (squib.getLunchbox() * 93) + (squib.getSquib() * 10));
+		        t.setY(y + 19 + (squib.getFirebox() * 52));
+		        t.setText(Integer.toString(squib.getSquib()));
+		        //t.setText(Integer.toString(s.getSquib()));
+		        f.getChildren().add(squibRectangle);
+		        f.getChildren().add(t);
+		        
+		        schematicContainer.getChildren().add(f);
+			}
+		}
+	}
+	
+	public void drawUniverseSchematic(){
+		// x and y location to draw components, xt is used to reset x back to original value
+		int x, y, xt;
+		
+		// Positions to start drawing
         x = 50;
         y = 50;
         xt = x;
-        yt = y;
+		//Draw some schematic layout stuff
+        Group f = new Group();
         
-        // Draw Firebox shape
-        Rectangle r = new Rectangle();
-        r.setWidth(80);
-        r.setHeight(30);
-        r.setX(x);
-        r.setY(y);
-        r.setStroke(Color.BLACK);
-        r.setFill(Color.GREEN);
-        
-        for (int k = 0; k < 4; k++){ 
-	        for (int i = 0; i < 6; i++){
-	        	// Draw 6 lunch boxes
+        boolean firstFirebox = true;
+        for (Firebox fb : universe.fireboxList){
+        	// Draw Firebox shape
+        	if (!firstFirebox){
+        		//Draw schematic connector between FB's
+                Line l = new Line();
+                l.setStrokeWidth(2);
+                l.setStartX(x + 40);
+                l.setStartY(y-20);
+                l.setEndX(x + 40);
+                l.setEndY(y - 1);
+                
+                Circle c = new Circle();
+                c.setCenterX(x + 40);
+                c.setCenterY(y - 1);
+                c.setRadius(3);
+                c.setFill(Color.BLACK);
+                
+                f.getChildren().add(l);
+                f.getChildren().add(c);
+        	}
+        	firstFirebox = false;
+            Rectangle r = new Rectangle();
+            r.setWidth(80);
+            r.setHeight(30);
+            r.setX(x);
+            r.setY(y);
+            r.setStroke(Color.BLACK);
+            r.setFill(Color.GREEN);
+            
+            f.getChildren().add(r);
+            
+            for (Lunchbox lb : fb.lunchboxList) {
+            	// Draw Lunchboxes //
+            	
+            	// Draw lunchbox connecting wire
 	            Line l2 = new Line();
 	            l2.setStrokeWidth(2);
 	            l2.setStartX(x + 80);
@@ -98,6 +194,7 @@ public class VcVisualSchematicView implements Initializable {
 	            l2.setEndX(x + 90);
 	            l2.setEndY(y + 14);
 	            
+	            //Draw connecting circle
 	            Circle c2 = new Circle();
 	            c2.setCenterX(x + 90);
 	            c2.setCenterY(y + 14);
@@ -106,73 +203,64 @@ public class VcVisualSchematicView implements Initializable {
 	            
 	            f.getChildren().add(l2);
 	            f.getChildren().add(c2);
-	
-		        for (int j = 0; j < 8; j++){
-		        	// Draw individual lunch boxes
-		        	Rectangle s = new Rectangle();
-		            s.setX(x + 93);
-		            s.setY(y + 7);
-		            s.setWidth(10);
-		            s.setHeight(15);
-		            s.setStroke(Color.BLACK);
-		            s.setFill(Color.GREEN);
+	            
+	            int squibcount = 0;
+	            for (Squib s : lb.squibList){
+	            	// Draw the individual squibs in the lunchboxes
+		        	Rectangle squibRectangle = new Rectangle();
+		            squibRectangle.setX(x + 93);
+		            squibRectangle.setY(y + 7);
+		            squibRectangle.setWidth(10);
+		            squibRectangle.setHeight(15);
+		            squibRectangle.setStroke(Color.BLACK);
+		            // TODO: Change color here when simulating firing
+		            squibRectangle.setFill(Color.GREEN);
 		            
 		            Text t = new Text();
 		            t.setFill(Color.BLACK);
 		            t.setX(x + 95);
 		            t.setY(y + 19);
-		            t.setText(String.valueOf(j));
-		            f.getChildren().add(s);
+		            t.setText(Integer.toString(s.getSquib()));
+		            f.getChildren().add(squibRectangle);
 		            f.getChildren().add(t);
 		            
 		            x += 10;
-		        }
-		        
-		        Text id = new Text();
+		            squibcount++;
+	            }
+	            
+	            // Draw blank squibs to keep alignment easy to maintain
+	            while (squibcount < 8){
+	            	Rectangle squibRectangle = new Rectangle();
+		            squibRectangle.setX(x + 93);
+		            squibRectangle.setY(y + 7);
+		            squibRectangle.setWidth(10);
+		            squibRectangle.setHeight(15);
+		            squibRectangle.setStroke(Color.BLACK);
+		            squibRectangle.setFill(Color.TRANSPARENT);
+		            
+		            f.getChildren().add(squibRectangle);
+		            x += 10;
+	            	squibcount++;
+	            }
+	            
+	            // Draw lunchbox label x-x
+	            Text id = new Text();
 		        id.setFill(Color.BLACK);
-		        id.setX(x + 45);
+		        // Some weird off setting to draw the label in the right location,
+		        // essentially move cursor back to 0, and build offset from there.
+		        id.setX((x-(squibcount*10)) + 85 + squibcount*5);
 		        id.setY(y + 35);
-		        id.setText(String.valueOf(k) + "-" + String.valueOf(i));
+		        id.setText(lb.getGrandParent() + "-" + lb.getId());
 		        f.getChildren().add(id);
 		        
 		        x += 13;
-	        } 
+            }
         	x = xt;
-            y = yt;
-            
-            Line l = new Line();
-            l.setStrokeWidth(2);
-            l.setStartX(x + 40);
-            l.setStartY(y + 30);
-            l.setEndX(x + 40);
-            l.setEndY(y + 50);
-            
-            Circle c = new Circle();
-            c.setCenterX(x + 40);
-            c.setCenterY(y + 50);
-            c.setRadius(3);
-            c.setFill(Color.BLACK);
-            
-            Rectangle r2 = new Rectangle();
-            r2.setWidth(80);
-            r2.setHeight(30);
-            r2.setX(x);
-            r2.setY(y + 52);
-            r2.setStroke(Color.BLACK);
-            r2.setFill(Color.GREEN);
-            
-            y = y + 52;
-            yt = y;
-            
-            f.getChildren().add(r2);
-            f.getChildren().add(l);
-            f.getChildren().add(c);
+        	
+            y = y + 52;    
         }
         
-        f.getChildren().add(r);
-        
         schematicContainer.getChildren().add(f);
-        
 	}
 	
 	@FXML 

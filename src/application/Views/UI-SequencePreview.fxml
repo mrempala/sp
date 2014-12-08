@@ -22,10 +22,10 @@ styleClass="root" id="Container">
                     <items>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" style="-fx-background-color: green;">
                            <children>
-                              <fx:include source="UI-Part-VisualSchematicView.fxml" />
+                              <fx:include fx:id="visualSchematic" source="UI-Part-VisualSchematicView.fxml" />
                               <HBox layoutX="19.0" layoutY="324.0" prefHeight="35.0" prefWidth="759.0" style="-fx-background-color: aqua;">
                                  <children>
-                                    <fx:include source="UI-Part-Timeline.fxml" />
+                                    <fx:include fx:id="timeLine" source="UI-Part-Timeline.fxml" />
                                     <Button mnemonicParsing="false" text="Send to Universe" />
                                  </children>
                               </HBox>

@@ -102,18 +102,29 @@ public class VcSetupManualLoad implements Initializable {
 	protected void openVisualOrganizer(ActionEvent event) throws IOException{
 		Sequence sequence = new Sequence(universe);
 		sequence.loadUniverseSweep();
-		
-		//universe.traverseUniverse();
-		/*
-		// Traverse user created tree for now, later will need to set these values
-		traverseTree(rootTreeNode);
-		
+	
+
 		Parent root;
     	// Load the next window
-        root = FXMLLoader.load(getClass().getResource("Views/UI-Setup-VisualLayout.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("Views/UI-SequencePreview.fxml"));
+        root = (Parent)loader.load();
+        
+        // Get a reference to the VisualSchematic controller so we can pass a reference of the universe to it.
+        VcSequencePreview seqPreviewController = loader.<VcSequencePreview>getController();
+        seqPreviewController.visualSchematicController.setUniverse(universe);
+        seqPreviewController.visualSchematicController.drawUniverseSchematic();
+        //seqPreviewController.visualSchematicController.drawFiringSquib();
+        
+        // Hack to get sequence into the sequence previewer
+        seqPreviewController.setSequence(sequence);
+        //seqPreviewController.visualSchematicController.drawFiringSquib(seqPreviewController.sequence.timeLine.get(1).squibList.get(0));
+        //seqPreviewController.drawFiredSquibs();
+        seqPreviewController.timeLineController.addObserver(seqPreviewController);
+        
+        
         Scene scene = new Scene(root, 1000, 500);
         Stage stage = new Stage();
-        stage.setTitle("New Project - Visual Organization");
+        stage.setTitle("Sequence Preview");
         stage.setScene(scene);
         stage.show();
         
@@ -122,8 +133,7 @@ public class VcSetupManualLoad implements Initializable {
         Stage currentstage = (Stage) button_openVisualOrganizer.getScene().getWindow();
         // and close it
         currentstage.close();
-        
-        */
+  
 	}
 	
 	@FXML

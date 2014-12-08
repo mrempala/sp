@@ -37,22 +37,54 @@ public class Sequence {
 		System.out.println(timeLine);
 	}
 	
-/*	
-	public void loadUniverseTwoStep(){
-		int i = 0;
-		for (Firebox f : universe.fireboxList){
+	/*
+	// Fire even lunchboxes, then odd lunchboxes
+	// I'm (eric) is not thinking straight at the moment and it's not working
+	public void loadUniverseEvenOddStep(){
+		boolean isEven = false;
+		int success;
+		for (int j = 0; j < 2; j++){
 			TimeStep t = new TimeStep();
-			
-			for (Lunchbox l : f.lunchboxList){
-				if (l.squibList.size() > i) {
-					t.squibList.add(l.squibList.get(i));
+			do {
+				for (Firebox f : universe.fireboxList){
+					int i = 0;
+					for (Lunchbox l : f.lunchboxList){
+						if ((i%2) == 0 && isEven){
+							t.squibList.add(l.squibList.get(0));
+							System.out.println(l.squibList.get(0).getLunchbox() + i);
+						}
+						else if (!isEven) {
+							t.squibList.add(l.squibList.get(0));
+							System.out.println(l.squibList.get(0).getLunchbox() + i);
+						}
+						i++;
+					}
 				}
-			}
-			
-			Object[] result = validate(t);
+				Object[] result = validate(t);
+				Integer newResult = (Integer)result[0];
+				success = newResult.intValue();
+				String error = (String)result[2];
+				if (success == 0){
+					timeLine.add(t);
+					System.out.println("Inserted timestep");
+				}
+				else {
+					t = new TimeStep();
+					validate(t);
+					timeLine.add(t);
+					System.out.println("Failed to insert, inserting blank. " + error);
+				}
+				if (isEven){
+					isEven = false;
+				}
+				else {
+					isEven = true;
+				}
+			} while(success != 0);
 		}
+		System.out.println(timeLine);
 	}
-*/
+	 */
 	
 	public Object[] validate(TimeStep timeStep){
 		Object[] error  = new Object[3];
@@ -67,7 +99,7 @@ public class Sequence {
 		// Scan current time step
 		int j = 0;
 		for (Squib s : timeStep.squibList){
-			// Check current squib against each previous squib in timestep
+			// Check current squib against each previous squib in timestep to prevent duplicate fire
 			for (int i = 0; i < j; i++){
 				Squib t = timeStep.squibList.get(i);
 				if (s.getFirebox() == t.getFirebox() && s.getLunchbox() == t.getLunchbox()) {

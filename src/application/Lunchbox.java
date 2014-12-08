@@ -6,7 +6,6 @@ import java.util.List;
 public class Lunchbox {
 	public List<Squib> squibList;
 	private int id;
-	@SuppressWarnings("unused")
 	private int grandParent;
 	
 	// Constructor
