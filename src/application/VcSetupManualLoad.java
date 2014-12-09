@@ -101,8 +101,9 @@ public class VcSetupManualLoad implements Initializable {
 	@FXML 
 	protected void openVisualOrganizer(ActionEvent event) throws IOException{
 		Sequence sequence = new Sequence(universe);
-		sequence.loadUniverseSweep();
-
+		//sequence.loadUniverseSweep();
+		sequence.loadUniverseSimultaneousSweep();
+		
 		Parent root;
     	// Load the next window
         FXMLLoader loader = new FXMLLoader(getClass().getResource("Views/UI-SequencePreview.fxml"));
