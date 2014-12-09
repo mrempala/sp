@@ -9,11 +9,11 @@
 fx:controller="application.VcNewProjectSetup" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Label layoutX="47.0" layoutY="51.0" text="Load Recent Project:" />
-      <Hyperlink layoutX="58.0" layoutY="78.0" text="Scene 1" />
-      <Hyperlink layoutX="58.0" layoutY="101.0" text="Scene 2" />
-      <Hyperlink layoutX="58.0" layoutY="124.0" text="Scene 3" />
-      <Hyperlink layoutX="58.0" layoutY="148.0" text="Scene 4" />
-      <Hyperlink layoutX="58.0" layoutY="173.0" text="Scene 5" />
+      <Hyperlink fx:id="link1" layoutX="58.0" layoutY="78.0" text="Scene 1" onAction="#loadExistingUniverse" />
+      <Hyperlink fx:id="link2" layoutX="58.0" layoutY="101.0" text="Scene 2" onAction="#loadExistingUniverse" />
+      <Hyperlink fx:id="link3" layoutX="58.0" layoutY="124.0" text="Scene 3" onAction="#loadExistingUniverse" />
+      <Hyperlink fx:id="link4" layoutX="58.0" layoutY="148.0" text="Scene 4" onAction="#loadExistingUniverse" />
+      <Hyperlink fx:id="link5" layoutX="58.0" layoutY="173.0" text="Scene 5" onAction="#loadExistingUniverse" />
       <Separator layoutX="247.0" layoutY="47.0" orientation="VERTICAL" prefHeight="200.0" />
       <Button layoutX="93.0" layoutY="209.0" mnemonicParsing="false" text="Browse..." fx:id="button_browse" onAction="#browseExistingProject" />
       <Button fx:id="button_newproject" onAction="#openNewProjectDetails" layoutX="299.0" layoutY="118.0" mnemonicParsing="false" prefHeight="61.0" prefWidth="145.0" text="New Project" />

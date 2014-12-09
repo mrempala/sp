@@ -9,6 +9,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 //import javafx.scene.control.TreeItem;
@@ -28,6 +29,13 @@ public class VcNewProjectSetup {
     @FXML public TextField tfProjectName;
     @FXML public TextField tfVenue;
     @FXML public TextField tfDj;
+    
+    // Canned universe links
+    @FXML public Hyperlink link1;
+    @FXML public Hyperlink link2;
+    @FXML public Hyperlink link3;
+    @FXML public Hyperlink link4;
+    @FXML public Hyperlink link5;
     
     public Stage stage;
     
@@ -61,6 +69,49 @@ public class VcNewProjectSetup {
             e.printStackTrace();
         }
     }
+    
+	@FXML void loadExistingUniverse(ActionEvent event) throws IOException{
+		Hyperlink clickedLink = (Hyperlink) event.getSource();
+		System.out.println(clickedLink.getText());
+		
+		Universe universe = new Universe();
+		
+		// TODO: implement here
+		
+    	universe.readUniverse("asdf");
+    	
+    	Sequence sequence = new Sequence(universe);
+		Parent root;
+		
+    	// Load the next window
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("Views/UI-SequenceEditor.fxml"));
+        root = (Parent)loader.load();
+        
+        // Get a reference to the VisualSchematic controller so we can pass a reference of the universe to it.
+        VcSequenceEditor seqEditorController = loader.<VcSequenceEditor>getController();
+        seqEditorController.visualSchematicController.setUniverse(universe);
+        seqEditorController.visualSchematicController.drawUniverseSchematic();
+        
+        // Hack to get sequence into the sequence previewer
+        seqEditorController.setSequence(sequence);
+        
+        // Register the sequence preview as an observer of the time line to get play and pause events
+        seqEditorController.timeLineController.addObserver(seqEditorController);
+        
+        Scene scene = new Scene(root, 1000, 500);
+        Stage stage = new Stage();
+        stage.setTitle("Sequence Preview");
+        stage.setScene(scene);
+        stage.show();
+        
+        // Close the current window
+        // get a handle to the stage
+        Stage currentstage = (Stage) button_browse.getScene().getWindow();
+        // and close it
+        currentstage.close();
+        //universe.writeUniverse("test_output.txt");
+		
+	}
     
     @FXML  protected void browseExistingProject(ActionEvent event) throws IOException {
     	System.out.println("browse button hit");
