@@ -72,13 +72,27 @@ public class VcNewProjectSetup {
     
 	@FXML void loadExistingUniverse(ActionEvent event) throws IOException{
 		Hyperlink clickedLink = (Hyperlink) event.getSource();
-		System.out.println(clickedLink.getText());
-		
+		String selectedSelection = clickedLink.getText();
+		String fileToOpen = "uninitalized";
 		Universe universe = new Universe();
 		
-		// TODO: implement here
-		
-    	universe.readUniverse("asdf");
+		if(selectedSelection.equals("Scene 1")){
+			fileToOpen = "universe_4x6x8.txt";
+		}
+		else if(selectedSelection.equals("Scene 2")){
+			fileToOpen = "universe_4x4x8.txt";
+		}
+		else if(selectedSelection.equals("Scene 3")){
+			fileToOpen = "universe_1x4x8.txt";
+		}
+		else if(selectedSelection.equals("Scene 4")){
+			fileToOpen = "universe_pyramid.txt";
+		}
+		else if(selectedSelection.equals("Scene 5")){
+			fileToOpen = "universe_unusual.txt";
+		}
+
+    	universe.readUniverse(fileToOpen);
     	
     	Sequence sequence = new Sequence(universe);
 		Parent root;
