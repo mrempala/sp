@@ -100,7 +100,7 @@ public class VcSetupManualLoad implements Initializable {
 	
 	@FXML 
 	protected void openVisualOrganizer(ActionEvent event) throws IOException{
-		//universe.readUniverse("test_output.txt");
+		universe.readUniverse("test_output.txt");
 		Sequence sequence = new Sequence(universe);
 
 		Parent root;

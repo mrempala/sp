@@ -74,6 +74,9 @@ public class VcSequenceEditor implements Initializable, Observer {
 		else if (s.equals("randomUniverseSequence")){
 			sequence.loadRandomOneAtATimeSequence();
 		}
+		else if (s.equals("randomPerFireboxUniverseSequence")){
+			sequence.loadRandomOnePerFireboxSequence(100);
+		}
 		else {
 			// Clear the timeline
 			sequence.timeLine.clear();

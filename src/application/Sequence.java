@@ -52,7 +52,7 @@ public class Sequence {
 		System.out.println(timeLine);
 	}
 	
-	//Default for randomOneAtATime
+	//Default for loadRandomOneAtATimeSequence
 	public void loadRandomOneAtATimeSequence(){
 		loadRandomOneAtATimeSequence(100);
 	}
@@ -96,6 +96,49 @@ public class Sequence {
 		
 		System.out.println(timeLine);
 	}
+	
+	public void loadRandomOnePerFireboxSequence(int numTimeSteps){
+		// Clear the timeline
+		timeLine.clear();
+		System.out.println("SHFLSDHFL");
+		// Populate timeline with new sequence
+		for(int i=0; i<numTimeSteps; i++){
+			System.out.println("DSF");
+			TimeStep t = new TimeStep();
+			for(Firebox f : universe.fireboxList) {
+				System.out.println("Hi");
+				//TODO: Initialize and refactor code so a list 
+				//will not be recreated multiple times
+				List<Squib>tempSquibList = new ArrayList<Squib>();
+				for(Lunchbox l : f.lunchboxList) {
+					for(Squib s : l.squibList) {
+						tempSquibList.add(s);
+					}
+				}
+				
+				int numSquibs = tempSquibList.size();
+				if(numSquibs > 0){
+					System.out.println("hello");
+					Random randomGenerator = new Random();
+					int randSquib = randomGenerator.nextInt(numSquibs);
+					t.squibList.add(tempSquibList.get(randSquib));
+				}
+			}
+			Object[] result = validate(t);
+			Integer newResult = (Integer)result[0];
+			String error = (String)result[2];
+			if (newResult.intValue() == 0){
+				timeLine.add(t);
+				System.out.println("Inserted timestep");
+			}
+			else {
+				System.out.println("Failed to insert" + error);
+			}
+		}
+
+		System.out.println(timeLine);
+	}
+	
 	
 	// simultaneously sweep through squibs 1-8 in each firebox
 	public void loadUniverseSimultaneousSweep()
