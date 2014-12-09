@@ -40,6 +40,41 @@ public class Sequence {
 		System.out.println(timeLine);
 	}
 	
+	// simultaneously sweep through squibs 1-8 in each firebox
+	public void loadUniverseSimultaneousSweep()
+	{
+		timeLine.clear();
+		
+		// loop for each possible squib position
+		for(int i = 0; i < 8; i++)
+		{
+			TimeStep t = new TimeStep();
+			
+			for(Firebox f : universe.fireboxList)
+			{
+				for(Lunchbox l : f.lunchboxList)
+				{
+					if(l.squibList.size() > i)
+					{
+						Squib s = l.squibList.get(i);
+						t.squibList.add(s);
+						Object[] result = validate(t);
+						Integer newResult = (Integer)result[0];
+						String error = (String)result[2];
+						if (newResult.intValue() == 0){
+							timeLine.add(t);
+							System.out.println("Inserted timestep");
+						}
+						else {
+							System.out.println("Failed to insert" + error);
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	// 
 	/*
 	// Fire even lunchboxes, then odd lunchboxes
 	// I'm (eric) is not thinking straight at the moment and it's not working
