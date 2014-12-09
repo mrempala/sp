@@ -71,6 +71,18 @@ public class VcSequenceEditor implements Initializable, Observer {
 		else if (s.equals("simultaneousUniverseSweep")){
 			sequence.loadUniverseSimultaneousSweep();
 		}
+		else if (s.equals("randomUniverseSequence")){
+			sequence.loadRandomOneAtATimeSequence();
+		}
+		else if (s.equals("randomPerFireboxUniverseSequence")){
+			sequence.loadRandomOnePerFireboxSequence(100);
+		}
+		else if (s.equals("zigZag")){
+			sequence.loadUniverseZigZag();
+		}
+		else if (s.equals("alternate")){
+			sequence.loadUniverseAlternate();
+		}
 		else {
 			// Clear the timeline
 			sequence.timeLine.clear();

@@ -2,6 +2,7 @@ package application;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class Sequence {
 	public Universe universe;
@@ -55,6 +56,165 @@ public class Sequence {
 		timeLine.add(t);
 	}
 	
+	//Default for loadRandomOneAtATimeSequence
+	public void loadRandomOneAtATimeSequence(){
+		loadRandomOneAtATimeSequence(100);
+	}
+	
+	//A sequence that fires one random squib at a time from
+	//anywhere in the universe per time step.
+	public void loadRandomOneAtATimeSequence(int numTimeSteps){
+		// Clear the timeline
+		timeLine.clear();
+		
+		// Populate timeline with new sequence
+		List<Squib>tempSquibList = new ArrayList<Squib>();
+		for(Firebox f : universe.fireboxList) {
+			for(Lunchbox l : f.lunchboxList) {
+				for(Squib s : l.squibList) {
+					tempSquibList.add(s);
+				}
+			}
+		}
+		
+		//Select a random squib and add it to the time step list for numTimeSteps
+		int numSquibs = tempSquibList.size();
+		if(numSquibs > 0){
+			Random randomGenerator = new Random();
+			for(int i=0; i<numTimeSteps; i++){
+				int randSquib = randomGenerator.nextInt(numSquibs);
+				TimeStep t = new TimeStep();
+				t.squibList.add(tempSquibList.get(randSquib));
+				Object[] result = validate(t);
+				Integer newResult = (Integer)result[0];
+				String error = (String)result[2];
+				if (newResult.intValue() == 0){
+					timeLine.add(t);
+					System.out.println("Inserted timestep");
+				}
+				else {
+					System.out.println("Failed to insert" + error);
+				}
+			}
+		}
+		
+		//TODO: Else statement Error, number of squibs found in universe is 0
+		
+		System.out.println(timeLine);
+	}
+	
+	//A sequence that fires one random squib from each firebox
+	//per timestep so that multiple squibs are fired per time step
+	//if there are multiple fireboxes with squibs.
+	public void loadRandomOnePerFireboxSequence(int numTimeSteps){
+		// Clear the timeline
+		timeLine.clear();
+		// Populate timeline with new sequence
+		for(int i=0; i<numTimeSteps; i++){
+			TimeStep t = new TimeStep();
+			for(Firebox f : universe.fireboxList) {
+				//TODO: Initialize and refactor code so a list 
+				//will not be recreated multiple times
+				List<Squib>tempSquibList = new ArrayList<Squib>();
+				for(Lunchbox l : f.lunchboxList) {
+					for(Squib s : l.squibList) {
+						tempSquibList.add(s);
+					}
+				}
+				
+				int numSquibs = tempSquibList.size();
+				if(numSquibs > 0){
+					Random randomGenerator = new Random();
+					int randSquib = randomGenerator.nextInt(numSquibs);
+					t.squibList.add(tempSquibList.get(randSquib));
+				}
+			}
+			Object[] result = validate(t);
+			Integer newResult = (Integer)result[0];
+			String error = (String)result[2];
+			if (newResult.intValue() == 0){
+				timeLine.add(t);
+				System.out.println("Inserted timestep");
+			}
+			else {
+				System.out.println("Failed to insert" + error);
+			}
+		}
+
+		System.out.println(timeLine);
+	}
+	
+
+	// zig zags through the current setup starting at the first firebox,
+	// going through all its squibs, going to the last squib of the next
+	// firebox, go back through those squibs, etc.
+	public void loadUniverseZigZag()
+	{
+		timeLine.clear();
+		
+		boolean leftToRight = true;
+		
+		// Populate timeline with new sequence
+		for(Firebox f : universe.fireboxList)
+		{
+			if(leftToRight == true)
+			{
+				for(Lunchbox l : f.lunchboxList)
+				{
+					for(Squib s : l.squibList)
+					{
+						TimeStep t = new TimeStep();
+						t.squibList.add(s);
+						Object[] result = validate(t);
+						Integer newResult = (Integer)result[0];
+						String error = (String)result[2];
+						if (newResult.intValue() == 0)
+						{
+							timeLine.add(t);
+							System.out.println("Inserted timestep");
+						}
+						else
+						{
+							System.out.println("Failed to insert" + error);
+						}
+					}
+				}
+				
+				leftToRight = false;
+			}
+			else
+			{
+				for(int i = f.lunchboxList.size() - 1; i >= 0; i--)//for(Lunchbox l : f.lunchboxList)
+				{
+					Lunchbox l = f.lunchboxList.get(i);
+					
+					for(int j = l.squibList.size() - 1; j >= 0; j--)//for(Squib s : l.squibList)
+					{
+						Squib s = l.squibList.get(j);
+						TimeStep t = new TimeStep();
+						t.squibList.add(s);
+						Object[] result = validate(t);
+						Integer newResult = (Integer)result[0];
+						String error = (String)result[2];
+						if (newResult.intValue() == 0)
+						{
+							timeLine.add(t);
+							System.out.println("Inserted timestep");
+						}
+						else
+						{
+							System.out.println("Failed to insert" + error);
+						}
+					}
+				}
+				
+				leftToRight = true;
+			}
+			
+		}
+		System.out.println(timeLine);
+	}
+		
 	// simultaneously sweep through squibs 1-8 in each firebox
 	public void loadUniverseSimultaneousSweep()
 	{
@@ -81,6 +241,72 @@ public class Sequence {
 							System.out.println("Inserted timestep");
 						}
 						else {
+							System.out.println("Failed to insert" + error);
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	// sequence alternates between even and odd lunchboxes firing squibs
+	public void loadUniverseAlternate()
+	{
+		timeLine.clear();
+		
+		TimeStep t = new TimeStep();
+		
+		for(Firebox f : universe.fireboxList)
+		{
+			for(int i = 0; i < f.lunchboxList.size(); i++)
+			{
+				if(i % 2 == 0)
+				{
+					Lunchbox l = f.lunchboxList.get(i);
+					if(l.squibList.size() > 0)
+					{
+						Squib s = l.squibList.get(0);
+						t.squibList.add(s);
+						Object[] result = validate(t);
+						Integer newResult = (Integer)result[0];
+						String error = (String)result[2];
+						if (newResult.intValue() == 0)
+						{
+							timeLine.add(t);
+							System.out.println("Inserted timestep");
+						}
+						else 
+						{
+							System.out.println("Failed to insert" + error);
+						}
+					}
+				}
+			}
+		}
+		
+		t = new TimeStep();
+		
+		for(Firebox f : universe.fireboxList)
+		{
+			for(int i = 0; i < f.lunchboxList.size(); i++)
+			{
+				if(i % 2 != 0)
+				{
+					Lunchbox l = f.lunchboxList.get(i);
+					if(l.squibList.size() > 0)
+					{
+						Squib s = l.squibList.get(0);
+						t.squibList.add(s);
+						Object[] result = validate(t);
+						Integer newResult = (Integer)result[0];
+						String error = (String)result[2];
+						if (newResult.intValue() == 0)
+						{
+							timeLine.add(t);
+							System.out.println("Inserted timestep");
+						}
+						else 
+						{
 							System.out.println("Failed to insert" + error);
 						}
 					}
