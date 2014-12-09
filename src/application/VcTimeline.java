@@ -29,6 +29,7 @@ public class VcTimeline extends Observable {
     	notifyObservers("Play");
     	
     	// Reset cursor
+    	// Currently throws exception when animation is played in sequence preview b/c time line isn't implemented there yet
     	timelineCursor.setStartX(0);
         timelineCursor.setStartY(0);
         timelineCursor.setEndX(0);

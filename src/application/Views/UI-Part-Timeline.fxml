@@ -2,9 +2,14 @@
 
 <?import javafx.scene.layout.* ?>
 <?import javafx.scene.control.* ?>
+<?import java.net.*?>
 
-<HBox fx:controller="application.VcTimeline" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<HBox fx:controller="application.VcTimeline" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" id="TimelineContainer">
 	<Button fx:id="playButton" onAction="#playAnimation" mnemonicParsing="false" text="Play" />
 	<Button fx:id="pauseButton" onAction="#pauseAnimation" mnemonicParsing="false" text="Pause" />
-	<Pane fx:id="timelinePane" prefHeight="35.0" prefWidth="600.0" style="-fx-background-color: pink;" />
+	<Pane fx:id="timelinePane" prefHeight="35.0" prefWidth="600.0" id="TimelinePane" />
+	
+	<stylesheets>
+		<URL value="@../Styles/application.css" />
+	</stylesheets>
 </HBox>

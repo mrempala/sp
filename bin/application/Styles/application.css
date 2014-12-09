@@ -1,46 +1,59 @@
-/* .root {
-	/* File needs to be in the bin directory, not src 
-	-fx-background-image: url("background.jpg")
+#SeqEditorLeftPane {
+	-fx-background-color: red;
 }
 
-.label {
-	-fx-font-size: 12px;
-	-fx-font-weight: bold;
-	-fx-text-fill: #333333;
-	-fx-effect: dropshadow(gaussian, rgba(255,255,255,0.5), 0, 0, 0, 1);
+#SeqEditorRightPane {
+	-fx-background-color: blue;
 }
 
-.text-field {
-	-fx-pref-column-count: 50;
+#SeqEditorRtPaneAnchor {
+	-fx-background-color: green;
 }
 
-#welcome-text {
-	-fx-font-size: 32px;
-	-fx-font-family: "Arial Black";
-	-fx-fill: #818181;
-	-fx-effect: innershadow(three-pass-box, rgba(0,0,0,0.7), 6, 0.0, 0, 2);
+#SeqEditorTimelineContainer{
+	-fx-background-color: aqua;
 }
 
-#actiontarget {
-	-fx-fill: FIREBRICK;
-	-fx-font-weight: bold;
-	-fx-effect: dropshadow( gaussian, rgba(255,255,255,0.5), 0, 0, 0, 1);
+#TimelineContainer {
+	-fx-background-color: black;
 }
 
-.button {
-	-fx-text-fill: white;
-	-fx-font-family: "Arial Narrow";
-	-fx-font-weight: bold;
-	-fx-background-color: linear-gradient(#61a2b1, #2a5058);
-	-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 5, 0.0, 0, 1);
+#TimelinePane {
+	-fx-background-color: pink;
 }
 
-.button:hover {
-	-fx-background-color: linear-gradient(#2a5058, #61a2b1);
-} */
+#SeqPreviewLeft {
+	-fx-background-color: red;
+}
 
-.menuItem {
-	/* How to edit menu widths? */
+#SeqPreviewRt {
+	-fx-background-color: blue;
+}
+
+#SeqPreviewRtTop {
+	-fx-background-color: green;
+}
+
+#SeqPreviewRtBottom {
+	-fx-background-color: yellow;
+}
+
+#VisSchem {
+	-fx-background-color: blue;
+}
+#VisSchemSchematic {
+	-fx-background-color: red;
+}
+
+#VisSchemVisual{
+	-fx-background-color: orange;
+}
+
+
+
+/*
+ * .menuItem {
+	How to edit menu widths?
 }
 #Container {
 	-fx-background-color: blue;
@@ -57,3 +70,4 @@
 #RightPane {
 	-fx-background-color: green;
 }
+*/

@@ -3,7 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
-
+<?import java.net.*?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" fx:controller="application.VcSequencePreview"
 prefHeight="500.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
@@ -11,7 +11,7 @@ styleClass="root" id="Container">
    <center>
       <SplitPane dividerPositions="0.20641282565130262" prefHeight="160.0" prefWidth="200.0" BorderPane.alignment="CENTER">
         <items>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" maxWidth="200" style="-fx-background-color: red;">
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" maxWidth="200" id="SeqPreviewLeft" >
                <children>
                   <Label layoutX="14.0" layoutY="6.0" text="Sequence Info:" />
                   
@@ -29,14 +29,14 @@ styleClass="root" id="Container">
                   
                </children>
           </AnchorPane>
-          <BorderPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" style="-fx-background-color: blue;">
+          <BorderPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" id="SeqPreviewRt" >
                <center>
                   <SplitPane dividerPositions="0.7341269841269841" layoutX="-3.0" layoutY="-4.0" orientation="VERTICAL" prefHeight="506.0" prefWidth="795.0">
                     <items>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" style="-fx-background-color: green;">
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" id="SeqPreviewRtTop">
                            <children>
                               <fx:include fx:id="visualSchematic" source="UI-Part-VisualSchematicView.fxml" />
-                              <HBox layoutX="19.0" layoutY="324.0" prefHeight="35.0" prefWidth="759.0" style="-fx-background-color: aqua;">
+                              <HBox layoutX="19.0" layoutY="324.0" prefHeight="35.0" prefWidth="759.0" id="SeqEditorTimelineContainer">
                                  <children>
                                     <fx:include fx:id="timeLine" source="UI-Part-Timeline.fxml" />
                                     <Button mnemonicParsing="false" text="Send to Universe" />
@@ -44,7 +44,7 @@ styleClass="root" id="Container">
                               </HBox>
                            </children>
                         </AnchorPane>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="83.0" prefWidth="793.0" maxHeight="100" style="-fx-background-color: yellow;">
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="83.0" prefWidth="793.0" maxHeight="100" id="SeqPreviewRtBottom">
                            <children>
                               <Label layoutX="14.0" layoutY="14.0" text="Sequence Error Info" />
                            </children>
@@ -59,4 +59,8 @@ styleClass="root" id="Container">
    <top>
 		<fx:include source="UI-Part-Menu.fxml" />
    </top>
+   
+   	<stylesheets>
+		<URL value="@../Styles/application.css" />
+	</stylesheets>
 </BorderPane>

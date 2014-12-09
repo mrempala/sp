@@ -3,6 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
+<?import java.net.*?>
 
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" fx:controller="application.VcSequenceEditor"
@@ -11,7 +12,7 @@ styleClass="root" id="Container">
    <center>
       <SplitPane dividerPositions="0.20641282565130262" prefHeight="160.0" prefWidth="200.0" BorderPane.alignment="CENTER">
         <items>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" maxWidth="200" style="-fx-background-color: red;">
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" maxWidth="200" id="SeqEditorLeftPane" >
                <children>
                		<Label text="Select from canned sequence:" layoutX="10.0" layoutY="10.0" />
                  	<RadioButton layoutX="20.0" layoutY="40.0" mnemonicParsing="false" selected="false" text="Full Universe Sweep" userData="fullUniverseSweep">
@@ -23,12 +24,12 @@ styleClass="root" id="Container">
       				<RadioButton layoutX="20.0" layoutY="100.0" mnemonicParsing="false" text="Unimplemented Option" toggleGroup="$sequenceSelection" userData="temp" />
                </children>
           </AnchorPane>
-          <BorderPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" style="-fx-background-color: blue;">
+          <BorderPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" id="SeqEditorRightPane">
                <center>
-                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" style="-fx-background-color: green;">
+                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" id="SeqEditorRtPaneAnchor">
                         <children>
                            <fx:include fx:id="visualSchematic" source="UI-Part-VisualSchematicView.fxml" />
-                           <HBox layoutX="19.0" layoutY="324.0" prefHeight="35.0" prefWidth="759.0" style="-fx-background-color: aqua;">
+                           <HBox layoutX="19.0" layoutY="324.0" prefHeight="35.0" prefWidth="759.0" id="SeqEditorTimelineContainer">
                               <children>
                                  <fx:include fx:id="timeLine" source="UI-Part-Timeline.fxml" />
                               </children>
@@ -44,4 +45,9 @@ styleClass="root" id="Container">
    <top>
 		<fx:include source="UI-Part-Menu.fxml" />
    </top>
+   
+   <stylesheets>
+		<URL value="@../Styles/application.css" />
+	</stylesheets>
+   
 </BorderPane>
