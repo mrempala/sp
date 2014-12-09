@@ -29,11 +29,15 @@ public class VcVisualSchematicView implements Initializable {
 	@FXML AnchorPane schematicContainer;
 	
 	public Universe universe;
+	public Group universeSchematic;
+	public Group firingSquibs;
 	
 	// TODO: Add integer values x & y for location to start drawing universe, hard coded at the moment
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		universeSchematic = new Group();
+		firingSquibs = new Group();
 		drawUniverseVisual();
 	}
 	
@@ -87,9 +91,11 @@ public class VcVisualSchematicView implements Initializable {
 	}
 	
 	public void drawFiringSquib(TimeStep timestep, TimeStep previousTimestep){
+		schematicContainer.getChildren().clear();
+		firingSquibs.getChildren().clear();
+		
 		//Draw squibs to be fired
 		for (Squib squib : timestep.squibList) {
-			Group f = new Group();
 			int x=50, y=50;
 			
 			Rectangle squibRectangle = new Rectangle();
@@ -107,16 +113,13 @@ public class VcVisualSchematicView implements Initializable {
 	        t.setY(y + 19 + (squib.getFirebox() * 52));
 	        t.setText("F");
 	        //t.setText(Integer.toString(s.getSquib()));
-	        f.getChildren().add(squibRectangle);
-	        f.getChildren().add(t);
-	        
-	        schematicContainer.getChildren().add(f);
+	        firingSquibs.getChildren().add(squibRectangle);
+	        firingSquibs.getChildren().add(t);
 		}
 		
 		//Redraw previously drawn squibs to their old state
 		if (previousTimestep != null){
 			for (Squib squib : previousTimestep.squibList){
-				Group f = new Group();
 				int x=50, y=50;
 				
 				Rectangle squibRectangle = new Rectangle();
@@ -134,12 +137,12 @@ public class VcVisualSchematicView implements Initializable {
 		        t.setY(y + 19 + (squib.getFirebox() * 52));
 		        t.setText(Integer.toString(squib.getSquib()));
 		        //t.setText(Integer.toString(s.getSquib()));
-		        f.getChildren().add(squibRectangle);
-		        f.getChildren().add(t);
-		        
-		        schematicContainer.getChildren().add(f);
+		        firingSquibs.getChildren().add(squibRectangle);
+		        firingSquibs.getChildren().add(t);
 			}
 		}
+		schematicContainer.getChildren().add(universeSchematic);
+        schematicContainer.getChildren().add(firingSquibs);
 	}
 	
 	public void drawUniverseSchematic(){
@@ -151,7 +154,6 @@ public class VcVisualSchematicView implements Initializable {
         y = 50;
         xt = x;
 		//Draw some schematic layout stuff
-        Group f = new Group();
         
         boolean firstFirebox = true;
         for (Firebox fb : universe.fireboxList){
@@ -171,8 +173,8 @@ public class VcVisualSchematicView implements Initializable {
                 c.setRadius(3);
                 c.setFill(Color.BLACK);
                 
-                f.getChildren().add(l);
-                f.getChildren().add(c);
+                universeSchematic.getChildren().add(l);
+                universeSchematic.getChildren().add(c);
         	}
         	firstFirebox = false;
             Rectangle r = new Rectangle();
@@ -183,7 +185,7 @@ public class VcVisualSchematicView implements Initializable {
             r.setStroke(Color.BLACK);
             r.setFill(Color.GREEN);
             
-            f.getChildren().add(r);
+            universeSchematic.getChildren().add(r);
             
             for (Lunchbox lb : fb.lunchboxList) {
             	// Draw Lunchboxes //
@@ -203,8 +205,8 @@ public class VcVisualSchematicView implements Initializable {
 	            c2.setRadius(3);
 	            c2.setFill(Color.BLACK);
 	            
-	            f.getChildren().add(l2);
-	            f.getChildren().add(c2);
+	            universeSchematic.getChildren().add(l2);
+	            universeSchematic.getChildren().add(c2);
 	            
 	            int squibcount = 0;
 	            for (Squib s : lb.squibList){
@@ -215,7 +217,7 @@ public class VcVisualSchematicView implements Initializable {
 		            squibRectangle.setWidth(10);
 		            squibRectangle.setHeight(15);
 		            squibRectangle.setStroke(Color.BLACK);
-		            // TODO: Change color here when simulating firing
+		            // TODO: Change color here when simulating firing if squib is dead
 		            squibRectangle.setFill(Color.GREEN);
 		            
 		            Text t = new Text();
@@ -223,8 +225,8 @@ public class VcVisualSchematicView implements Initializable {
 		            t.setX(x + 95);
 		            t.setY(y + 19);
 		            t.setText(Integer.toString(s.getSquib()));
-		            f.getChildren().add(squibRectangle);
-		            f.getChildren().add(t);
+		            universeSchematic.getChildren().add(squibRectangle);
+		            universeSchematic.getChildren().add(t);
 		            
 		            x += 10;
 		            squibcount++;
@@ -240,7 +242,7 @@ public class VcVisualSchematicView implements Initializable {
 		            squibRectangle.setStroke(Color.BLACK);
 		            squibRectangle.setFill(Color.TRANSPARENT);
 		            
-		            f.getChildren().add(squibRectangle);
+		            universeSchematic.getChildren().add(squibRectangle);
 		            x += 10;
 	            	squibcount++;
 	            }
@@ -253,7 +255,7 @@ public class VcVisualSchematicView implements Initializable {
 		        id.setX((x-(squibcount*10)) + 85 + squibcount*5);
 		        id.setY(y + 35);
 		        id.setText(lb.getGrandParent() + "-" + lb.getId());
-		        f.getChildren().add(id);
+		        universeSchematic.getChildren().add(id);
 		        
 		        x += 13;
             }
@@ -262,7 +264,7 @@ public class VcVisualSchematicView implements Initializable {
             y = y + 52;    
         }
         
-        schematicContainer.getChildren().add(f);
+        schematicContainer.getChildren().add(universeSchematic);
 	}
 	
 	@FXML 

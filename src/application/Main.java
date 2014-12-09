@@ -8,8 +8,7 @@ import javafx.scene.Scene;
 //import javafx.stage.Screen;
 import javafx.stage.Stage;
 
-public class Main extends Application {
-
+public class Main extends Application {	
     @Override
     public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("Views/UI-Setup-ManualLoad.fxml"));

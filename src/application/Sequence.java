@@ -49,6 +49,10 @@ public class Sequence {
 			}
 		}
 		System.out.println(timeLine);
+		
+		// Insert a trailing blank time step to clear universe
+		TimeStep t = new TimeStep();
+		timeLine.add(t);
 	}
 	
 	// simultaneously sweep through squibs 1-8 in each firebox

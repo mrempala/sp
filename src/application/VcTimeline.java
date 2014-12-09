@@ -24,6 +24,8 @@ public class VcTimeline extends Observable {
 	Timeline cursorAnimation = new Timeline();
 	Line timelineCursor;
 	
+	Group timelineGroup = new Group();
+	
     @FXML protected void playAnimation(ActionEvent event) {
     	setChanged();
     	notifyObservers("Play");
@@ -47,6 +49,9 @@ public class VcTimeline extends Observable {
     
     public void buildTimeline(int length){
     	// Timeline width: 600 height: 35
+        timelinePane.getChildren().clear();
+        timelineGroup.getChildren().clear();
+        
     	System.out.println("Length: " + length);
     	int stepSize = 0;
     	int step = 0;
@@ -71,8 +76,6 @@ public class VcTimeline extends Observable {
     	}
     	timelineLength = stepSize * length;
     	
-    	Group g = new Group();
-    	
     	Rectangle background = new Rectangle();
     	background.setX(0);
     	background.setY(0);
@@ -89,8 +92,8 @@ public class VcTimeline extends Observable {
         timelineCursor.setEndY(35);
         timelineCursor.setStroke(Color.RED);
         
-        g.getChildren().add(background);
-        g.getChildren().add(timelineCursor);
+        timelineGroup.getChildren().add(background);
+        timelineGroup.getChildren().add(timelineCursor);
         
         for (int i = 0; i < length; i++){
 	        Line frameMarker = new Line();
@@ -108,7 +111,7 @@ public class VcTimeline extends Observable {
 	            t.setX(step - 2);
 	            t.setY(15);
 	            t.setText(Integer.toString(i));
-	            g.getChildren().add(t);
+	            timelineGroup.getChildren().add(t);
         	}
         	else {  // Draw a short market, no text
 		        frameMarker.setStrokeWidth(1);
@@ -118,11 +121,10 @@ public class VcTimeline extends Observable {
 		        frameMarker.setEndY(30);
         	}
 	        step += stepSize;
-	        System.out.println(step);
-	        g.getChildren().add(frameMarker);
+	        //System.out.println(step);
+	        timelineGroup.getChildren().add(frameMarker);
         }
-        
-        timelinePane.getChildren().add(g);
+        timelinePane.getChildren().add(timelineGroup);
         
         KeyValue kv1 = new KeyValue(timelineCursor.startXProperty(), timelineLength );
         KeyValue kv2 = new KeyValue(timelineCursor.endXProperty(), timelineLength );
