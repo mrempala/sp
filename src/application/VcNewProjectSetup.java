@@ -1,5 +1,6 @@
 package application;
 
+import java.io.File;
 import java.io.IOException;
 
 import javafx.event.ActionEvent;
@@ -12,6 +13,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 //import javafx.scene.control.TreeItem;
 import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
  
 public class VcNewProjectSetup {
@@ -19,12 +21,15 @@ public class VcNewProjectSetup {
     @FXML private Button button_newproject;
     @FXML private Button button_universeconfig;
     @FXML private ToggleGroup universeConfiguration;
+    @FXML private Button button_browse;
     
     // New project setup text fields
     @FXML public TextField tfShow;
     @FXML public TextField tfProjectName;
     @FXML public TextField tfVenue;
     @FXML public TextField tfDj;
+    
+    public Stage stage;
     
     String show;
     String projectName;
@@ -54,6 +59,28 @@ public class VcNewProjectSetup {
 
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+    
+    @FXML  protected void browseExistingProject(ActionEvent event) {
+    	System.out.println("browse button hit");
+    	FileChooser fileChooser = new FileChooser();
+    	fileChooser.setTitle("Open Resource File");
+    	File file = fileChooser.showOpenDialog(stage);
+        if (file != null) {
+        	System.out.println("File does exist");
+        	System.out.println(file);
+        	
+        	Universe universe = new Universe();
+        	universe.readUniverse(file.getAbsolutePath());
+        	
+        	Sequence sequence = new Sequence(universe);
+        	
+        	Parent root;
+            //openFile(file);
+        }
+        else{
+        	System.out.println("Error, file could not be opened");
         }
     }
     

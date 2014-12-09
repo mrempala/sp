@@ -11,12 +11,16 @@ import javafx.stage.Stage;
 public class Main extends Application {	
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("Views/UI-Setup-ManualLoad.fxml"));
+        Parent root;
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("Views/UI-NewProject.fxml"));
+        root = (Parent)loader.load();
         
+        VcNewProjectSetup newProject = loader.<VcNewProjectSetup>getController();
+        newProject.stage = stage;
         //Rectangle2D r = Screen.getPrimary().getBounds();
         
         stage.setTitle("E-Squib Controller");
-        stage.setScene(new Scene(root,300, 320));
+        stage.setScene(new Scene(root,500, 300));
         //stage.setMaximized(true);
         stage.show();
     }
