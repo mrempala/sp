@@ -116,7 +116,7 @@ public class VcSetupManualLoad implements Initializable {
 		else {
 			sequence.universe = universe;
 		}
-		
+	
 		Parent root;
     	// Load the next window
         FXMLLoader loader = new FXMLLoader(getClass().getResource("Views/UI-SequenceEditor.fxml"));
@@ -147,8 +147,7 @@ public class VcSetupManualLoad implements Initializable {
         Stage currentstage = (Stage) button_openVisualOrganizer.getScene().getWindow();
         // and close it
         currentstage.close();
-        //universe.writeUniverse("test_output.txt");
-  
+        universe.writeUniverse("test_output.txt");
 	}
 	
 	@FXML
