@@ -108,6 +108,9 @@ public class VcSequenceEditor implements Initializable, Observer {
 			animationTimeline.getChildren().add(tempTimeline);
 			i++;
 		}
+		
+		// Update the physical time line in the view
+		timeLineController.buildTimeline(sequence.timeLine.size());
 	}
 	
 	public void playTimelineAnimation(){
