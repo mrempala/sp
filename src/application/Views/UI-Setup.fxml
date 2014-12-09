@@ -25,21 +25,21 @@ fx:controller="application.VcNewProjectSetup" xmlns:fx="http://javafx.com/fxml/1
             <Label text="Project Name:" />
             <Label text="Show:" GridPane.rowIndex="2" />
             <Label text="DJ:" GridPane.rowIndex="3" />
-            <TextField prefHeight="25.0" prefWidth="169.0" GridPane.columnIndex="1" />
-            <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <TextField GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <TextField GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <TextField fx:id="tfProjectName" prefHeight="25.0" prefWidth="169.0" GridPane.columnIndex="1" />
+            <TextField fx:id="tfVenue" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextField fx:id="tfShow" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <TextField fx:id="tfDj" GridPane.columnIndex="1" GridPane.rowIndex="3" />
          </children>
          <padding>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </padding> 
       </GridPane>
-	  <RadioButton layoutX="77.0" layoutY="201.0" mnemonicParsing="false" selected="true" text="Detect Universe Configuration">
+	  <RadioButton layoutX="77.0" layoutY="201.0" mnemonicParsing="false" selected="true" text="Detect Universe Configuration" userData="auto">
          <toggleGroup>
             <ToggleGroup fx:id="universeConfiguration" />
          </toggleGroup>
       </RadioButton>
-      <RadioButton layoutX="77.0" layoutY="226.0" mnemonicParsing="false" text="Manual Universe Configuration" toggleGroup="$universeConfiguration" />
+      <RadioButton layoutX="77.0" layoutY="226.0" mnemonicParsing="false" text="Manual Universe Configuration" toggleGroup="$universeConfiguration" userData="manual" />
       <Button fx:id="button_universeconfig" onAction="#openUniverseConfig" layoutX="316.0" layoutY="253.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="112.0" text="Next" />
    </children>
 </Pane>

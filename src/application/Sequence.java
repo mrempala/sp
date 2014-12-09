@@ -7,6 +7,17 @@ public class Sequence {
 	public Universe universe;
 	public List<TimeStep> timeLine = new ArrayList<TimeStep>();
 	
+	// TODO: As pointed out by Vance, these fields only make sense at a
+	// concert, we may need to generalize more or have a new layer
+	// of setup where the user can choose the type of show, such as
+	// concert, play, orchestra, etc... But for hacking something together
+	// by Wednesday, lets just stick with these values
+	String projectName = "Temp Name", venue = "Temp Venue", show = "Temp Show", dj = "Temp dj"; 
+
+	Sequence () {
+		
+	}
+	
 	Sequence(Universe universe) {
 		this.universe = universe;
 	}
@@ -165,5 +176,37 @@ public class Sequence {
 		error[2] = "Success";
 		
 		return error;
+	}
+	
+	public String getProjectName() {
+		return projectName;
+	}
+
+	public void setProjectName(String projectName) {
+		this.projectName = projectName;
+	}
+
+	public String getVenue() {
+		return venue;
+	}
+
+	public void setVenue(String venue) {
+		this.venue = venue;
+	}
+
+	public String getShow() {
+		return show;
+	}
+
+	public void setShow(String show) {
+		this.show = show;
+	}
+
+	public String getDj() {
+		return dj;
+	}
+
+	public void setDj(String dj) {
+		this.dj = dj;
 	}
 }
