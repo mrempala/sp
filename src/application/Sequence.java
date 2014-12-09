@@ -101,6 +101,10 @@ public class Sequence {
 		//TODO: Else statement Error, number of squibs found in universe is 0
 		
 		System.out.println(timeLine);
+		
+		// Insert a trailing blank time step to clear universe
+		TimeStep t = new TimeStep();
+		timeLine.add(t);
 	}
 	
 	//A sequence that fires one random squib from each firebox
@@ -142,6 +146,10 @@ public class Sequence {
 		}
 
 		System.out.println(timeLine);
+		
+		// Insert a trailing blank time step to clear universe
+		TimeStep t = new TimeStep();
+		timeLine.add(t);
 	}
 	
 
@@ -213,6 +221,10 @@ public class Sequence {
 			
 		}
 		System.out.println(timeLine);
+		
+		// Insert a trailing blank time step to clear universe
+		TimeStep t = new TimeStep();
+		timeLine.add(t);
 	}
 		
 	// simultaneously sweep through squibs 1-8 in each firebox
@@ -247,6 +259,10 @@ public class Sequence {
 				}
 			}
 		}
+		
+		// Insert a trailing blank time step to clear universe
+		TimeStep t = new TimeStep();
+		timeLine.add(t);
 	}
 	
 	// sequence alternates between even and odd lunchboxes firing squibs
@@ -313,6 +329,10 @@ public class Sequence {
 				}
 			}
 		}
+		
+		// Insert a trailing blank time step to clear universe
+		TimeStep t1 = new TimeStep();
+		timeLine.add(t1);
 	}
 	
 	// 
