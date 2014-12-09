@@ -21,7 +21,10 @@ styleClass="root" id="Container">
          				</toggleGroup>
       				</RadioButton>
       				<RadioButton layoutX="20.0" layoutY="70.0" mnemonicParsing="false" text="Universe Simultaneous Sweep" toggleGroup="$sequenceSelection" userData="simultaneousUniverseSweep" />
-      				<RadioButton layoutX="20.0" layoutY="100.0" mnemonicParsing="false" text="Unimplemented Option" toggleGroup="$sequenceSelection" userData="temp" />
+					<RadioButton layoutX="20.0" layoutY="100.0" mnemonicParsing="false" text="Universe Zig Zag" toggleGroup="$sequenceSelection" userData="zigZag" />
+					<RadioButton layoutX="20.0" layoutY="130.0" mnemonicParsing="false" text="Universe Alternate" toggleGroup="$sequenceSelection" userData="alternate" />
+					<RadioButton layoutX="20.0" layoutY="160.0" mnemonicParsing="false" text="Unimplemented Option" toggleGroup="$sequenceSelection" userData="temp" />
+      				
                </children>
           </AnchorPane>
           <BorderPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" id="SeqEditorRightPane">

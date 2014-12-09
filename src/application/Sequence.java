@@ -51,6 +51,76 @@ public class Sequence {
 		System.out.println(timeLine);
 	}
 	
+	// zig zags through the current setup starting at the first firebox,
+		// going through all its squibs, going to the last squib of the next
+		// firebox, go back through those squibs, etc.
+		public void loadUniverseZigZag()
+		{
+			timeLine.clear();
+			
+			boolean leftToRight = true;
+			
+			// Populate timeline with new sequence
+			for(Firebox f : universe.fireboxList)
+			{
+				if(leftToRight == true)
+				{
+					for(Lunchbox l : f.lunchboxList)
+					{
+						for(Squib s : l.squibList)
+						{
+							TimeStep t = new TimeStep();
+							t.squibList.add(s);
+							Object[] result = validate(t);
+							Integer newResult = (Integer)result[0];
+							String error = (String)result[2];
+							if (newResult.intValue() == 0)
+							{
+								timeLine.add(t);
+								System.out.println("Inserted timestep");
+							}
+							else
+							{
+								System.out.println("Failed to insert" + error);
+							}
+						}
+					}
+					
+					leftToRight = false;
+				}
+				else
+				{
+					for(int i = f.lunchboxList.size() - 1; i >= 0; i--)//for(Lunchbox l : f.lunchboxList)
+					{
+						Lunchbox l = f.lunchboxList.get(i);
+						
+						for(int j = l.squibList.size() - 1; j >= 0; j--)//for(Squib s : l.squibList)
+						{
+							Squib s = l.squibList.get(j);
+							TimeStep t = new TimeStep();
+							t.squibList.add(s);
+							Object[] result = validate(t);
+							Integer newResult = (Integer)result[0];
+							String error = (String)result[2];
+							if (newResult.intValue() == 0)
+							{
+								timeLine.add(t);
+								System.out.println("Inserted timestep");
+							}
+							else
+							{
+								System.out.println("Failed to insert" + error);
+							}
+						}
+					}
+					
+					leftToRight = true;
+				}
+				
+			}
+			System.out.println(timeLine);
+		}
+		
 	// simultaneously sweep through squibs 1-8 in each firebox
 	public void loadUniverseSimultaneousSweep()
 	{
@@ -77,6 +147,72 @@ public class Sequence {
 							System.out.println("Inserted timestep");
 						}
 						else {
+							System.out.println("Failed to insert" + error);
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	// sequence alternates between even and odd lunchboxes firing squibs
+	public void loadUniverseAlternate()
+	{
+		timeLine.clear();
+		
+		TimeStep t = new TimeStep();
+		
+		for(Firebox f : universe.fireboxList)
+		{
+			for(int i = 0; i < f.lunchboxList.size(); i++)
+			{
+				if(i % 2 == 0)
+				{
+					Lunchbox l = f.lunchboxList.get(i);
+					if(l.squibList.size() > 0)
+					{
+						Squib s = l.squibList.get(0);
+						t.squibList.add(s);
+						Object[] result = validate(t);
+						Integer newResult = (Integer)result[0];
+						String error = (String)result[2];
+						if (newResult.intValue() == 0)
+						{
+							timeLine.add(t);
+							System.out.println("Inserted timestep");
+						}
+						else 
+						{
+							System.out.println("Failed to insert" + error);
+						}
+					}
+				}
+			}
+		}
+		
+		t = new TimeStep();
+		
+		for(Firebox f : universe.fireboxList)
+		{
+			for(int i = 0; i < f.lunchboxList.size(); i++)
+			{
+				if(i % 2 != 0)
+				{
+					Lunchbox l = f.lunchboxList.get(i);
+					if(l.squibList.size() > 0)
+					{
+						Squib s = l.squibList.get(0);
+						t.squibList.add(s);
+						Object[] result = validate(t);
+						Integer newResult = (Integer)result[0];
+						String error = (String)result[2];
+						if (newResult.intValue() == 0)
+						{
+							timeLine.add(t);
+							System.out.println("Inserted timestep");
+						}
+						else 
+						{
 							System.out.println("Failed to insert" + error);
 						}
 					}

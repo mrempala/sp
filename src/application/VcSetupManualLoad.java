@@ -84,6 +84,14 @@ public class VcSetupManualLoad implements Initializable {
 		int value = Integer.parseInt(text_inputValue.getText());
 		currentTreeNode.getChildren().clear();
 		
+		// added check to prevent creating more than allowed according to hardware limitations (vp)
+		if(elementToSet == "Squib" && value > 8)
+			value = 8;
+		if(elementToSet == "Firebox" && value > 16)
+			value = 16;
+		if(elementToSet == "Lunchbox" && value > 12)
+			value = 12;
+
 		for (int i = 0; i < value; i++) {
 			TreeItem<String> item = new TreeItem<String> (elementToSet + " " +  String.valueOf(i+1));
 			item.setExpanded(true);
