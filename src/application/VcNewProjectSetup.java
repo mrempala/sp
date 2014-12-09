@@ -110,7 +110,7 @@ public class VcNewProjectSetup {
         }
     }
     
-    @FXML protected void openUniverseConfig(ActionEvent event) {
+    @FXML protected void openUniverseConfig(ActionEvent event) throws IOException {
     	// TODO: Pass sequence into manual load to get the user defined project name, etc.
     	Sequence sequence = new Sequence();
     	String windowToLoad;
@@ -151,26 +151,26 @@ public class VcNewProjectSetup {
     	
     	// Open new window
         Parent root;
-        try {
-        	// Load the next window
-            root = FXMLLoader.load(getClass().getResource("Views/" + windowToLoad + ".fxml"));
-            //TreeItem<String> newNode = new TreeItem<String>("Test Node");
-            //FB1.getChildren().add(newNode);
-            Scene scene = new Scene(root, width, height);
-            Stage stage = new Stage();
-            stage.setTitle("Project Name - Configuration");
-            stage.setScene(scene);
-            stage.show();
-            
-            // Close the current window
-            // get a handle to the stage
-            Stage currentstage = (Stage) button_universeconfig.getScene().getWindow();
-            // and close it
-            currentstage.close();
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    	// Load the next window
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("Views/" + windowToLoad + ".fxml"));
+        root = (Parent)loader.load();
+        
+        // Get a reference to the VisualSchematic controller so we can pass a reference of the universe to it.
+        VcSetupManualLoad setupManualController = loader.<VcSetupManualLoad>getController();
+        setupManualController.sequence = sequence;
+        
+        Scene scene = new Scene(root, width, height);
+        Stage stage = new Stage();
+        stage.setTitle("Universe Configuration");
+        stage.setScene(scene);
+        stage.show();
+        
+        // Close the current window
+        // get a handle to the stage
+        Stage currentstage = (Stage) button_universeconfig.getScene().getWindow();
+        // and close it
+        currentstage.close();
         
     }
 }

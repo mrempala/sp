@@ -31,6 +31,8 @@ public class VcSetupManualLoad implements Initializable {
     private String elementToSet;	//This defines which universe element to set, num set by elementNum
     //private String elementNum;		//This defines the element number, ex. Firebox 1 or Squib 1-2-3
     private Universe universe;
+    
+    Sequence sequence = null;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -107,10 +109,14 @@ public class VcSetupManualLoad implements Initializable {
 	}
 	
 	@FXML 
-	protected void openVisualOrganizer(ActionEvent event) throws IOException{
-		universe.readUniverse("test_output.txt");
-		Sequence sequence = new Sequence(universe);
-
+	protected void openVisualOrganizer(ActionEvent event) throws IOException{		
+		if (sequence == null){
+			sequence = new Sequence(universe);
+		}
+		else {
+			sequence.universe = universe;
+		}
+		
 		Parent root;
     	// Load the next window
         FXMLLoader loader = new FXMLLoader(getClass().getResource("Views/UI-SequenceEditor.fxml"));
