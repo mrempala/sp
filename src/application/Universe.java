@@ -42,6 +42,7 @@ public class Universe {
 			Scanner fileReader = new Scanner(new File(inFile));
 			
 			int numFB = fileReader.nextInt();
+			this.fireboxList = new ArrayList<Firebox>();
 			
 			for (int i = 0; i < numFB; i++) {
 				int FBID = fileReader.nextInt();
@@ -55,24 +56,24 @@ public class Universe {
 					
 					int numSquib = fileReader.nextInt();
 					for (int k = 0; k < numSquib; k++) {
-						lb.addSquib(new Squib(FBID, LBID, fileReader.nextInt()));
+						int squibNum = fileReader.nextInt();
+						lb.addSquib(new Squib(FBID, LBID, squibNum));
 					}
 					
 					fb.addLunchbox(lb);
-					this.fireboxList.add(fb);
 				}
+				this.fireboxList.add(fb);
 			}
+			fileReader.close();
 		} catch (Exception e) {
 			System.out.println(e.toString());
 		}
-		
 	}
 	
 	public void writeUniverse(String outFile) {
 		try {
 			PrintWriter writer = new PrintWriter(outFile, "ASCII");
 			int numFB = this.fireboxList.size();
-			
 			writer.println(numFB);
 			
 			for (int i = 0; i < numFB; i++) {
@@ -95,7 +96,7 @@ public class Universe {
 					
 					List<Squib> list = lb.getSquibList();
 					for (int k = 0; k < numSquib; k++) {
-						writer.println(list.get(i).getFirebox());
+						writer.println(list.get(k).getSquib());
 					}
 					
 				}

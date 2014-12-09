@@ -2,6 +2,7 @@ package application;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class Sequence {
 	public Universe universe;
@@ -48,6 +49,51 @@ public class Sequence {
 				}
 			}
 		}
+		System.out.println(timeLine);
+	}
+	
+	//Default for randomOneAtATime
+	public void loadRandomOneAtATimeSequence(){
+		loadRandomOneAtATimeSequence(100);
+	}
+	
+	public void loadRandomOneAtATimeSequence(int numTimeSteps){
+		// Clear the timeline
+		timeLine.clear();
+		
+		// Populate timeline with new sequence
+		List<Squib>tempSquibList = new ArrayList<Squib>();
+		for(Firebox f : universe.fireboxList) {
+			for(Lunchbox l : f.lunchboxList) {
+				for(Squib s : l.squibList) {
+					tempSquibList.add(s);
+				}
+			}
+		}
+		
+		//Select a random squib and add it to the time step list for numTimeSteps
+		int numSquibs = tempSquibList.size();
+		if(numSquibs > 0){
+			Random randomGenerator = new Random();
+			for(int i=0; i<numTimeSteps; i++){
+				int randSquib = randomGenerator.nextInt(numSquibs);
+				TimeStep t = new TimeStep();
+				t.squibList.add(tempSquibList.get(randSquib));
+				Object[] result = validate(t);
+				Integer newResult = (Integer)result[0];
+				String error = (String)result[2];
+				if (newResult.intValue() == 0){
+					timeLine.add(t);
+					System.out.println("Inserted timestep");
+				}
+				else {
+					System.out.println("Failed to insert" + error);
+				}
+			}
+		}
+		
+		//TODO: Else statement Error, number of squibs found in universe is 0
+		
 		System.out.println(timeLine);
 	}
 	
