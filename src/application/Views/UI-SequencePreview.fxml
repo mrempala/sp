@@ -39,7 +39,6 @@ styleClass="root" id="Container">
                               <HBox layoutX="19.0" layoutY="324.0" prefHeight="35.0" prefWidth="759.0" id="SeqEditorTimelineContainer">
                                  <children>
                                     <fx:include fx:id="timeLine" source="UI-Part-Timeline.fxml" />
-                                    <Button mnemonicParsing="false" text="Send to Universe" />
                                  </children>
                               </HBox>
                            </children>
@@ -47,6 +46,7 @@ styleClass="root" id="Container">
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="83.0" prefWidth="793.0" maxHeight="100" id="SeqPreviewRtBottom">
                            <children>
                               <Label layoutX="14.0" layoutY="14.0" text="Sequence Error Info" />
+                              <Button mnemonicParsing="false" layoutX="14" layoutY="30" text="Send to Universe" />
                            </children>
                         </AnchorPane>
                     </items>

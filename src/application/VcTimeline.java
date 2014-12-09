@@ -32,9 +32,9 @@ public class VcTimeline extends Observable {
     	
     	// Reset cursor
     	// Currently throws exception when animation is played in sequence preview b/c time line isn't implemented there yet
-    	timelineCursor.setStartX(0);
+    	timelineCursor.setStartX(10);
         timelineCursor.setStartY(0);
-        timelineCursor.setEndX(0);
+        timelineCursor.setEndX(10);
         timelineCursor.setEndY(35);
     	
     	cursorAnimation.play();
@@ -54,12 +54,12 @@ public class VcTimeline extends Observable {
         
     	System.out.println("Length: " + length);
     	int stepSize = 0;
-    	int step = 0;
+    	int step = 10;
     	int mark;
     	int timelineLength;
     	
     	if (length != 0){
-    		stepSize = 600 / length;
+    		stepSize = 665 / length;
     	}
     	
     	if ((length/1000) >= 1) {
@@ -77,18 +77,18 @@ public class VcTimeline extends Observable {
     	timelineLength = stepSize * length;
     	
     	Rectangle background = new Rectangle();
-    	background.setX(0);
+    	background.setX(10);
     	background.setY(0);
-    	background.setWidth(timelineLength);
+    	background.setWidth(665);
         background.setHeight(35);
         background.setStroke(Color.BLACK);
-        background.setFill(Color.BLUEVIOLET);
+        background.setFill(Color.rgb(0, 78, 97));
         
         timelineCursor = new Line();
         timelineCursor.setStrokeWidth(4);
-        timelineCursor.setStartX(0);
+        timelineCursor.setStartX(10);
         timelineCursor.setStartY(0);
-        timelineCursor.setEndX(0);
+        timelineCursor.setEndX(10);
         timelineCursor.setEndY(35);
         timelineCursor.setStroke(Color.RED);
         
@@ -126,8 +126,8 @@ public class VcTimeline extends Observable {
         }
         timelinePane.getChildren().add(timelineGroup);
         
-        KeyValue kv1 = new KeyValue(timelineCursor.startXProperty(), timelineLength );
-        KeyValue kv2 = new KeyValue(timelineCursor.endXProperty(), timelineLength );
+        KeyValue kv1 = new KeyValue(timelineCursor.startXProperty(), timelineLength + 10 );
+        KeyValue kv2 = new KeyValue(timelineCursor.endXProperty(), timelineLength + 10 );
         
         KeyFrame kf = new KeyFrame(Duration.millis(35 * length), kv1, kv2);
         cursorAnimation.getKeyFrames().clear();

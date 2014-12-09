@@ -5,9 +5,9 @@
 <?import java.net.*?>
 
 <HBox fx:controller="application.VcTimeline" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" id="TimelineContainer">
-	<Button fx:id="playButton" onAction="#playAnimation" mnemonicParsing="false" text="Play" />
-	<Button fx:id="pauseButton" onAction="#pauseAnimation" mnemonicParsing="false" text="Pause" />
-	<Pane fx:id="timelinePane" prefHeight="35.0" prefWidth="600.0" id="TimelinePane" />
+	<Button fx:id="playButton" prefHeight="35.0" onAction="#playAnimation" mnemonicParsing="false" text="Play" />
+	<Button fx:id="pauseButton" prefHeight="35.0" onAction="#pauseAnimation" mnemonicParsing="false" text="Pause" />
+	<Pane fx:id="timelinePane" prefHeight="35.0" prefWidth="675.0" id="TimelinePane" />
 	
 	<stylesheets>
 		<URL value="@../Styles/application.css" />

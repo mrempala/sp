@@ -6,6 +6,54 @@
 	/* -fx-effect: dropshadow(gaussian, rgba(255,255,255,0.5), 0, 0, 0, 1); */
 }
 
+.radio-button {
+	-fx-text-fill: #ffffff;
+}
+
+.menu-bar {
+	-fx-background-color: #262626;
+}
+
+.menu-item:focused {
+	-fx-background-color: #535353;
+}
+
+.context-menu {
+    -fx-skin: "com.sun.javafx.scene.control.skin.ContextMenuSkin";
+    -fx-background-color: #535353;
+}
+
+.context-menu {
+    -fx-skin: "com.sun.javafx.scene.control.skin.ContextMenuSkin";
+    -fx-background-color: #262626;
+}
+
+.tab-header-background {
+	-fx-background-color: #3e3e3e;
+}
+
+.tab {
+	-fx-background-color: #262626;
+}
+
+.tab-label {
+	-fx-text-fill: #ffffff;
+}
+
+.button {
+	-fx-text-fill: white;
+	-fx-font-family: "Arial Narrow";
+	-fx-font-weight: bold;
+	-fx-background-color: linear-gradient(#262626, #3e3e3e);
+	/*-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 5, 0.0, 0, 1);*/
+}
+
+.button:hover {
+	-fx-background-color: linear-gradient(#3e3e3e, #262626);
+}
+
+
+
 #SeqEditorLeftPane {
 	-fx-background-color: #535353;
 }
@@ -19,15 +67,15 @@
 }
 
 #SeqEditorTimelineContainer{
-	-fx-background-color: aqua;
+	/* -fx-background-color: aqua; */
 }
 
 #TimelineContainer {
-	-fx-background-color: black;
+	/*-fx-background-color: black;*/
 }
 
 #TimelinePane {
-	-fx-background-color: pink;
+	/*-fx-background-color: pink;*/
 }
 
 #SeqPreviewLeft {
