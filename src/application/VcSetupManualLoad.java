@@ -101,26 +101,25 @@ public class VcSetupManualLoad implements Initializable {
 	@FXML 
 	protected void openVisualOrganizer(ActionEvent event) throws IOException{
 		Sequence sequence = new Sequence(universe);
-		sequence.loadUniverseSweep();
 
 		Parent root;
     	// Load the next window
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("Views/UI-SequencePreview.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("Views/UI-SequenceEditor.fxml"));
         root = (Parent)loader.load();
         
         // Get a reference to the VisualSchematic controller so we can pass a reference of the universe to it.
-        VcSequencePreview seqPreviewController = loader.<VcSequencePreview>getController();
-        seqPreviewController.visualSchematicController.setUniverse(universe);
-        seqPreviewController.visualSchematicController.drawUniverseSchematic();
+        VcSequenceEditor seqEditorController = loader.<VcSequenceEditor>getController();
+        seqEditorController.visualSchematicController.setUniverse(universe);
+        seqEditorController.visualSchematicController.drawUniverseSchematic();
         
         // Hack to get sequence into the sequence previewer
-        seqPreviewController.setSequence(sequence);
+        seqEditorController.setSequence(sequence);
         
         // Build the time line animation
-        seqPreviewController.buildTimelineAnimation();
+        //seqEditorController.buildTimelineAnimation();
         
         // Register the sequence preview as an observer of the time line to get play and pause events
-        seqPreviewController.timeLineController.addObserver(seqPreviewController);
+        seqEditorController.timeLineController.addObserver(seqEditorController);
         
         Scene scene = new Scene(root, 1000, 500);
         Stage stage = new Stage();
@@ -141,7 +140,7 @@ public class VcSetupManualLoad implements Initializable {
 		System.out.println("test");
 	}
 	
-	private void traverseTree (TreeItem<String> t){
+	public void traverseTree (TreeItem<String> t){
 		System.out.println(t.getValue());
 		for(TreeItem<String> s : t.getChildren()){
 			traverseTree(s);

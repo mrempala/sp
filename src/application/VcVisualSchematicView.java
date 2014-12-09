@@ -29,6 +29,8 @@ public class VcVisualSchematicView implements Initializable {
 	@FXML AnchorPane schematicContainer;
 	
 	public Universe universe;
+	
+	// TODO: Add integer values x & y for location to start drawing universe, hard coded at the moment
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {

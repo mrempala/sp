@@ -15,7 +15,10 @@ public class Sequence {
 	// step to LB2, until end of LB chain, then start
 	// over at FB2.
 	public void loadUniverseSweep(){
-
+		// Clear the timeline
+		timeLine.clear();
+		
+		// Populate timeline with new sequence
 		for(Firebox f : universe.fireboxList) {
 			for(Lunchbox l : f.lunchboxList) {
 				for(Squib s : l.squibList) {
