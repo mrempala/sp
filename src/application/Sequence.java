@@ -248,6 +248,12 @@ public class Sequence {
 						Object[] result = validate(t);
 						Integer newResult = (Integer)result[0];
 						String error = (String)result[2];
+						
+						while (newResult.intValue() == 2){
+							TimeStep tBlank = new TimeStep();
+							timeLine.add(tBlank);							
+						}
+
 						if (newResult.intValue() == 0){
 							timeLine.add(t);
 							System.out.println("Inserted timestep");
@@ -258,8 +264,10 @@ public class Sequence {
 					}
 				}
 			}
+			
+			
 		}
-		
+		System.out.println(timeLine);
 		// Insert a trailing blank time step to clear universe
 		TimeStep t = new TimeStep();
 		timeLine.add(t);
@@ -271,7 +279,7 @@ public class Sequence {
 		timeLine.clear();
 		TimeStep t;
 		
-		for(int i = 0; i < 100; i++)
+		for(int i = 0; i < 40; i++)
 		{
 			t = new TimeStep();
 			// if i is even
@@ -294,6 +302,12 @@ public class Sequence {
 								Object[] result = validate(t);
 								Integer newResult = (Integer)result[0];
 								String error = (String)result[2];
+								
+								while (newResult.intValue() == 2){
+									TimeStep tBlank = new TimeStep();
+									timeLine.add(tBlank);							
+								}
+								
 								if (newResult.intValue() == 0)
 								{
 									timeLine.add(t);
@@ -398,6 +412,9 @@ public class Sequence {
 	
 	public Object[] validate(TimeStep timeStep){
 		Object[] error  = new Object[3];
+		error[0] = 0;
+		error[1] = 0;
+		error[2] = "Success";
 		
 		// Decrement the sleep number in all FBs
 		for(Firebox f : universe.fireboxList){
@@ -428,13 +445,12 @@ public class Sequence {
 				error[2] = "Attempt to fire squibs too fast on Firebox " + s.getFirebox();
 				return error;
 			}
-			
-			universe.fireboxList.get(s.getFirebox()).timeStepSleepNumber++;
 		}
 		
-		error[0] = 0;
-		error[1] = 0;
-		error[2] = "Success";
+		// Only increment sleep count after successfully looking at all squibs to be fired
+		for (Squib s : timeStep.squibList){
+			universe.fireboxList.get(s.getFirebox()).timeStepSleepNumber++;
+		}
 		
 		return error;
 	}
