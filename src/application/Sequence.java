@@ -269,70 +269,81 @@ public class Sequence {
 	public void loadUniverseAlternate()
 	{
 		timeLine.clear();
+		TimeStep t;
 		
-		TimeStep t = new TimeStep();
-		
-		for(Firebox f : universe.fireboxList)
+		for(int i = 0; i < 100; i++)
 		{
-			for(int i = 0; i < f.lunchboxList.size(); i++)
+			t = new TimeStep();
+			// if i is even
+			if(i % 2 == 0)
 			{
-				if(i % 2 == 0)
+				System.out.println("even");
+				
+				for(Firebox f : universe.fireboxList)
 				{
-					Lunchbox l = f.lunchboxList.get(i);
-					if(l.squibList.size() > 0)
+					for(int j = 0; j < f.lunchboxList.size(); j++)
 					{
-						Squib s = l.squibList.get(0);
-						t.squibList.add(s);
-						Object[] result = validate(t);
-						Integer newResult = (Integer)result[0];
-						String error = (String)result[2];
-						if (newResult.intValue() == 0)
+						// if it is an even lunchbox
+						if(j % 2 == 0)
 						{
-							timeLine.add(t);
-							System.out.println("Inserted timestep");
-						}
-						else 
-						{
-							System.out.println("Failed to insert" + error);
+							Lunchbox l = f.lunchboxList.get(j);
+							if(l.squibList.size() > 0)
+							{
+								Squib s = l.squibList.get(0);
+								t.squibList.add(s);
+								Object[] result = validate(t);
+								Integer newResult = (Integer)result[0];
+								String error = (String)result[2];
+								if (newResult.intValue() == 0)
+								{
+									timeLine.add(t);
+									System.out.println("Inserted timestep");
+								}
+								else {
+									System.out.println("Failed to insert" + error);
+								}
+							}
 						}
 					}
 				}
 			}
-		}
-		
-		t = new TimeStep();
-		
-		for(Firebox f : universe.fireboxList)
-		{
-			for(int i = 0; i < f.lunchboxList.size(); i++)
+			else // if i is odd
 			{
-				if(i % 2 != 0)
+				System.out.println("odd");
+				
+				for(Firebox f : universe.fireboxList)
 				{
-					Lunchbox l = f.lunchboxList.get(i);
-					if(l.squibList.size() > 0)
+					for(int j = 0; j < f.lunchboxList.size(); j++)
 					{
-						Squib s = l.squibList.get(0);
-						t.squibList.add(s);
-						Object[] result = validate(t);
-						Integer newResult = (Integer)result[0];
-						String error = (String)result[2];
-						if (newResult.intValue() == 0)
+						// if it is an even lunchbox
+						if(j % 2 != 0)
 						{
-							timeLine.add(t);
-							System.out.println("Inserted timestep");
-						}
-						else 
-						{
-							System.out.println("Failed to insert" + error);
+							Lunchbox l = f.lunchboxList.get(j);
+							if(l.squibList.size() > 0)
+							{
+								Squib s = l.squibList.get(0);
+								t.squibList.add(s);
+								Object[] result = validate(t);
+								Integer newResult = (Integer)result[0];
+								String error = (String)result[2];
+								if (newResult.intValue() == 0)
+								{
+									timeLine.add(t);
+									System.out.println("Inserted timestep");
+								}
+								else {
+									System.out.println("Failed to insert" + error);
+								}
+							}
 						}
 					}
-				}
+				}	
 			}
 		}
 		
 		// Insert a trailing blank time step to clear universe
-		TimeStep t1 = new TimeStep();
-		timeLine.add(t1);
+		t = new TimeStep();
+		timeLine.add(t);
 	}
 	
 	// 
