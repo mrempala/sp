@@ -72,7 +72,7 @@ public class VcTimeline extends Observable {
     		mark = 5;
     	}
     	else {
-    		mark = -1;
+    		mark = 1;
     	}
     	timelineLength = stepSize * length;
     	
@@ -99,7 +99,7 @@ public class VcTimeline extends Observable {
 	        Line frameMarker = new Line();
 	        
 	        
-        	if (mark != -1 && (i % mark) == 0) {  // Draw a tall mark and text
+        	if ((i % mark) == 0) {  // Draw a tall mark and text
         		frameMarker.setStrokeWidth(2);
         		frameMarker.setStartX(step);
         		frameMarker.setStartY(35);

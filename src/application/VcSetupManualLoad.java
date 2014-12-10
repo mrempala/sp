@@ -136,9 +136,9 @@ public class VcSetupManualLoad implements Initializable {
         // Register the sequence preview as an observer of the time line to get play and pause events
         seqEditorController.timeLineController.addObserver(seqEditorController);
         
-        Scene scene = new Scene(root, 1000, 500);
+        Scene scene = new Scene(root, 1000, 450);
         Stage stage = new Stage();
-        stage.setTitle("Sequence Preview");
+        stage.setTitle("Sequence Selector");
         stage.setScene(scene);
         stage.show();
         

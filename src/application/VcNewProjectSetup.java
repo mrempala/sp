@@ -112,9 +112,9 @@ public class VcNewProjectSetup {
         // Register the sequence preview as an observer of the time line to get play and pause events
         seqEditorController.timeLineController.addObserver(seqEditorController);
         
-        Scene scene = new Scene(root, 1000, 500);
+        Scene scene = new Scene(root, 1000, 450);
         Stage stage = new Stage();
-        stage.setTitle("Sequence Preview");
+        stage.setTitle("Sequence Selector");
         stage.setScene(scene);
         stage.show();
         
@@ -157,9 +157,9 @@ public class VcNewProjectSetup {
             // Register the sequence preview as an observer of the time line to get play and pause events
             seqEditorController.timeLineController.addObserver(seqEditorController);
             
-            Scene scene = new Scene(root, 1000, 500);
+            Scene scene = new Scene(root, 1000, 450);
             Stage stage = new Stage();
-            stage.setTitle("Sequence Preview");
+            stage.setTitle("Sequence Selector");
             stage.setScene(scene);
             stage.show();
             
@@ -221,9 +221,11 @@ public class VcNewProjectSetup {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("Views/" + windowToLoad + ".fxml"));
         root = (Parent)loader.load();
         
-        // Get a reference to the VisualSchematic controller so we can pass a reference of the universe to it.
-        VcSetupManualLoad setupManualController = loader.<VcSetupManualLoad>getController();
-        setupManualController.sequence = sequence;
+        if (universeConfiguration.getSelectedToggle().getUserData().toString().equals("manual")){
+	        // Get a reference to the VisualSchematic controller so we can pass a reference of the universe to it.
+	        VcSetupManualLoad setupManualController = loader.<VcSetupManualLoad>getController();
+	        setupManualController.sequence = sequence;
+        }
         
         Scene scene = new Scene(root, width, height);
         Stage stage = new Stage();

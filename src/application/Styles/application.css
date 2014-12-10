@@ -1,5 +1,9 @@
 /* Nicer styling */
 
+.root {
+	-fx-background-color: #535353;
+}
+
 .label {
 	-fx-font-size: 12px;
 	-fx-text-fill: #ffffff;
@@ -42,9 +46,10 @@
 
 .button {
 	-fx-text-fill: white;
-	-fx-font-family: "Arial Narrow";
 	-fx-font-weight: bold;
 	-fx-background-color: linear-gradient(#262626, #3e3e3e);
+	-fx-border-color: #000000;
+	-fx-border-radius: 2px;
 	/*-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 5, 0.0, 0, 1);*/
 }
 
@@ -52,7 +57,25 @@
 	-fx-background-color: linear-gradient(#3e3e3e, #262626);
 }
 
+.split-pane-divider {
+	-fx-background-color: #262626;
+}
 
+#playButton {
+	-fx-background-radius: 20px;
+	-fx-border-radius: 20px;
+	-fx-border-color: transparent;
+	-fx-background-image: url("play.png");
+	
+}
+
+#pauseButton {
+	-fx-background-radius: 20px;
+	-fx-border-radius: 20px;
+	-fx-border-color: transparent;
+	-fx-background-image: url("pause.png");
+
+}
 
 #SeqEditorLeftPane {
 	-fx-background-color: #535353;
@@ -72,6 +95,7 @@
 
 #TimelineContainer {
 	/*-fx-background-color: black;*/
+	-fx-spacing: 6px;
 }
 
 #TimelinePane {

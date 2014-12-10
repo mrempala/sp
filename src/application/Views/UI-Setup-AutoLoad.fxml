@@ -3,7 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
-
+<?import java.net.*?>
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="500.0" 
 fx:controller="application.VcSetupAutoLoad" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
@@ -12,4 +12,8 @@ fx:controller="application.VcSetupAutoLoad" xmlns="http://javafx.com/javafx/8" x
       <ProgressBar layoutX="43.0" layoutY="40.0" prefHeight="52.0" prefWidth="412.0" progress="0.0" />
       <Label layoutX="43.0" layoutY="100.0" text="Detection details printed here..." />
    </children>
+   
+    <stylesheets>
+		<URL value="@../Styles/application.css" />
+	</stylesheets>
 </Pane>

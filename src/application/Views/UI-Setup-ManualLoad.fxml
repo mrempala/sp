@@ -3,7 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
-
+<?import java.net.*?>
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="320.0" prefWidth="300.0" 
 xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.VcSetupManualLoad">
@@ -26,39 +26,15 @@ xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:contro
       		<TreeView fx:id="mainTreeView" prefHeight="200" prefWidth="270">
       			<TreeItem fx:id="rootTreeNode" expanded="true" value="Universe">
 	      			<children>
-	      			<!-- <TreeItem fx:id="FB1" expanded="false" value="Firebox 1">
-	      				<children>
-	      					<TreeItem expanded="false" value="LB1" >
-	      						<children>
-	      							<TreeItem expanded="false" value="Squibs"></TreeItem>
-	      						</children>
-	      					</TreeItem>
-	      					<TreeItem expanded="false" value="LB2">
-	      						<children>
-	      							<TreeItem expanded="false" value="Squibs"></TreeItem>
-	      						</children>
-	      					</TreeItem>
-	      					<TreeItem expanded="false" value="LB3">
-	      						<children>
-	      							<TreeItem expanded="false" value="Squibs"></TreeItem>
-	      						</children>
-	      					</TreeItem>
-	      				</children>
-	      			</TreeItem>
-	      			<TreeItem expanded="false" value="Firebox 2">
-	      				<children>
-	      					<TreeItem expanded="false" value="LB1" />
-	      				</children>
-	      			</TreeItem>
-	      			<TreeItem expanded="false" value="Firebox 3">
-	      				<children>
-	      					<TreeItem expanded="false" value="LB1" />
-	      				</children>
-	      			</TreeItem>-->
+
 	      			</children>
       			</TreeItem>
      	 	</TreeView>
      	 </children>
       </VBox>
    </children>
+   
+   <stylesheets>
+		<URL value="@../Styles/application.css" />
+	</stylesheets>
 </Pane>

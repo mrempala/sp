@@ -185,7 +185,14 @@ public class VcVisualSchematicView implements Initializable {
             r.setStroke(Color.BLACK);
             r.setFill(Color.GREEN);
             
+            Text fireboxText = new Text();
+            fireboxText.setFill(Color.BLACK);
+            fireboxText.setX(x + 15);
+            fireboxText.setY(y + 20);
+            fireboxText.setText("Firebox " + Integer.toString(fb.id));
+            
             universeSchematic.getChildren().add(r);
+            universeSchematic.getChildren().add(fireboxText);
             
             for (Lunchbox lb : fb.lunchboxList) {
             	// Draw Lunchboxes //

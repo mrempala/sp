@@ -3,7 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
-
+<?import java.net.*?>
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="500.0" 
 fx:controller="application.VcNewProjectSetup" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
@@ -15,7 +15,12 @@ fx:controller="application.VcNewProjectSetup" xmlns="http://javafx.com/javafx/8"
       <Hyperlink fx:id="link4" layoutX="58.0" layoutY="148.0" text="Scene 4" onAction="#loadExistingUniverse" />
       <Hyperlink fx:id="link5" layoutX="58.0" layoutY="173.0" text="Scene 5" onAction="#loadExistingUniverse" />
       <Separator layoutX="247.0" layoutY="47.0" orientation="VERTICAL" prefHeight="200.0" />
-      <Button layoutX="93.0" layoutY="209.0" mnemonicParsing="false" text="Browse..." fx:id="button_browse" onAction="#browseExistingProject" />
+      <Button layoutX="47.0" layoutY="209.0" mnemonicParsing="false" text="Browse..." fx:id="button_browse" onAction="#browseExistingProject" />
       <Button fx:id="button_newproject" onAction="#openNewProjectDetails" layoutX="299.0" layoutY="118.0" mnemonicParsing="false" prefHeight="61.0" prefWidth="145.0" text="New Project" />
    </children>
+   
+   <stylesheets>
+		<URL value="@../Styles/application.css" />
+	</stylesheets>
+	
 </Pane>
