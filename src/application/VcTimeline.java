@@ -82,7 +82,8 @@ public class VcTimeline extends Observable {
     	background.setWidth(665);
         background.setHeight(35);
         background.setStroke(Color.BLACK);
-        background.setFill(Color.rgb(0, 78, 97));
+        background.setFill(Color.rgb(98, 208, 232));
+        /*background.setFill(Color.rgb(0, 78, 97));*/
         
         timelineCursor = new Line();
         timelineCursor.setStrokeWidth(4);

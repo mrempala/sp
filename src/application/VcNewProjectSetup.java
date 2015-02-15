@@ -11,8 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleGroup;
-//import javafx.scene.control.TreeItem;
+//import javafx.scene.control.ToggleGroup;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -21,7 +20,7 @@ public class VcNewProjectSetup {
     @FXML private Text actiontarget;
     @FXML private Button button_newproject;
     @FXML private Button button_universeconfig;
-    @FXML private ToggleGroup universeConfiguration;
+    // @FXML private ToggleGroup universeConfiguration; // Used in the event DSSP wants to add auto universe detection in the future
     @FXML private Button button_browse;
     
     // New project setup text fields
@@ -43,10 +42,6 @@ public class VcNewProjectSetup {
     String projectName;
     String venue;
     String dj;
-    
-    @FXML protected void handleSubmitButtonAction(ActionEvent event) {
-        actiontarget.setText("Sign in button pressed");
-    }
     
     @FXML protected void openNewProjectDetails(ActionEvent event){
         Parent root;
@@ -201,18 +196,10 @@ public class VcNewProjectSetup {
     	sequence.setVenue(venue);
     	
     	// If auto universe detection is selected by radio button
-    	if (universeConfiguration.getSelectedToggle().getUserData().toString().equals("auto")){
-    		windowToLoad = "UI-Setup-AutoLoad";
-    		width = 500;
-    		height = 150;
-    		System.out.println("auto");
-    	}
-    	else {
-    		windowToLoad = "UI-Setup-ManualLoad";
-    		width = 300;
-    		height = 320;
-    		System.out.println("manual");
-    	}
+    	windowToLoad = "UI-Setup-ManualLoad";
+    	width = 300;
+    	height = 320;
+    	System.out.println("manual");
     	
     	// Open new window
         Parent root;
@@ -220,12 +207,11 @@ public class VcNewProjectSetup {
     	// Load the next window
         FXMLLoader loader = new FXMLLoader(getClass().getResource("Views/" + windowToLoad + ".fxml"));
         root = (Parent)loader.load();
-        
-        if (universeConfiguration.getSelectedToggle().getUserData().toString().equals("manual")){
-	        // Get a reference to the VisualSchematic controller so we can pass a reference of the universe to it.
-	        VcSetupManualLoad setupManualController = loader.<VcSetupManualLoad>getController();
-	        setupManualController.sequence = sequence;
-        }
+
+	    // Get a reference to the VisualSchematic controller so we can pass a reference of the universe to it.
+	    VcSetupManualLoad setupManualController = loader.<VcSetupManualLoad>getController();
+	    setupManualController.sequence = sequence;
+
         
         Scene scene = new Scene(root, width, height);
         Stage stage = new Stage();

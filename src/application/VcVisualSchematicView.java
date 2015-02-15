@@ -129,7 +129,7 @@ public class VcVisualSchematicView implements Initializable {
 		        squibRectangle.setHeight(15);
 		        squibRectangle.setStroke(Color.BLACK);
 		        // TODO: Change color here when simulating firing
-		        squibRectangle.setFill(Color.GREEN);
+		        squibRectangle.setFill(Color.LIGHTGREEN);
 		        
 		        Text t = new Text();
 		        t.setFill(Color.BLACK);
@@ -183,7 +183,7 @@ public class VcVisualSchematicView implements Initializable {
             r.setX(x);
             r.setY(y);
             r.setStroke(Color.BLACK);
-            r.setFill(Color.GREEN);
+            r.setFill(Color.LIGHTGREEN);
             
             Text fireboxText = new Text();
             fireboxText.setFill(Color.BLACK);
@@ -225,7 +225,7 @@ public class VcVisualSchematicView implements Initializable {
 		            squibRectangle.setHeight(15);
 		            squibRectangle.setStroke(Color.BLACK);
 		            // TODO: Change color here when simulating firing if squib is dead
-		            squibRectangle.setFill(Color.GREEN);
+		            squibRectangle.setFill(Color.LIGHTGREEN);
 		            
 		            Text t = new Text();
 		            t.setFill(Color.BLACK);
@@ -256,7 +256,7 @@ public class VcVisualSchematicView implements Initializable {
 	            
 	            // Draw lunchbox label x-x
 	            Text id = new Text();
-		        id.setFill(Color.BLACK);
+		        id.setFill(Color.WHITESMOKE);
 		        // Some weird off setting to draw the label in the right location,
 		        // essentially move cursor back to 0, and build offset from there.
 		        id.setX((x-(squibcount*10)) + 85 + squibcount*5);

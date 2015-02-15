@@ -4,18 +4,22 @@ public class Squib {
 	private int firebox;
 	private int lunchbox;
 	private int squib;
+	private int channel;  // Can be a value of 1-8
 	private int firecount;
+	private int audiolevel; // Set to 1 for soft, 2 for loud
 	//private bool health;
 	
 	Squib () {
 		firecount = 0;
 	}
 	
-	Squib(int firebox, int lunchbox, int squib) {
+	Squib(int firebox, int lunchbox, int squib, int channel) {
 		this.firebox = firebox;
 		this.lunchbox = lunchbox;
 		this.squib = squib;
+		this.channel = channel;
 		
+		audiolevel = 1;
 		firecount = 0;
 	}
 	
@@ -45,12 +49,28 @@ public class Squib {
 		this.squib = squib;
 	}
 	
+	public int getChannel() {
+		return channel;
+	}
+	
+	public void setChannel(int channel){
+		this.channel = channel;
+	}
+	
 	public int getFirecount() {
 		return firecount;
 	}
 	
 	public void setFirecount(int firecount){
 		this.firecount = firecount;
+	}
+	
+	public int getAudiolevel() {
+		return audiolevel;
+	}
+	
+	public void setAudiolevel(int audiolevel){
+		this.audiolevel = audiolevel;
 	}
 
 	public void traverseUniverse() {

@@ -72,8 +72,16 @@ public class VcSetupManualLoad implements Initializable {
                 	label_setTreeNode.setText("Number of Fireboxes:");
                 }
                 else if (elements[0].equals("Squib")){
-                	// We don't want to add children to squibs!
+                	// Add/modify squib channel number 
+                	elementToSet = "Channel";
+                	label_setTreeNode.setText("Channel of Squib:");
+                }
+                else if(elements[0].equals("Channel")){
+                	// If channel is selected, use the previously selected element
                 	currentTreeNode = oldTreeNode;
+                }
+                else {
+                	System.out.println("ERROR!");
                 }
                 //System.out.println(elementToSet);
             }
@@ -84,9 +92,23 @@ public class VcSetupManualLoad implements Initializable {
 	@FXML 
 	protected void setValue(ActionEvent event) throws IOException {
 		int value = Integer.parseInt(text_inputValue.getText());
-		currentTreeNode.getChildren().clear();
+		
+		System.out.println("\n\n" + currentTreeNode.getValue() + "\n\n" + elementToSet);
+		
+		// When clearing the same element twice in a row, tree item selection changed event is fired
+		// and selects the parent item.  For this reason we need to back up the currently selected
+		// node and node to set to ensure values don't get corrupted.
+		if (!(currentTreeNode.getChildren().isEmpty())){
+			TreeItem<String> oldTreeNode = currentTreeNode;
+			String oldElementToSet = elementToSet;
+			currentTreeNode.getChildren().clear();
+			currentTreeNode = oldTreeNode;
+			elementToSet = oldElementToSet;
+		}
+		currentTreeNode.getChildren();
 		
 		// added check to prevent creating more than allowed according to hardware limitations (vp)
+		// TODO: Add error message feedback if bad input received
 		if(elementToSet == "Squib" && value > 8)
 			value = 8;
 		if(elementToSet == "Firebox" && value > 16)
@@ -94,10 +116,21 @@ public class VcSetupManualLoad implements Initializable {
 		if(elementToSet == "Lunchbox" && value > 12)
 			value = 12;
 
-		for (int i = 0; i < value; i++) {
-			TreeItem<String> item = new TreeItem<String> (elementToSet + " " +  String.valueOf(i+1));
+		if (elementToSet.equals("Channel")) {
+			TreeItem<String> item = new TreeItem<String> (elementToSet + " " +  String.valueOf(value));
 			item.setExpanded(true);
 			currentTreeNode.getChildren().add(item);
+		}
+		else {
+			for (int i = 0; i < value; i++) {
+				TreeItem<String> item = new TreeItem<String> (elementToSet + " " +  String.valueOf(i+1));
+				item.setExpanded(true);
+				if (elementToSet.equals("Squib")) {
+					TreeItem<String> childitem = new TreeItem<String> ("Channel " +  String.valueOf(i+1));
+					item.getChildren().add(childitem);
+				}
+				currentTreeNode.getChildren().add(item);
+			}
 		}
 		
 		// Check created tree
@@ -106,48 +139,6 @@ public class VcSetupManualLoad implements Initializable {
 		// Populate the universe based on users setting
 		// TODO: Move this call to openVisualOrganizer once testing done.
 		populateUniverse(rootTreeNode, 0);
-	}
-	
-	@FXML 
-	protected void openVisualOrganizer(ActionEvent event) throws IOException{		
-		if (sequence == null){
-			sequence = new Sequence(universe);
-		}
-		else {
-			sequence.universe = universe;
-		}
-	
-		Parent root;
-    	// Load the next window
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("Views/UI-SequenceEditor.fxml"));
-        root = (Parent)loader.load();
-        
-        // Get a reference to the VisualSchematic controller so we can pass a reference of the universe to it.
-        VcSequenceEditor seqEditorController = loader.<VcSequenceEditor>getController();
-        seqEditorController.visualSchematicController.setUniverse(universe);
-        seqEditorController.visualSchematicController.drawUniverseSchematic();
-        
-        // Hack to get sequence into the sequence previewer
-        seqEditorController.setSequence(sequence);
-        
-        // Build the time line animation
-        //seqEditorController.buildTimelineAnimation();
-        
-        // Register the sequence preview as an observer of the time line to get play and pause events
-        seqEditorController.timeLineController.addObserver(seqEditorController);
-        
-        Scene scene = new Scene(root, 1000, 450);
-        Stage stage = new Stage();
-        stage.setTitle("Sequence Selector");
-        stage.setScene(scene);
-        stage.show();
-        
-        // Close the current window
-        // get a handle to the stage
-        Stage currentstage = (Stage) button_openVisualOrganizer.getScene().getWindow();
-        // and close it
-        currentstage.close();
-        universe.writeUniverse("test_output.txt");
 	}
 	
 	@FXML
@@ -190,11 +181,56 @@ public class VcSetupManualLoad implements Initializable {
 	private void populateLunchbox(TreeItem<String> tree, int elementNum, int parentNum, int grandparentNum) {
 		for(TreeItem<String> s : tree.getChildren()){
 			String universeItem = s.getValue();
-			Squib squib = new Squib(grandparentNum, parentNum, elementNum);
+			int squibChannel = 1;
+			//System.out.println(s.getChildren().get(0).getValue());
+			//TODO: Actually grab channel number
+			Squib squib = new Squib(grandparentNum, parentNum, elementNum, squibChannel);
 			
 			System.out.println("Adding element: " + universeItem + "  " + elementNum + "  " + parentNum + "  " + grandparentNum);
 			universe.fireboxList.get(grandparentNum).lunchboxList.get(parentNum).addSquib(squib);
 			elementNum++;
 		}
+	}
+	
+	@FXML 
+	protected void openVisualOrganizer(ActionEvent event) throws IOException{		
+		if (sequence == null){
+			sequence = new Sequence(universe);
+		}
+		else {
+			sequence.universe = universe;
+		}
+	
+		Parent root;
+    	// Load the next window
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("Views/UI-SequenceEditor.fxml"));
+        root = (Parent)loader.load();
+        
+        // Get a reference to the VisualSchematic controller so we can pass a reference of the universe to it.
+        VcSequenceEditor seqEditorController = loader.<VcSequenceEditor>getController();
+        seqEditorController.visualSchematicController.setUniverse(universe);
+        seqEditorController.visualSchematicController.drawUniverseSchematic();
+        
+        // Hack to get sequence into the sequence previewer
+        seqEditorController.setSequence(sequence);
+        
+        // Build the time line animation
+        //seqEditorController.buildTimelineAnimation();
+        
+        // Register the sequence preview as an observer of the time line to get play and pause events
+        seqEditorController.timeLineController.addObserver(seqEditorController);
+        
+        Scene scene = new Scene(root, 1000, 450);
+        Stage stage = new Stage();
+        stage.setTitle("Sequence Selector");
+        stage.setScene(scene);
+        stage.show();
+        
+        // Close the current window
+        // get a handle to the stage
+        Stage currentstage = (Stage) button_openVisualOrganizer.getScene().getWindow();
+        // and close it
+        currentstage.close();
+        //universe.writeUniverse("test_output.txt");
 	}
 }

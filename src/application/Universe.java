@@ -57,7 +57,9 @@ public class Universe {
 					int numSquib = fileReader.nextInt();
 					for (int k = 0; k < numSquib; k++) {
 						int squibNum = fileReader.nextInt();
-						lb.addSquib(new Squib(FBID, LBID, squibNum));
+						//TODO: Get/Save Channel number of squibs
+						int squibChannel = 1;
+						lb.addSquib(new Squib(FBID, LBID, squibNum, squibChannel));
 					}
 					
 					fb.addLunchbox(lb);
