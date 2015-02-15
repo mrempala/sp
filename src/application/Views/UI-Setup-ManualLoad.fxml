@@ -12,7 +12,7 @@ xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:contro
       </Label>
       <TextField fx:id="text_inputValue" layoutX="160.0" layoutY="27.0" prefHeight="25.0" prefWidth="48.0" />
       <Button layoutX="220" layoutY="27" prefHeight="25.0" prefWidth="70" mnemonicParsing="false" text="Set" onAction="#setValue" />
-      
+      <Label fx:id="label_errorMessage" layoutX="20" layoutY="55" text="" styleClass="error"></Label>
       <!-- 	Good TreeView Info:
       		https://docs.oracle.com/javafx/2/ui_controls/tree-view.htm
       		http://stackoverflow.com/questions/21889697/how-can-i-set-a-graphic-for-a-treeitem-in-fxml

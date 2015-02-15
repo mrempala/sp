@@ -27,6 +27,7 @@ public class VcSetupManualLoad implements Initializable {
     @FXML private Button button_openVisualOrganizer;
     @FXML private TextField text_inputValue;
     @FXML private Label label_setTreeNode;
+    @FXML private Label label_errorMessage;
     private TreeItem<String> currentTreeNode;
     private String elementToSet;	//This defines which universe element to set, num set by elementNum
     //private String elementNum;		//This defines the element number, ex. Firebox 1 or Squib 1-2-3
@@ -93,6 +94,9 @@ public class VcSetupManualLoad implements Initializable {
 	protected void setValue(ActionEvent event) throws IOException {
 		int value = Integer.parseInt(text_inputValue.getText());
 		
+		// Clear any previous error messages
+		label_errorMessage.textProperty().set("");
+		
 		System.out.println("\n\n" + currentTreeNode.getValue() + "\n\n" + elementToSet);
 		
 		// When clearing the same element twice in a row, tree item selection changed event is fired
@@ -108,14 +112,19 @@ public class VcSetupManualLoad implements Initializable {
 		currentTreeNode.getChildren();
 		
 		// added check to prevent creating more than allowed according to hardware limitations (vp)
-		// TODO: Add error message feedback if bad input received
-		if(elementToSet == "Squib" && value > 8)
+		if(elementToSet == "Squib" && value > 8) {
+			label_errorMessage.textProperty().set(" ERROR: Max number of squibs is 8! ");
 			value = 8;
-		if(elementToSet == "Firebox" && value > 16)
+		}
+		if(elementToSet == "Firebox" && value > 16){
+			label_errorMessage.textProperty().set(" ERROR: Max number of fireboxes is 8! ");
 			value = 16;
-		if(elementToSet == "Lunchbox" && value > 12)
+		}
+		if(elementToSet == "Lunchbox" && value > 12){
+			label_errorMessage.textProperty().set(" ERROR: Max number of lunchboxes is 8! ");
 			value = 12;
-
+		}
+		
 		if (elementToSet.equals("Channel")) {
 			TreeItem<String> item = new TreeItem<String> (elementToSet + " " +  String.valueOf(value));
 			item.setExpanded(true);
@@ -132,9 +141,6 @@ public class VcSetupManualLoad implements Initializable {
 				currentTreeNode.getChildren().add(item);
 			}
 		}
-		
-		// Check created tree
-		//traverseTree(rootTreeNode);
 		
 		// Populate the universe based on users setting
 		// TODO: Move this call to openVisualOrganizer once testing done.
@@ -181,9 +187,12 @@ public class VcSetupManualLoad implements Initializable {
 	private void populateLunchbox(TreeItem<String> tree, int elementNum, int parentNum, int grandparentNum) {
 		for(TreeItem<String> s : tree.getChildren()){
 			String universeItem = s.getValue();
-			int squibChannel = 1;
-			//System.out.println(s.getChildren().get(0).getValue());
-			//TODO: Actually grab channel number
+
+			// Get the squib channel number out of the tree
+			String element = s.getChildren().get(0).getValue();
+            String elements[] = element.split(" ");
+            int squibChannel = Integer.parseInt(elements[1]);
+			
 			Squib squib = new Squib(grandparentNum, parentNum, elementNum, squibChannel);
 			
 			System.out.println("Adding element: " + universeItem + "  " + elementNum + "  " + parentNum + "  " + grandparentNum);
