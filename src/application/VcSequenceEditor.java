@@ -51,6 +51,13 @@ public class VcSequenceEditor implements Initializable, Observer {
 		sequenceSelection.selectedToggleProperty().addListener(new ChangeListener<Toggle>(){
 		    public void changed(ObservableValue<? extends Toggle> ov,
 		        Toggle old_toggle, Toggle new_toggle) {
+		    			// Stop the currently playing animation
+		    			timeLineController.cursorAnimation.stop();
+		    			animationTimeline.stop();
+		    			
+		    			// Redraw universe to avoid drawing firing squib from previous sequence
+		    			visualSchematicController.drawUniverseSchematic();
+		    			
 			            if (sequenceSelection.getSelectedToggle() != null) {
 			            	System.out.println(sequenceSelection.getSelectedToggle().getUserData());
 			            	setAnimation(sequenceSelection.getSelectedToggle().getUserData().toString());
@@ -106,8 +113,7 @@ public class VcSequenceEditor implements Initializable, Observer {
 				previousTimestep = null;
 			}
 			
-			// Create a keyframe to color in fired squibs.  Currently we are just redrawing over the top of old universe
-			// TODO: May create memory problems in the future?
+			// Create a keyframe to color in fired squibs.
 			KeyFrame kf = new KeyFrame(Duration.millis(35), new EventHandler<ActionEvent>() {
 	            @Override
 	            public void handle(ActionEvent actionEvent) {

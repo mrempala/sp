@@ -61,9 +61,19 @@
 	-fx-background-color: #262626;
 }
 
+/* Error Messages */
 .error {
 	-fx-background-color: #cc0000;
 	-fx-font-weight: bold;
+}
+
+/* Schematic View Styling */
+.universe-green {
+	-fx-fill: lightgreen;
+}
+
+.universe-firing {
+	-fx-fill: orange;
 }
 
 #playButton {

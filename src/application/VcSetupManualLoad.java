@@ -78,13 +78,14 @@ public class VcSetupManualLoad implements Initializable {
                 	label_setTreeNode.setText("Channel of Squib:");
                 }
                 else if(elements[0].equals("Channel")){
-                	// If channel is selected, use the previously selected element
-                	currentTreeNode = oldTreeNode;
+                	currentTreeNode = newTreeNode.getParent();
+                	// Add/modify squib channel number 
+                	elementToSet = "Channel";
+                	label_setTreeNode.setText("Channel of Squib:");
                 }
                 else {
                 	System.out.println("ERROR!");
                 }
-                //System.out.println(elementToSet);
             }
 
           });
@@ -109,23 +110,34 @@ public class VcSetupManualLoad implements Initializable {
 			currentTreeNode = oldTreeNode;
 			elementToSet = oldElementToSet;
 		}
-		currentTreeNode.getChildren();
 		
 		// added check to prevent creating more than allowed according to hardware limitations (vp)
 		if(elementToSet == "Squib" && value > 8) {
-			label_errorMessage.textProperty().set(" ERROR: Max number of squibs is 8! ");
-			value = 8;
+			label_errorMessage.textProperty().set(" ERROR: Squib value must be between 0 and 8! ");
+			return;
 		}
-		if(elementToSet == "Firebox" && value > 16){
-			label_errorMessage.textProperty().set(" ERROR: Max number of fireboxes is 8! ");
-			value = 16;
+		else if(elementToSet == "Firebox" && value > 16){
+			label_errorMessage.textProperty().set(" ERROR: Firebox value must be between 0 and 16! ");
+			return;
 		}
-		if(elementToSet == "Lunchbox" && value > 12){
-			label_errorMessage.textProperty().set(" ERROR: Max number of lunchboxes is 8! ");
-			value = 12;
+		else if(elementToSet == "Lunchbox" && value > 12){
+			label_errorMessage.textProperty().set(" ERROR: Lunchbox value must be between 0 and 12! ");
+			return;
 		}
 		
 		if (elementToSet.equals("Channel")) {
+			System.out.println(currentTreeNode.getParent().getValue());
+			for (TreeItem<String> s : currentTreeNode.getParent().getChildren()) {
+				for (TreeItem<String> s1 : s.getChildren()){
+					String currentValue[] = s1.getValue().split(" ");
+					int val = Integer.parseInt(currentValue[1]);
+					System.out.println(s1.getValue());
+					if (val == value){
+						label_errorMessage.textProperty().set(" ERROR: Cannot have duplicate squib channels! ");
+						return;
+					}
+				}
+			}
 			TreeItem<String> item = new TreeItem<String> (elementToSet + " " +  String.valueOf(value));
 			item.setExpanded(true);
 			currentTreeNode.getChildren().add(item);

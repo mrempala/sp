@@ -104,8 +104,8 @@ public class VcVisualSchematicView implements Initializable {
 	        squibRectangle.setWidth(10);
 	        squibRectangle.setHeight(15);
 	        squibRectangle.setStroke(Color.BLACK);
-	        // TODO: Change color here when simulating firing
-	        squibRectangle.setFill(Color.ORANGE);
+
+	        squibRectangle.getStyleClass().add("universe-firing");
 	        
 	        Text t = new Text();
 	        t.setFill(Color.BLACK);
@@ -128,8 +128,8 @@ public class VcVisualSchematicView implements Initializable {
 		        squibRectangle.setWidth(10);
 		        squibRectangle.setHeight(15);
 		        squibRectangle.setStroke(Color.BLACK);
-		        // TODO: Change color here when simulating firing
-		        squibRectangle.setFill(Color.LIGHTGREEN);
+		        
+		        squibRectangle.getStyleClass().add("universe-green");
 		        
 		        Text t = new Text();
 		        t.setFill(Color.BLACK);
@@ -146,6 +146,9 @@ public class VcVisualSchematicView implements Initializable {
 	}
 	
 	public void drawUniverseSchematic(){
+		// Clear any previously loaded universe schematic data
+		schematicContainer.getChildren().clear();
+		
 		// x and y location to draw components, xt is used to reset x back to original value
 		int x, y, xt;
 		
@@ -183,7 +186,7 @@ public class VcVisualSchematicView implements Initializable {
             r.setX(x);
             r.setY(y);
             r.setStroke(Color.BLACK);
-            r.setFill(Color.LIGHTGREEN);
+            r.getStyleClass().add("universe-green");
             
             Text fireboxText = new Text();
             fireboxText.setFill(Color.BLACK);
@@ -225,7 +228,7 @@ public class VcVisualSchematicView implements Initializable {
 		            squibRectangle.setHeight(15);
 		            squibRectangle.setStroke(Color.BLACK);
 		            // TODO: Change color here when simulating firing if squib is dead
-		            squibRectangle.setFill(Color.LIGHTGREEN);
+		            squibRectangle.getStyleClass().add("universe-green");
 		            
 		            Text t = new Text();
 		            t.setFill(Color.BLACK);
