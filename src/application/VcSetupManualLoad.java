@@ -214,7 +214,46 @@ public class VcSetupManualLoad implements Initializable {
 	}
 	
 	@FXML 
-	protected void openVisualOrganizer(ActionEvent event) throws IOException{		
+	protected void openVisualOrganizer(ActionEvent event) throws IOException{
+		if (sequence == null){
+			sequence = new Sequence(universe);
+		}
+		else {
+			sequence.universe = universe;
+		}
+	
+		Parent root;
+    	// Load the next window
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("Views/UI-Setup-VisualLayout.fxml"));
+        root = (Parent)loader.load();
+        
+        // Get a reference to the VisualSchematic controller so we can pass a reference of the universe to it.
+        VcSetupVisualLayout seqVisualLayoutController = loader.<VcSetupVisualLayout>getController();
+        seqVisualLayoutController.visualSchematicController.setUniverse(universe);
+        seqVisualLayoutController.visualSchematicController.drawUniverseSchematic();
+        
+        // Hack to get sequence into the sequence previewer
+        seqVisualLayoutController.setSequence(sequence);
+        
+        // Build the time line animation
+        //seqEditorController.buildTimelineAnimation();
+        
+        // Register the sequence preview as an observer of the time line to get play and pause events
+        //seqVisualLayoutController.timeLineController.addObserver(seqEditorController);
+        
+        Scene scene = new Scene(root, 1000, 450);
+        Stage stage = new Stage();
+        stage.setTitle("Visual Organization");
+        stage.setScene(scene);
+        stage.show();
+        
+        // Get a handle to the stage, close the current window 
+        Stage currentstage = (Stage) button_openVisualOrganizer.getScene().getWindow();
+        currentstage.close();
+        //universe.writeUniverse("test_output.txt");
+		
+		
+		/*
 		if (sequence == null){
 			sequence = new Sequence(universe);
 		}
@@ -247,11 +286,10 @@ public class VcSetupManualLoad implements Initializable {
         stage.setScene(scene);
         stage.show();
         
-        // Close the current window
-        // get a handle to the stage
+        // Get a handle to the stage, close the current window 
         Stage currentstage = (Stage) button_openVisualOrganizer.getScene().getWindow();
-        // and close it
         currentstage.close();
         //universe.writeUniverse("test_output.txt");
+         */
 	}
 }

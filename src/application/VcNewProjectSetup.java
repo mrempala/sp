@@ -183,7 +183,8 @@ public class VcNewProjectSetup {
     	dj = tfDj.getText();
     	
     	//TODO: Add more rigorous check, for now just make sure the user input something for fields
-    	if (show.equals("") || projectName.equals("") || venue.equals("") || dj.equals("")) {
+    	//TODO: Renable setting project details, stopped check temporarily to expedite debugging
+    	/*if (show.equals("") || projectName.equals("") || venue.equals("") || dj.equals("")) {
     		System.out.println("Bad Input, try again!");
     		return;
     	}
@@ -194,7 +195,7 @@ public class VcNewProjectSetup {
     	sequence.setDj(dj);
     	sequence.setShow(show);
     	sequence.setVenue(venue);
-    	
+    	*/
     	// If auto universe detection is selected by radio button
     	windowToLoad = "UI-Setup-ManualLoad";
     	width = 300;

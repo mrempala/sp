@@ -6,7 +6,12 @@ import java.util.Random;
 
 public class Sequence {
 	public Universe universe;
+	
+	// The master timeline to be sent to the universe
 	public List<TimeStep> timeLine = new ArrayList<TimeStep>();
+	
+	// A list to contain the user defined groups of squibs
+	public List<ArrayList<Squib>> squibGroups = new ArrayList<ArrayList<Squib>>();
 	
 	// TODO: As pointed out by Vance, these fields only make sense at a
 	// concert, we may need to generalize more or have a new layer

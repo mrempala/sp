@@ -2,19 +2,19 @@ package application;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
-
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-//import javafx.scene.control.Button;
 import javafx.scene.effect.BlendMode;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-//import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
@@ -31,6 +31,9 @@ public class VcVisualSchematicView implements Initializable {
 	public Universe universe;
 	public Group universeSchematic;
 	public Group firingSquibs;
+	
+	// TODO: Figure out where this list of squibs should go, probably shouldn't stay here
+	public ArrayList<Squib> selectedSquibs = new ArrayList<Squib>();
 	
 	// TODO: Add integer values x & y for location to start drawing universe, hard coded at the moment
 
@@ -188,6 +191,15 @@ public class VcVisualSchematicView implements Initializable {
             r.setStroke(Color.BLACK);
             r.getStyleClass().add("universe-green");
             
+            // Setup an event listener to detect when this rectangle is clicked
+            r.setOnMouseClicked(new EventHandler<MouseEvent>()
+                    {
+                        @Override
+                        public void handle(MouseEvent t) {
+                            r.setFill(Color.RED);
+                        }
+                    });
+            
             Text fireboxText = new Text();
             fireboxText.setFill(Color.BLACK);
             fireboxText.setX(x + 15);
@@ -229,12 +241,28 @@ public class VcVisualSchematicView implements Initializable {
 		            squibRectangle.setStroke(Color.BLACK);
 		            // TODO: Change color here when simulating firing if squib is dead
 		            squibRectangle.getStyleClass().add("universe-green");
-		            
+
 		            Text t = new Text();
 		            t.setFill(Color.BLACK);
 		            t.setX(x + 95);
 		            t.setY(y + 19);
 		            t.setText(Integer.toString(s.getSquib()));
+		            
+		            // Setup an event listener to detect when this rectangle is clicked
+		            t.setOnMouseClicked(new EventHandler<MouseEvent>() {
+		                        @Override
+		                        public void handle(MouseEvent t) {
+		                            if (selectedSquibs.contains(s)){
+		                            	squibRectangle.getStyleClass().remove("universe-selected");
+		                            	selectedSquibs.remove(s);
+		                            }
+		                            else {
+		                            	squibRectangle.getStyleClass().add("universe-selected");
+		                            	selectedSquibs.add(s);
+		                            }
+		                        }
+		            });
+		            
 		            universeSchematic.getChildren().add(squibRectangle);
 		            universeSchematic.getChildren().add(t);
 		            

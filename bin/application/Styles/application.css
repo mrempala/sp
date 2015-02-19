@@ -76,6 +76,9 @@
 	-fx-fill: orange;
 }
 
+.universe-selected {
+	-fx-fill: blue;
+}
 #playButton {
 	-fx-background-radius: 20px;
 	-fx-border-radius: 20px;
@@ -92,7 +95,7 @@
 
 }
 
-#SeqEditorLeftPane {
+#SeqEditorLeftPane, #squibsToPlace {
 	-fx-background-color: #535353;
 }
 
