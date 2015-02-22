@@ -16,7 +16,7 @@ public class Main extends Application {
         root = (Parent)loader.load();
         
         VcNewProjectSetup newProject = loader.<VcNewProjectSetup>getController();
-        newProject.stage = stage;
+        newProject.setCurrentStage(stage);
         //Rectangle2D r = Screen.getPrimary().getBounds();
         
         stage.setTitle("E-Squib Controller");

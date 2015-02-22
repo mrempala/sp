@@ -1,6 +1,5 @@
 package application;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.Observable;
 import java.util.Observer;
@@ -14,19 +13,14 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.HBox;
-import javafx.stage.Stage;
 import javafx.util.Duration;
 
-public class VcSequenceEditor implements Initializable, Observer {
+public class VcSequenceEditor extends VcMainController implements Observer {
 	// TODO: 	At the moment, this class is almost an exact duplicate of VcSequencePreview.
 	// 			in the future, may be able to have the two visual views use the same controller,
 	//			or perhaps create a base class for sequence and have the two extend it.
@@ -41,7 +35,6 @@ public class VcSequenceEditor implements Initializable, Observer {
 	@FXML HBox timeLine;
 	@FXML VcTimeline timeLineController;
 	
-	Sequence sequence;
 	SequentialTransition animationTimeline = new SequentialTransition();
 	String animationID;
 
@@ -64,10 +57,6 @@ public class VcSequenceEditor implements Initializable, Observer {
 			            }
 		            }                
 		        });
-	}
-	
-	public void setSequence(Sequence sequence){
-		this.sequence = sequence;
 	}
 	
 	public void setAnimation(String s){
@@ -148,40 +137,5 @@ public class VcSequenceEditor implements Initializable, Observer {
 		else if (arg1.equals("Pause")){
 			pauseTimelineAnimation();
 		}
-	}
-	
-	@FXML protected void loadSequencePreview(ActionEvent event) throws IOException {
-		//Sequence sequence = new Sequence(universe);
-		//sequence.loadUniverseSweep();
-
-		Parent root;
-    	// Load the next window
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("Views/UI-SequencePreview.fxml"));
-        root = (Parent)loader.load();
-        
-        // Get a reference to the VisualSchematic controller so we can pass a reference of the universe to it.
-        VcSequencePreview seqPreviewController = loader.<VcSequencePreview>getController();
-        // And hackily push the necessary variables into it
-        seqPreviewController.visualSchematicController.setUniverse(this.visualSchematicController.universe);
-        seqPreviewController.visualSchematicController.drawUniverseSchematic();
-        
-        // Hack to get sequence into the sequence previewer
-        seqPreviewController.setSequence(sequence);
-        seqPreviewController.buildTimelineAnimation();
-        
-        // Register the sequence preview as an observer of the time line to get play and pause events
-        seqPreviewController.timeLineController.addObserver(seqPreviewController);
-        
-        Scene scene = new Scene(root, 1000, 500);
-        Stage stage = new Stage();
-        stage.setTitle("Sequence Preview");
-        stage.setScene(scene);
-        stage.show();
-        
-        // Close the current window
-        // get a handle to the stage
-        Stage currentstage = (Stage) button_loadSequencePreview.getScene().getWindow();
-        // and close it
-        currentstage.close();
 	}
 }

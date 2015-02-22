@@ -48,6 +48,17 @@ public class VcTimeline extends Observable {
     }
     
     public void buildTimeline(int length){
+    	int timelineLength = drawTimeline(length);
+        
+        KeyValue kv1 = new KeyValue(timelineCursor.startXProperty(), timelineLength + 10 );
+        KeyValue kv2 = new KeyValue(timelineCursor.endXProperty(), timelineLength + 10 );
+        
+        KeyFrame kf = new KeyFrame(Duration.millis(35 * length), kv1, kv2);
+        cursorAnimation.getKeyFrames().clear();
+        cursorAnimation.getKeyFrames().add(kf);
+    }
+    
+    public int drawTimeline(int length){
     	// Timeline width: 600 height: 35
         timelinePane.getChildren().clear();
         timelineGroup.getChildren().clear();
@@ -126,12 +137,6 @@ public class VcTimeline extends Observable {
 	        timelineGroup.getChildren().add(frameMarker);
         }
         timelinePane.getChildren().add(timelineGroup);
-        
-        KeyValue kv1 = new KeyValue(timelineCursor.startXProperty(), timelineLength + 10 );
-        KeyValue kv2 = new KeyValue(timelineCursor.endXProperty(), timelineLength + 10 );
-        
-        KeyFrame kf = new KeyFrame(Duration.millis(35 * length), kv1, kv2);
-        cursorAnimation.getKeyFrames().clear();
-        cursorAnimation.getKeyFrames().add(kf);
+        return timelineLength;
     }
 }

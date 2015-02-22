@@ -5,18 +5,13 @@ import java.io.IOException;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.TextField;
-//import javafx.scene.control.ToggleGroup;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
  
-public class VcNewProjectSetup {
+public class VcNewProjectSetup extends VcMainController {
     @FXML private Text actiontarget;
     @FXML private Button button_newproject;
     @FXML private Button button_universeconfig;
@@ -36,34 +31,10 @@ public class VcNewProjectSetup {
     @FXML public Hyperlink link4;
     @FXML public Hyperlink link5;
     
-    public Stage stage;
-    
     String show;
     String projectName;
     String venue;
     String dj;
-    
-    @FXML protected void openNewProjectDetails(ActionEvent event){
-        Parent root;
-        try {
-        	// Load the next window
-            root = FXMLLoader.load(getClass().getResource("Views/UI-Setup.fxml"));
-            Scene scene = new Scene(root, 500, 300);
-            Stage stage = new Stage();
-            stage.setTitle("New Project - Details");
-            stage.setScene(scene);
-            stage.show();
-            
-            // Close the current window
-            // get a handle to the stage
-            Stage currentstage = (Stage) button_newproject.getScene().getWindow();
-            // and close it
-            currentstage.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
     
 	@FXML void loadExistingUniverse(ActionEvent event) throws IOException{
 		Hyperlink clickedLink = (Hyperlink) event.getSource();
@@ -89,44 +60,15 @@ public class VcNewProjectSetup {
 
     	universe.readUniverse(fileToOpen);
     	
-    	Sequence sequence = new Sequence(universe);
-		Parent root;
-		
-    	// Load the next window
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("Views/UI-SequenceEditor.fxml"));
-        root = (Parent)loader.load();
-        
-        // Get a reference to the VisualSchematic controller so we can pass a reference of the universe to it.
-        VcSequenceEditor seqEditorController = loader.<VcSequenceEditor>getController();
-        seqEditorController.visualSchematicController.setUniverse(universe);
-        seqEditorController.visualSchematicController.drawUniverseSchematic();
-        
-        // Hack to get sequence into the sequence previewer
-        seqEditorController.setSequence(sequence);
-        
-        // Register the sequence preview as an observer of the time line to get play and pause events
-        seqEditorController.timeLineController.addObserver(seqEditorController);
-        
-        Scene scene = new Scene(root, 1000, 450);
-        Stage stage = new Stage();
-        stage.setTitle("Sequence Selector");
-        stage.setScene(scene);
-        stage.show();
-        
-        // Close the current window
-        // get a handle to the stage
-        Stage currentstage = (Stage) button_browse.getScene().getWindow();
-        // and close it
-        currentstage.close();
-        //universe.writeUniverse("test_output.txt");
-		
+    	sequence = new Sequence(universe);
+    	loadSequenceEditor(event);
 	}
     
     @FXML  protected void browseExistingProject(ActionEvent event) throws IOException {
     	System.out.println("browse button hit");
     	FileChooser fileChooser = new FileChooser();
     	fileChooser.setTitle("Open Resource File");
-    	File file = fileChooser.showOpenDialog(stage);
+    	File file = fileChooser.showOpenDialog(currentStage);
         if (file != null) {
         	System.out.println("File does exist");
         	System.out.println(file);
@@ -134,48 +76,16 @@ public class VcNewProjectSetup {
         	Universe universe = new Universe();
         	universe.readUniverse(file.getAbsolutePath());
         	
-        	Sequence sequence = new Sequence(universe);
-    		Parent root;
-    		
-        	// Load the next window
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("Views/UI-SequenceEditor.fxml"));
-            root = (Parent)loader.load();
-            
-            // Get a reference to the VisualSchematic controller so we can pass a reference of the universe to it.
-            VcSequenceEditor seqEditorController = loader.<VcSequenceEditor>getController();
-            seqEditorController.visualSchematicController.setUniverse(universe);
-            seqEditorController.visualSchematicController.drawUniverseSchematic();
-            
-            // Hack to get sequence into the sequence previewer
-            seqEditorController.setSequence(sequence);
-            
-            // Register the sequence preview as an observer of the time line to get play and pause events
-            seqEditorController.timeLineController.addObserver(seqEditorController);
-            
-            Scene scene = new Scene(root, 1000, 450);
-            Stage stage = new Stage();
-            stage.setTitle("Sequence Selector");
-            stage.setScene(scene);
-            stage.show();
-            
-            // Close the current window
-            // get a handle to the stage
-            Stage currentstage = (Stage) button_browse.getScene().getWindow();
-            // and close it
-            currentstage.close();
-            //universe.writeUniverse("test_output.txt");
+        	sequence = new Sequence(universe);
+        	loadSequenceEditor(event);
         }
         else{
         	System.out.println("Error, file could not be opened");
         }
+        
     }
     
-    @FXML protected void openUniverseConfig(ActionEvent event) throws IOException {
-    	// TODO: Pass sequence into manual load to get the user defined project name, etc.
-    	Sequence sequence = new Sequence();
-    	String windowToLoad;
-    	int width, height;
-    	
+    @FXML protected void openUniverseConfig(ActionEvent event) throws IOException {    	
     	// Get text field values and confirm
     	show = tfShow.getText();
     	projectName = tfProjectName.getText();
@@ -183,49 +93,22 @@ public class VcNewProjectSetup {
     	dj = tfDj.getText();
     	
     	//TODO: Add more rigorous check, for now just make sure the user input something for fields
-    	//TODO: Renable setting project details, stopped check temporarily to expedite debugging
+    	//TODO: Reenable setting project details, stopped check temporarily to expedite debugging
     	/*if (show.equals("") || projectName.equals("") || venue.equals("") || dj.equals("")) {
     		System.out.println("Bad Input, try again!");
     		return;
     	}
     	
     	System.out.println(projectName + " " + venue + " " + show + " " + dj);
-    	
+    	*/
+    	// TODO: For some reason these values aren't carrying through the project
     	sequence.setProjectName(projectName);
     	sequence.setDj(dj);
     	sequence.setShow(show);
     	sequence.setVenue(venue);
-    	*/
-    	// If auto universe detection is selected by radio button
-    	windowToLoad = "UI-Setup-ManualLoad";
-    	width = 300;
-    	height = 320;
-    	System.out.println("manual");
     	
-    	// Open new window
-        Parent root;
-
-    	// Load the next window
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("Views/" + windowToLoad + ".fxml"));
-        root = (Parent)loader.load();
-
-	    // Get a reference to the VisualSchematic controller so we can pass a reference of the universe to it.
-	    VcSetupManualLoad setupManualController = loader.<VcSetupManualLoad>getController();
-	    setupManualController.sequence = sequence;
-
-        
-        Scene scene = new Scene(root, width, height);
-        Stage stage = new Stage();
-        stage.setTitle("Universe Configuration");
-        stage.setScene(scene);
-        stage.show();
-        
-        // Close the current window
-        // get a handle to the stage
-        Stage currentstage = (Stage) button_universeconfig.getScene().getWindow();
-        // and close it
-        currentstage.close();
-        
+    	// Call to load the manual configuration window
+    	openUniverseManualConfig(event);
     }
 }
 

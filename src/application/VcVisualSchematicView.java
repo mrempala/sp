@@ -1,17 +1,12 @@
 package application;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.effect.BlendMode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -20,7 +15,6 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 
 
 public class VcVisualSchematicView implements Initializable {
@@ -91,61 +85,6 @@ public class VcVisualSchematicView implements Initializable {
         }
         
         visualContainer.getChildren().add(g);
-	}
-	
-	public void drawFiringSquib(TimeStep timestep, TimeStep previousTimestep){
-		schematicContainer.getChildren().clear();
-		firingSquibs.getChildren().clear();
-		
-		//Draw squibs to be fired
-		for (Squib squib : timestep.squibList) {
-			int x=50, y=50;
-			
-			Rectangle squibRectangle = new Rectangle();
-	        squibRectangle.setX(x + 93 + (squib.getLunchbox() * 93) + (squib.getSquib()*10));
-	        squibRectangle.setY(y + 7 + (squib.getFirebox() * 52));
-	        squibRectangle.setWidth(10);
-	        squibRectangle.setHeight(15);
-	        squibRectangle.setStroke(Color.BLACK);
-
-	        squibRectangle.getStyleClass().add("universe-firing");
-	        
-	        Text t = new Text();
-	        t.setFill(Color.BLACK);
-	        t.setX(x + 95 + (squib.getLunchbox() * 93) + (squib.getSquib() * 10));
-	        t.setY(y + 19 + (squib.getFirebox() * 52));
-	        t.setText("F");
-	        //t.setText(Integer.toString(s.getSquib()));
-	        firingSquibs.getChildren().add(squibRectangle);
-	        firingSquibs.getChildren().add(t);
-		}
-		
-		//Redraw previously drawn squibs to their old state
-		if (previousTimestep != null){
-			for (Squib squib : previousTimestep.squibList){
-				int x=50, y=50;
-				
-				Rectangle squibRectangle = new Rectangle();
-		        squibRectangle.setX(x + 93 + (squib.getLunchbox() * 93) + (squib.getSquib()*10));
-		        squibRectangle.setY(y + 7 + (squib.getFirebox() * 52));
-		        squibRectangle.setWidth(10);
-		        squibRectangle.setHeight(15);
-		        squibRectangle.setStroke(Color.BLACK);
-		        
-		        squibRectangle.getStyleClass().add("universe-green");
-		        
-		        Text t = new Text();
-		        t.setFill(Color.BLACK);
-		        t.setX(x + 95 + (squib.getLunchbox() * 93) + (squib.getSquib() * 10));
-		        t.setY(y + 19 + (squib.getFirebox() * 52));
-		        t.setText(Integer.toString(squib.getSquib()));
-		        //t.setText(Integer.toString(s.getSquib()));
-		        firingSquibs.getChildren().add(squibRectangle);
-		        firingSquibs.getChildren().add(t);
-			}
-		}
-		schematicContainer.getChildren().add(universeSchematic);
-        schematicContainer.getChildren().add(firingSquibs);
 	}
 	
 	public void drawUniverseSchematic(){
@@ -305,21 +244,58 @@ public class VcVisualSchematicView implements Initializable {
         schematicContainer.getChildren().add(universeSchematic);
 	}
 	
-	@FXML 
-	protected void openSequenceEditor(ActionEvent event) throws IOException{
-		Parent root;
-    	// Load the next window
-        root = FXMLLoader.load(getClass().getResource("Views/UI-Universe-Visual-Layout.fxml"));
-        Scene scene = new Scene(root, 1000, 500);
-        Stage stage = new Stage();
-        stage.setTitle("New Project - Details");
-        stage.setScene(scene);
-        stage.show();
-        
-        // Close the current window
-        // get a handle to the stage
-        //Stage currentstage = (Stage) button_openVisualOrganizer.getScene().getWindow();
-        // and close it
-        //currentstage.close();
+	public void drawFiringSquib(TimeStep timestep, TimeStep previousTimestep){
+		schematicContainer.getChildren().clear();
+		firingSquibs.getChildren().clear();
+		
+		//Draw squibs to be fired
+		for (Squib squib : timestep.squibList) {
+			int x=50, y=50;
+			
+			Rectangle squibRectangle = new Rectangle();
+	        squibRectangle.setX(x + 93 + (squib.getLunchbox() * 93) + (squib.getSquib()*10));
+	        squibRectangle.setY(y + 7 + (squib.getFirebox() * 52));
+	        squibRectangle.setWidth(10);
+	        squibRectangle.setHeight(15);
+	        squibRectangle.setStroke(Color.BLACK);
+
+	        squibRectangle.getStyleClass().add("universe-firing");
+	        
+	        Text t = new Text();
+	        t.setFill(Color.BLACK);
+	        t.setX(x + 95 + (squib.getLunchbox() * 93) + (squib.getSquib() * 10));
+	        t.setY(y + 19 + (squib.getFirebox() * 52));
+	        t.setText("F");
+	        //t.setText(Integer.toString(s.getSquib()));
+	        firingSquibs.getChildren().add(squibRectangle);
+	        firingSquibs.getChildren().add(t);
+		}
+		
+		//Redraw previously drawn squibs to their old state
+		if (previousTimestep != null){
+			for (Squib squib : previousTimestep.squibList){
+				int x=50, y=50;
+				
+				Rectangle squibRectangle = new Rectangle();
+		        squibRectangle.setX(x + 93 + (squib.getLunchbox() * 93) + (squib.getSquib()*10));
+		        squibRectangle.setY(y + 7 + (squib.getFirebox() * 52));
+		        squibRectangle.setWidth(10);
+		        squibRectangle.setHeight(15);
+		        squibRectangle.setStroke(Color.BLACK);
+		        
+		        squibRectangle.getStyleClass().add("universe-green");
+		        
+		        Text t = new Text();
+		        t.setFill(Color.BLACK);
+		        t.setX(x + 95 + (squib.getLunchbox() * 93) + (squib.getSquib() * 10));
+		        t.setY(y + 19 + (squib.getFirebox() * 52));
+		        t.setText(Integer.toString(squib.getSquib()));
+		        //t.setText(Integer.toString(s.getSquib()));
+		        firingSquibs.getChildren().add(squibRectangle);
+		        firingSquibs.getChildren().add(t);
+			}
+		}
+		schematicContainer.getChildren().add(universeSchematic);
+        schematicContainer.getChildren().add(firingSquibs);
 	}
 }

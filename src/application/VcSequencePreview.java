@@ -18,7 +18,7 @@ import javafx.scene.layout.HBox;
 import javafx.util.Duration;
 
 
-public class VcSequencePreview implements Initializable, Observer {
+public class VcSequencePreview extends VcMainController implements Initializable, Observer {
 
 	// Included VisualSchematic View reference
 	@FXML TabPane visualSchematic;
@@ -32,18 +32,11 @@ public class VcSequencePreview implements Initializable, Observer {
 	@FXML Label lbVenue;
 	@FXML Label lbShow;
 	@FXML Label lbDj;
-	
-	Sequence sequence;
+
 	SequentialTransition animationTimeline = new SequentialTransition();
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-        
-	}
-	
-	public void setSequence(Sequence sequence){
-		this.sequence = sequence;
-		
 		// Update the sequence info labels
 		lbProjectName.setText(this.sequence.getProjectName());
 		lbVenue.setText(this.sequence.getVenue());

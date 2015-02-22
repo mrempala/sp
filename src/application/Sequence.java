@@ -18,7 +18,10 @@ public class Sequence {
 	// of setup where the user can choose the type of show, such as
 	// concert, play, orchestra, etc... But for hacking something together
 	// by Wednesday, lets just stick with these values
-	String projectName = "Temp Name", venue = "Temp Venue", show = "Temp Show", dj = "Temp dj"; 
+	public String projectName = "Temp Name";
+	public String venue = "Temp Venue";
+	public String show = "Temp Show";
+	public String dj = "Temp dj"; 
 
 	Sequence () {
 		
