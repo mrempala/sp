@@ -11,7 +11,9 @@ public class Sequence {
 	public List<TimeStep> timeLine = new ArrayList<TimeStep>();
 	
 	// A list to contain the user defined groups of squibs
-	public List<ArrayList<Squib>> squibGroups = new ArrayList<ArrayList<Squib>>();
+	// Stored as universe objects so we can apply various animations
+	// to sub groups without changing the way we create the animations
+	public List<Universe> squibGroups = new ArrayList<Universe>();
 	
 	// TODO: As pointed out by Vance, these fields only make sense at a
 	// concert, we may need to generalize more or have a new layer
