@@ -14,9 +14,12 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.util.Duration;
 
@@ -27,6 +30,9 @@ public class VcSequenceEditor extends VcMainController implements Observer {
 	
 	@FXML ToggleGroup sequenceSelection;
 	@FXML Button button_loadSequencePreview;
+	
+	@FXML ToggleGroup groupSelection;
+	@FXML AnchorPane SeqEditorLeftPane;
 
 	// Included VisualSchematic View reference
 	@FXML TabPane visualSchematic;
@@ -34,6 +40,8 @@ public class VcSequenceEditor extends VcMainController implements Observer {
 	
 	@FXML HBox timeLine;
 	@FXML VcTimeline timeLineController;
+	
+	@FXML Label labelOutput;
 	
 	SequentialTransition animationTimeline = new SequentialTransition();
 	String animationID;
@@ -53,31 +61,68 @@ public class VcSequenceEditor extends VcMainController implements Observer {
 		    			
 			            if (sequenceSelection.getSelectedToggle() != null) {
 			            	System.out.println(sequenceSelection.getSelectedToggle().getUserData());
-			            	setAnimation(sequenceSelection.getSelectedToggle().getUserData().toString());
+			            	//setAnimation(sequenceSelection.getSelectedToggle().getUserData().toString());
 			            }
 		            }                
 		        });
 	}
 	
-	public void setAnimation(String s){
+	public void loadGroups () {
+		buildTimelineAnimation();
+		
+		int y = 280;
+		// Populate the radio button group
+		for (int i = 0; i < sequence.squibGroups.size(); i++) {
+			RadioButton rb = new RadioButton();
+			rb.toggleGroupProperty().set(groupSelection);
+			rb.setLayoutX(20.0);
+			rb.setLayoutY(y);
+			y += 30;
+			rb.setText("Group " + i);
+			rb.setUserData(i);
+			SeqEditorLeftPane.getChildren().add(rb);
+		}
+	}
+	
+	@FXML
+	public void addAnimation(){
+		String animation = sequenceSelection.getSelectedToggle().getUserData().toString();
+		String group = groupSelection.getSelectedToggle().getUserData().toString();
+		Universe u;
+		if (group.equals("Universe")) {
+			u = sequence.universe;
+		}
+		else {
+			u = sequence.squibGroups.get(Integer.parseInt(group));
+		}
+		setAnimation(animation, u);
+	}
+	
+	@FXML
+	public void clearAnimation(){
+		sequence.timeLine.clear();
+		buildTimelineAnimation();
+	}
+	
+	public void setAnimation(String s, Universe u){
 		animationID = s;
 		if (s.equals("fullUniverseSweep")){
-			sequence.loadUniverseSweep();
+			sequence.loadUniverseSweep(u);
 		}
 		else if (s.equals("simultaneousUniverseSweep")){
-			sequence.loadUniverseSimultaneousSweep();
+			sequence.loadUniverseSimultaneousSweep(u);
 		}
 		else if (s.equals("randomUniverseSequence")){
-			sequence.loadRandomOneAtATimeSequence();
+			sequence.loadRandomOneAtATimeSequence(u);
 		}
 		else if (s.equals("randomPerFireboxUniverseSequence")){
-			sequence.loadRandomOnePerFireboxSequence(100);
+			sequence.loadRandomOnePerFireboxSequence(u, 100);
 		}
 		else if (s.equals("zigZag")){
-			sequence.loadUniverseZigZag();
+			sequence.loadUniverseZigZag(u);
 		}
 		else if (s.equals("alternate")){
-			sequence.loadUniverseAlternate();
+			sequence.loadUniverseAlternate(u);
 		}
 		else {
 			// Clear the timeline

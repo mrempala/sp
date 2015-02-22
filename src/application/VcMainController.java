@@ -15,11 +15,11 @@ import javafx.stage.Stage;
 public class VcMainController implements Initializable{
 
     Stage currentStage;
-	Sequence sequence = new Sequence();
+	Sequence sequence;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-
+		sequence = new Sequence();
 	}
 	
 	public Sequence getSequence(){
@@ -51,8 +51,6 @@ public class VcMainController implements Initializable{
     @FXML protected void openNewProjectDetails(ActionEvent event){
         Parent root;
         try {
-        	// Load the next window
-        	
         	// Load the next window
             FXMLLoader loader = new FXMLLoader(getClass().getResource("Views/UI-Setup.fxml"));
             root = (Parent)loader.load();            
@@ -144,8 +142,7 @@ public class VcMainController implements Initializable{
         seqEditorController.visualSchematicController.setUniverse(sequence.universe);
         seqEditorController.visualSchematicController.drawUniverseSchematic();
         
-        // Build the time line animation
-        //seqEditorController.buildTimelineAnimation();
+        seqEditorController.loadGroups();
         
         // Register the sequence preview as an observer of the time line to get play and pause events
         seqEditorController.timeLineController.addObserver(seqEditorController);
@@ -174,6 +171,7 @@ public class VcMainController implements Initializable{
         VcSequencePreview seqPreviewController = loader.<VcSequencePreview>getController();
         // And hackily push the necessary variables into it
         seqPreviewController.setSequence(sequence);
+        seqPreviewController.loadProjectInfo();
         seqPreviewController.visualSchematicController.setUniverse(sequence.universe);
         seqPreviewController.visualSchematicController.drawUniverseSchematic();
         
@@ -191,9 +189,6 @@ public class VcMainController implements Initializable{
         seqPreviewController.setCurrentStage(stage);
         
         // Close the current window
-        // get a handle to the stage
-        //Stage currentstage = (Stage) button_loadSequencePreview.getScene().getWindow();
-        // and close it
         currentStage.close();
 	}
 }

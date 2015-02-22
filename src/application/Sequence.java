@@ -36,9 +36,9 @@ public class Sequence {
 	// Start at FB1-LB1-SQ1, fire each squib in LB1,
 	// step to LB2, until end of LB chain, then start
 	// over at FB2.
-	public void loadUniverseSweep(){
+	public void loadUniverseSweep(Universe universe){
 		// Clear the timeline
-		timeLine.clear();
+		//timeLine.clear();
 		
 		// Populate timeline with new sequence
 		for(Firebox f : universe.fireboxList) {
@@ -67,15 +67,15 @@ public class Sequence {
 	}
 	
 	//Default for loadRandomOneAtATimeSequence
-	public void loadRandomOneAtATimeSequence(){
-		loadRandomOneAtATimeSequence(100);
+	public void loadRandomOneAtATimeSequence(Universe universe){
+		loadRandomOneAtATimeSequence(universe, 100);
 	}
 	
 	//A sequence that fires one random squib at a time from
 	//anywhere in the universe per time step.
-	public void loadRandomOneAtATimeSequence(int numTimeSteps){
+	public void loadRandomOneAtATimeSequence(Universe universe, int numTimeSteps){
 		// Clear the timeline
-		timeLine.clear();
+		//timeLine.clear();
 		
 		// Populate timeline with new sequence
 		List<Squib>tempSquibList = new ArrayList<Squib>();
@@ -120,9 +120,9 @@ public class Sequence {
 	//A sequence that fires one random squib from each firebox
 	//per timestep so that multiple squibs are fired per time step
 	//if there are multiple fireboxes with squibs.
-	public void loadRandomOnePerFireboxSequence(int numTimeSteps){
+	public void loadRandomOnePerFireboxSequence(Universe universe, int numTimeSteps){
 		// Clear the timeline
-		timeLine.clear();
+		//timeLine.clear();
 		// Populate timeline with new sequence
 		for(int i=0; i<numTimeSteps; i++){
 			TimeStep t = new TimeStep();
@@ -166,9 +166,9 @@ public class Sequence {
 	// zig zags through the current setup starting at the first firebox,
 	// going through all its squibs, going to the last squib of the next
 	// firebox, go back through those squibs, etc.
-	public void loadUniverseZigZag()
+	public void loadUniverseZigZag(Universe universe)
 	{
-		timeLine.clear();
+		//timeLine.clear();
 		
 		boolean leftToRight = true;
 		
@@ -238,9 +238,9 @@ public class Sequence {
 	}
 		
 	// simultaneously sweep through squibs 1-8 in each firebox
-	public void loadUniverseSimultaneousSweep()
+	public void loadUniverseSimultaneousSweep(Universe universe)
 	{
-		timeLine.clear();
+		//timeLine.clear();
 		
 		// loop for each possible squib position
 		for(int i = 0; i < 8; i++)
@@ -284,9 +284,9 @@ public class Sequence {
 	}
 	
 	// sequence alternates between even and odd lunchboxes firing squibs
-	public void loadUniverseAlternate()
+	public void loadUniverseAlternate(Universe universe)
 	{
-		timeLine.clear();
+		//timeLine.clear();
 		TimeStep t;
 		
 		for(int i = 0; i < 40; i++)

@@ -12,9 +12,10 @@ styleClass="root" id="Container">
    <center>
       <SplitPane dividerPositions="0.20641282565130262" prefHeight="160.0" prefWidth="200.0" BorderPane.alignment="CENTER">
         <items>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" maxWidth="200" id="SeqEditorLeftPane" >
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" maxWidth="200" fx:id="SeqEditorLeftPane" >
                <children>
                		<Label text="Select from canned sequence:" layoutX="10.0" layoutY="10.0" />
+               		
                  	<RadioButton layoutX="20.0" layoutY="40.0" mnemonicParsing="false" selected="false" text="Full Universe Sweep" userData="fullUniverseSweep">
         				<toggleGroup>
             				<ToggleGroup fx:id="sequenceSelection" />
@@ -25,6 +26,16 @@ styleClass="root" id="Container">
 					<RadioButton layoutX="20.0" layoutY="130.0" mnemonicParsing="false" text="Alternate Odd Even" toggleGroup="$sequenceSelection" userData="alternate" />
       				<RadioButton layoutX="20.0" layoutY="160.0" mnemonicParsing="false" text="Random One at a Time" toggleGroup="$sequenceSelection" userData="randomUniverseSequence" />
       				<RadioButton layoutX="20.0" layoutY="190.0" mnemonicParsing="false" text="Random One per FB" toggleGroup="$sequenceSelection" userData="randomPerFireboxUniverseSequence" />
+      				
+      				<Label text="Select group to apply sequence to:" layoutX="10.0" layoutY="220" />
+      				<RadioButton layoutX="20.0" layoutY="250.0" mnemonicParsing="false" selected="true" text="Universe" userData="Universe">
+        				<toggleGroup>
+            				<ToggleGroup fx:id="groupSelection" />
+         				</toggleGroup>
+      				</RadioButton>
+      				
+      				<Button layoutX="10" layoutY = "375" mnemonicParsing="false" text="Add sequence" onAction="#addAnimation"/>
+      				<Button layoutX="110" layoutY = "375" mnemonicParsing="false" text="Clear" onAction="#clearAnimation"/>
                </children>
           </AnchorPane>
           <BorderPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" id="SeqEditorRightPane">

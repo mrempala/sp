@@ -1,9 +1,7 @@
 package application;
 
-import java.net.URL;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.ResourceBundle;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.SequentialTransition;
@@ -11,14 +9,13 @@ import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.HBox;
 import javafx.util.Duration;
 
 
-public class VcSequencePreview extends VcMainController implements Initializable, Observer {
+public class VcSequencePreview extends VcMainController implements Observer {
 
 	// Included VisualSchematic View reference
 	@FXML TabPane visualSchematic;
@@ -34,10 +31,8 @@ public class VcSequencePreview extends VcMainController implements Initializable
 	@FXML Label lbDj;
 
 	SequentialTransition animationTimeline = new SequentialTransition();
-
-	@Override
-	public void initialize(URL location, ResourceBundle resources) {
-		// Update the sequence info labels
+	
+	public void loadProjectInfo(){
 		lbProjectName.setText(this.sequence.getProjectName());
 		lbVenue.setText(this.sequence.getVenue());
 		lbShow.setText(this.sequence.getShow());
