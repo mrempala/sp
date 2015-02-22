@@ -18,7 +18,7 @@ public class VcSetupVisualLayout extends VcMainController{
 
 	// Included VisualSchematic View reference
 	@FXML TabPane visualSchematic;
-	@FXML VcVisualSchematicView visualSchematicController;
+	@FXML VcVisualSchematicViewClickable visualSchematicController;
 	
 	@FXML Button button_loadSequencePreview;
 	@FXML Pane sceneContainer;
