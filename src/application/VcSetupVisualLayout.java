@@ -27,14 +27,26 @@ public class VcSetupVisualLayout extends VcMainController{
 	@FXML ListView<String> listview_squibGroups;
 	ObservableList<String> items = FXCollections.observableArrayList ();
 	int groupCount = 0;
+	int groupToEdit = -1; // Edit variable tracks if an item other than "New Group" has been selected
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources){
+		items.add("New Group");
+		listview_squibGroups.setItems(items);
 		listview_squibGroups.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
 		    public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
 		        // TODO: When the user selects the group, reselect corresponding squibs in schematic view
 		    	//       and color appropriately, allowing user to edit the given group.
 		        System.out.println("Selected item: " + newValue);
+		        if (newValue.equals("New Group")) {
+		        	groupToEdit = -1;
+		        	visualSchematicController.selectedSquibs.clear();
+		        	visualSchematicController.drawUniverseSchematic();
+		        	return;
+		        }
+                String elements[] = newValue.split(" ");
+                groupToEdit = Integer.parseInt(elements[1]);
+                selectSquibGroup(groupToEdit);
 		    }
 		});
 	}
@@ -63,10 +75,16 @@ public class VcSetupVisualLayout extends VcMainController{
 		
 		squibGroup.traverseUniverse();
 		
-		// TODO: Test to confirm clone is making a deep copy
-		sequence.squibGroups.add(squibGroup);
-		items.add("Group " + groupCount);
-		listview_squibGroups.setItems(items);
+		if (groupToEdit== -1){
+			sequence.squibGroups.add(squibGroup);
+			items.add("Group " + groupCount);
+			listview_squibGroups.setItems(items);
+			groupCount++;
+		}
+		else {
+			sequence.squibGroups.remove(groupToEdit);
+			sequence.squibGroups.add(groupToEdit, squibGroup);
+		}
 		
 		// Clear the selected squibs
 		visualSchematicController.selectedSquibs.clear();
@@ -78,6 +96,24 @@ public class VcSetupVisualLayout extends VcMainController{
 		for (Universe squibList : sequence.squibGroups){
 			squibList.traverseUniverse();
 		}
-		groupCount++;
+	}
+	
+	public void selectSquibGroup(int index){
+		Universe u = sequence.squibGroups.get(index);
+		
+		// Clear any previously selected squibs
+		visualSchematicController.selectedSquibs.clear();
+		
+		// And select the squibs from the given group
+		for (Firebox fb : u.fireboxList){
+			for (Lunchbox lb : fb.lunchboxList){
+				for (Squib s : lb.squibList){
+					visualSchematicController.selectedSquibs.add(s);
+				}
+			}
+		}
+		
+		// Redraw the universe for the up to date selection list
+		visualSchematicController.drawUniverseSchematic();
 	}
 }

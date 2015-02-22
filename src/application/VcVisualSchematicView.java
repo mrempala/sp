@@ -135,7 +135,15 @@ public class VcVisualSchematicView implements Initializable {
                     {
                         @Override
                         public void handle(MouseEvent t) {
-                            r.setFill(Color.RED);
+                            r.setFill(Color.BLUE);
+                            // Select each squib in the universe
+                            for (Lunchbox lb : fb.lunchboxList){
+                            	for (Squib s : lb.squibList){
+                            		selectedSquibs.add(s);
+                            	}
+                            }
+                            // Redraw the universe
+                            drawUniverseSchematic();
                         }
                     });
             
@@ -180,6 +188,11 @@ public class VcVisualSchematicView implements Initializable {
 		            squibRectangle.setStroke(Color.BLACK);
 		            // TODO: Change color here when simulating firing if squib is dead
 		            squibRectangle.getStyleClass().add("universe-green");
+		            squibRectangle.getStyleClass().add("fb" + s.getFirebox());
+		            squibRectangle.getStyleClass().add("lb" + s.getLunchbox());
+		            if (selectedSquibs.contains(s)){
+		            	squibRectangle.getStyleClass().add("universe-selected");
+		            }
 
 		            Text t = new Text();
 		            t.setFill(Color.BLACK);
