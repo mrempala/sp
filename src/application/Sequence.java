@@ -36,9 +36,8 @@ public class Sequence {
 	// Start at FB1-LB1-SQ1, fire each squib in LB1,
 	// step to LB2, until end of LB chain, then start
 	// over at FB2.
-	public void loadUniverseSweep(Universe universe){
-		// Clear the timeline
-		//timeLine.clear();
+	public int loadUniverseSweep(Universe universe){
+		int numTimesteps = 0;
 		
 		// Populate timeline with new sequence
 		for(Firebox f : universe.fireboxList) {
@@ -51,6 +50,7 @@ public class Sequence {
 					String error = (String)result[2];
 					if (newResult.intValue() == 0){
 						timeLine.add(t);
+						numTimesteps++;
 						System.out.println("Inserted timestep");
 					}
 					else {
@@ -64,18 +64,19 @@ public class Sequence {
 		// Insert a trailing blank time step to clear universe
 		TimeStep t = new TimeStep();
 		timeLine.add(t);
+		numTimesteps++;
+		return numTimesteps;
 	}
 	
 	//Default for loadRandomOneAtATimeSequence
-	public void loadRandomOneAtATimeSequence(Universe universe){
-		loadRandomOneAtATimeSequence(universe, 100);
+	public int loadRandomOneAtATimeSequence(Universe universe){
+		return loadRandomOneAtATimeSequence(universe, 100);
 	}
 	
 	//A sequence that fires one random squib at a time from
 	//anywhere in the universe per time step.
-	public void loadRandomOneAtATimeSequence(Universe universe, int numTimeSteps){
-		// Clear the timeline
-		//timeLine.clear();
+	public int loadRandomOneAtATimeSequence(Universe universe, int numTimeSteps){
+		int numTimesteps = 0;
 		
 		// Populate timeline with new sequence
 		List<Squib>tempSquibList = new ArrayList<Squib>();
@@ -100,6 +101,7 @@ public class Sequence {
 				String error = (String)result[2];
 				if (newResult.intValue() == 0){
 					timeLine.add(t);
+					numTimesteps++;
 					System.out.println("Inserted timestep");
 				}
 				else {
@@ -115,14 +117,17 @@ public class Sequence {
 		// Insert a trailing blank time step to clear universe
 		TimeStep t = new TimeStep();
 		timeLine.add(t);
+		numTimesteps++;
+		
+		return numTimesteps;
 	}
 	
 	//A sequence that fires one random squib from each firebox
 	//per timestep so that multiple squibs are fired per time step
 	//if there are multiple fireboxes with squibs.
-	public void loadRandomOnePerFireboxSequence(Universe universe, int numTimeSteps){
-		// Clear the timeline
-		//timeLine.clear();
+	public int loadRandomOnePerFireboxSequence(Universe universe, int numTimeSteps){
+		int numTimesteps = 0;
+		
 		// Populate timeline with new sequence
 		for(int i=0; i<numTimeSteps; i++){
 			TimeStep t = new TimeStep();
@@ -148,6 +153,7 @@ public class Sequence {
 			String error = (String)result[2];
 			if (newResult.intValue() == 0){
 				timeLine.add(t);
+				numTimesteps++;
 				System.out.println("Inserted timestep");
 			}
 			else {
@@ -160,15 +166,18 @@ public class Sequence {
 		// Insert a trailing blank time step to clear universe
 		TimeStep t = new TimeStep();
 		timeLine.add(t);
+		numTimesteps++;
+		
+		return numTimesteps;
 	}
 	
 
 	// zig zags through the current setup starting at the first firebox,
 	// going through all its squibs, going to the last squib of the next
 	// firebox, go back through those squibs, etc.
-	public void loadUniverseZigZag(Universe universe)
+	public int loadUniverseZigZag(Universe universe)
 	{
-		//timeLine.clear();
+		int numTimesteps = 0;
 		
 		boolean leftToRight = true;
 		
@@ -189,6 +198,7 @@ public class Sequence {
 						if (newResult.intValue() == 0)
 						{
 							timeLine.add(t);
+							numTimesteps++;
 							System.out.println("Inserted timestep");
 						}
 						else
@@ -217,6 +227,7 @@ public class Sequence {
 						if (newResult.intValue() == 0)
 						{
 							timeLine.add(t);
+							numTimesteps++;
 							System.out.println("Inserted timestep");
 						}
 						else
@@ -235,12 +246,15 @@ public class Sequence {
 		// Insert a trailing blank time step to clear universe
 		TimeStep t = new TimeStep();
 		timeLine.add(t);
+		numTimesteps++;
+		
+		return numTimesteps;
 	}
 		
 	// simultaneously sweep through squibs 1-8 in each firebox
-	public void loadUniverseSimultaneousSweep(Universe universe)
+	public int loadUniverseSimultaneousSweep(Universe universe)
 	{
-		//timeLine.clear();
+		int numTimesteps = 0;
 		
 		// loop for each possible squib position
 		for(int i = 0; i < 8; i++)
@@ -261,11 +275,13 @@ public class Sequence {
 						
 						while (newResult.intValue() == 2){
 							TimeStep tBlank = new TimeStep();
-							timeLine.add(tBlank);							
+							timeLine.add(tBlank);
+							numTimesteps++;
 						}
 
 						if (newResult.intValue() == 0){
 							timeLine.add(t);
+							numTimesteps++;
 							System.out.println("Inserted timestep");
 						}
 						else {
@@ -281,12 +297,15 @@ public class Sequence {
 		// Insert a trailing blank time step to clear universe
 		TimeStep t = new TimeStep();
 		timeLine.add(t);
+		numTimesteps++;
+		
+		return numTimesteps;
 	}
 	
 	// sequence alternates between even and odd lunchboxes firing squibs
-	public void loadUniverseAlternate(Universe universe)
+	public int loadUniverseAlternate(Universe universe)
 	{
-		//timeLine.clear();
+		int numTimesteps = 0;
 		TimeStep t;
 		
 		for(int i = 0; i < 40; i++)
@@ -315,12 +334,14 @@ public class Sequence {
 								
 								while (newResult.intValue() == 2){
 									TimeStep tBlank = new TimeStep();
-									timeLine.add(tBlank);							
+									timeLine.add(tBlank);
+									numTimesteps++;
 								}
 								
 								if (newResult.intValue() == 0)
 								{
 									timeLine.add(t);
+									numTimesteps++;
 									System.out.println("Inserted timestep");
 								}
 								else {
@@ -353,6 +374,7 @@ public class Sequence {
 								if (newResult.intValue() == 0)
 								{
 									timeLine.add(t);
+									numTimesteps++;
 									System.out.println("Inserted timestep");
 								}
 								else {
@@ -368,6 +390,9 @@ public class Sequence {
 		// Insert a trailing blank time step to clear universe
 		t = new TimeStep();
 		timeLine.add(t);
+		numTimesteps++;
+		
+		return numTimesteps;
 	}
 	
 	// 

@@ -1,6 +1,8 @@
 package application;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.ResourceBundle;
@@ -13,6 +15,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
@@ -21,6 +24,7 @@ import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
 public class VcSequenceEditor extends VcMainController implements Observer {
@@ -45,6 +49,9 @@ public class VcSequenceEditor extends VcMainController implements Observer {
 	
 	SequentialTransition animationTimeline = new SequentialTransition();
 	String animationID;
+	
+	Group squibGroups = new Group();
+	public List<Integer> squibGroupSizes = new ArrayList<Integer>();
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -67,6 +74,7 @@ public class VcSequenceEditor extends VcMainController implements Observer {
 		        });
 	}
 	
+	// Load the groups of squibs as defined by the user
 	public void loadGroups () {
 		buildTimelineAnimation();
 		
@@ -95,7 +103,9 @@ public class VcSequenceEditor extends VcMainController implements Observer {
 		else {
 			u = sequence.squibGroups.get(Integer.parseInt(group));
 		}
+		timeLineController.timelinePane.getChildren().remove(squibGroups);
 		setAnimation(animation, u);
+		timeLineController.timelinePane.getChildren().add(squibGroups);
 	}
 	
 	@FXML
@@ -105,30 +115,33 @@ public class VcSequenceEditor extends VcMainController implements Observer {
 	}
 	
 	public void setAnimation(String s, Universe u){
+		// numTimesteps tracks how many timesteps inserted for new sequence part
+		int numTimesteps = 0;
 		animationID = s;
 		if (s.equals("fullUniverseSweep")){
-			sequence.loadUniverseSweep(u);
+			numTimesteps = sequence.loadUniverseSweep(u);
 		}
 		else if (s.equals("simultaneousUniverseSweep")){
-			sequence.loadUniverseSimultaneousSweep(u);
+			numTimesteps = sequence.loadUniverseSimultaneousSweep(u);
 		}
 		else if (s.equals("randomUniverseSequence")){
-			sequence.loadRandomOneAtATimeSequence(u);
+			numTimesteps = sequence.loadRandomOneAtATimeSequence(u);
 		}
 		else if (s.equals("randomPerFireboxUniverseSequence")){
-			sequence.loadRandomOnePerFireboxSequence(u, 100);
+			numTimesteps = sequence.loadRandomOnePerFireboxSequence(u, 100);
 		}
 		else if (s.equals("zigZag")){
-			sequence.loadUniverseZigZag(u);
+			numTimesteps = sequence.loadUniverseZigZag(u);
 		}
 		else if (s.equals("alternate")){
-			sequence.loadUniverseAlternate(u);
+			numTimesteps = sequence.loadUniverseAlternate(u);
 		}
 		else {
 			// Clear the timeline
 			sequence.timeLine.clear();
 		}
 		buildTimelineAnimation();
+		drawAnimationSubgroups(numTimesteps);
 	}
 	
 	public void buildTimelineAnimation(){
@@ -163,6 +176,24 @@ public class VcSequenceEditor extends VcMainController implements Observer {
 		
 		// Update the physical time line in the view
 		timeLineController.buildTimeline(sequence.timeLine.size());
+	}
+	
+	public void drawAnimationSubgroups(int numTimesteps){
+		squibGroupSizes.add(numTimesteps);
+		squibGroups.getChildren().clear();
+		int totalNumTimesteps = sequence.timeLine.size();
+		int stepSize = 665 / totalNumTimesteps;
+		int x = 10;
+		for (Integer i : squibGroupSizes){
+			Rectangle squibGroup = new Rectangle();
+			squibGroup.setX(x);
+			squibGroup.setY(5);
+			squibGroup.setHeight(25);
+			squibGroup.setWidth(i * stepSize);
+			squibGroup.getStyleClass().add("squib-group-overlay");
+			squibGroups.getChildren().add(squibGroup);
+			x += (i*stepSize);
+		}
 	}
 	
 	public void playTimelineAnimation(){
