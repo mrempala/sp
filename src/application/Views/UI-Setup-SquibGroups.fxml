@@ -14,9 +14,10 @@ styleClass="root" id="Container">
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" maxWidth="200" fx:id="squibsToPlace" >
                <children>
-               		<Label text="TODO: Print Universe elements here" layoutX="10.0" layoutY="10.0" />
-               		<Button layoutX="10" layoutY = "100" mnemonicParsing="false" text="Make Group" onAction="#makeSquibGroup" />
-               		<ListView layoutX="10" layoutY = "130" prefHeight="100.0" prefWidth="180.0" BorderPane.alignment="CENTER" fx:id="listview_squibGroups" />
+               		<Button layoutX="10" layoutY = "20" mnemonicParsing="false" text="New Group" onAction="#newSquibGroup" />
+               		<Button layoutX="100" layoutY = "20" mnemonicParsing="false" text="Set Group" onAction="#setSquibGroup" />
+               		<Label fx:id="label_message" layoutX="10" layoutY="50" text="" styleClass="error" />
+               		<ListView layoutX="10" layoutY = "70" prefHeight="100.0" prefWidth="180.0" BorderPane.alignment="CENTER" fx:id="listview_squibGroups" />
                </children>
           </AnchorPane>
           <BorderPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" id="SeqEditorRightPane">

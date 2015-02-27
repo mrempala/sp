@@ -9,6 +9,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.AnchorPane;
@@ -23,6 +24,7 @@ public class VcSetupSquibGroups extends VcMainController{
 	@FXML Button button_loadSequencePreview;
 	@FXML Pane sceneContainer;
 	@FXML AnchorPane squibsToPlace;
+	@FXML Label label_message;
 	
 	@FXML ListView<String> listview_squibGroups;
 	ObservableList<String> items = FXCollections.observableArrayList ();
@@ -31,19 +33,12 @@ public class VcSetupSquibGroups extends VcMainController{
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources){
-		items.add("New Group");
 		listview_squibGroups.setItems(items);
 		listview_squibGroups.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
 		    public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
 		        // TODO: When the user selects the group, reselect corresponding squibs in schematic view
 		    	//       and color appropriately, allowing user to edit the given group.
 		        System.out.println("Selected item: " + newValue);
-		        if (newValue.equals("New Group")) {
-		        	groupToEdit = -1;
-		        	visualSchematicController.selectedSquibs.clear();
-		        	visualSchematicController.drawUniverseSchematic();
-		        	return;
-		        }
                 String elements[] = newValue.split(" ");
                 groupToEdit = Integer.parseInt(elements[1]);
                 selectSquibGroup(groupToEdit);
@@ -51,8 +46,17 @@ public class VcSetupSquibGroups extends VcMainController{
 		});
 	}
 	
+	@FXML void newSquibGroup(){
+		Universe squibGroup = new Universe();
+		sequence.squibGroups.add(squibGroup);
+		items.add("Group " + groupCount);
+		listview_squibGroups.setItems(items);
+		groupToEdit = groupCount;
+		groupCount++;
+	}
+	
 	@FXML
-	public void makeSquibGroup(){
+	public void setSquibGroup(){
 		// Add the newly created group to the sequence
 		Universe squibGroup = new Universe();
 		int fb = 0;
@@ -75,27 +79,21 @@ public class VcSetupSquibGroups extends VcMainController{
 		
 		squibGroup.traverseUniverse();
 		
-		if (groupToEdit== -1){
-			sequence.squibGroups.add(squibGroup);
-			items.add("Group " + groupCount);
-			listview_squibGroups.setItems(items);
-			groupCount++;
-		}
-		else {
-			sequence.squibGroups.remove(groupToEdit);
-			sequence.squibGroups.add(groupToEdit, squibGroup);
-		}
+		sequence.squibGroups.remove(groupToEdit);
+		sequence.squibGroups.add(groupToEdit, squibGroup);
 		
 		// Clear the selected squibs
-		visualSchematicController.selectedSquibs.clear();
+		//visualSchematicController.selectedSquibs.clear();
 		
 		// Redraw the universe to erase previous selections
-		visualSchematicController.drawUniverseSchematic();
+		//visualSchematicController.drawUniverseSchematic();
 		
 		// Check all the universes in the list
 		for (Universe squibList : sequence.squibGroups){
 			squibList.traverseUniverse();
 		}
+		
+		label_message.setText("Group " + groupToEdit + " updated.");
 	}
 	
 	public void selectSquibGroup(int index){
