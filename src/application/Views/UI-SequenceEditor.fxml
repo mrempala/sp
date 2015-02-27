@@ -48,7 +48,7 @@ styleClass="root" id="Container">
                                  <fx:include fx:id="timeLine" source="UI-Part-Timeline.fxml" />
                               </children>
                            </HBox>
-                           <Button layoutX="715" layoutY = "375" mnemonicParsing="false" text="Next ->" fx:id="button_loadSequencePreview" onAction="#loadSequencePreview"/>
+                           <Button layoutX="715" layoutY = "375" mnemonicParsing="false" text="Next ->" fx:id="button_loadSequencePreview" onAction="#openSequencePreview"/>
                         </children>
                      </AnchorPane>
                </center>

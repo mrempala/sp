@@ -1,8 +1,12 @@
 package application;
 
-import java.util.ArrayList;
-import javafx.event.EventHandler;
-import javafx.scene.input.MouseEvent;
+import java.net.URL;
+import java.util.ResourceBundle;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.Group;
+import javafx.scene.effect.BlendMode;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
@@ -10,10 +14,72 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
 
-public class VcVisualSchematicViewClickable extends VcVisualSchematicView {
+public class VcPtVisualSchematicView implements Initializable {
+
+	@FXML AnchorPane visualContainer;
+	@FXML AnchorPane schematicContainer;
 	
-	// TODO: Figure out where this list of squibs should go, probably shouldn't stay here
-	public ArrayList<Squib> selectedSquibs = new ArrayList<Squib>();
+	public Universe universe;
+	public Group universeSchematic;
+	public Group firingSquibs;
+	
+	// TODO: Add integer values x & y for location to start drawing universe, hard coded at the moment
+
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		universeSchematic = new Group();
+		firingSquibs = new Group();
+		drawUniverseVisual();
+	}
+	
+	public void setUniverse (Universe universe){
+		this.universe = universe;
+	}
+	
+	public void drawUniverseVisual(){
+		//TODO: Hard coded drawing of a rough visual view, this needs
+		//		to be updated once we figure out how to store the visual
+		//		configuration of the world.
+		// Draw some visual layout stuff
+        Group g = new Group();
+        g.setBlendMode(BlendMode.SRC_OVER);
+
+        int x = 20, y = 20, xt = x+2, yt = y+12;
+        for (int j = 0; j < 5; j++){
+	        for (int i = 0; i < 8; i++){
+	        	Rectangle r = new Rectangle();
+	            r.setX(x);
+	            r.setY(y);
+	            r.setWidth(10);
+	            r.setHeight(15);
+	            r.setStroke(Color.BLACK);
+	            r.setFill(null);
+	            
+	            Text t = new Text();
+	            t.setFill(Color.BLACK);
+	            t.setX(xt);
+	            t.setY(yt);
+	            t.setText(String.valueOf(i));
+	            g.getChildren().add(r);
+	            g.getChildren().add(t);
+	            
+	            x += 10;
+	            xt = x+2;
+	        }
+	        Text id = new Text();
+	        id.setFill(Color.BLACK);
+	        id.setX(x-50);
+	        id.setY(y+25);
+	        id.setText("1-" + String.valueOf(j));
+	        g.getChildren().add(id);
+	        x += 20;
+	        y += 20;
+	        xt = x + 2;
+            yt = y + 12;
+        }
+        
+        visualContainer.getChildren().add(g);
+	}
 	
 	public void drawUniverseSchematic(){
 		// Clear any previously loaded universe schematic data
@@ -56,25 +122,7 @@ public class VcVisualSchematicViewClickable extends VcVisualSchematicView {
             r.setX(x);
             r.setY(y);
             r.setStroke(Color.BLACK);
-            r.getStyleClass().add("universe-green");
-            
-            // Setup an event listener to detect when this rectangle is clicked
-            r.setOnMouseClicked(new EventHandler<MouseEvent>()
-                    {
-                        @Override
-                        public void handle(MouseEvent t) {
-                            r.setFill(Color.BLUE);
-                            // Select each squib in the universe
-                            for (Lunchbox lb : fb.lunchboxList){
-                            	for (Squib s : lb.squibList){
-                            		selectedSquibs.add(s);
-                            	}
-                            }
-                            // Redraw the universe
-                            drawUniverseSchematic();
-                        }
-                    });
-            
+            r.getStyleClass().add("universe-green");            
             Text fireboxText = new Text();
             fireboxText.setFill(Color.BLACK);
             fireboxText.setX(x + 15);
@@ -116,32 +164,12 @@ public class VcVisualSchematicViewClickable extends VcVisualSchematicView {
 		            squibRectangle.setStroke(Color.BLACK);
 		            // TODO: Change color here when simulating firing if squib is dead
 		            squibRectangle.getStyleClass().add("universe-green");
-		            squibRectangle.getStyleClass().add("fb" + s.getFirebox());
-		            squibRectangle.getStyleClass().add("lb" + s.getLunchbox());
-		            if (selectedSquibs.contains(s)){
-		            	squibRectangle.getStyleClass().add("universe-selected");
-		            }
 
 		            Text t = new Text();
 		            t.setFill(Color.BLACK);
 		            t.setX(x + 95);
 		            t.setY(y + 19);
 		            t.setText(Integer.toString(s.getSquib()));
-		            
-		            // Setup an event listener to detect when this rectangle is clicked
-		            t.setOnMouseClicked(new EventHandler<MouseEvent>() {
-		                        @Override
-		                        public void handle(MouseEvent t) {
-		                            if (selectedSquibs.contains(s)){
-		                            	squibRectangle.getStyleClass().remove("universe-selected");
-		                            	selectedSquibs.remove(s);
-		                            }
-		                            else {
-		                            	squibRectangle.getStyleClass().add("universe-selected");
-		                            	selectedSquibs.add(s);
-		                            }
-		                        }
-		            });
 		            
 		            universeSchematic.getChildren().add(squibRectangle);
 		            universeSchematic.getChildren().add(t);
@@ -183,5 +211,60 @@ public class VcVisualSchematicViewClickable extends VcVisualSchematicView {
         }
         
         schematicContainer.getChildren().add(universeSchematic);
+	}
+	
+	public void drawFiringSquib(TimeStep timestep, TimeStep previousTimestep){
+		schematicContainer.getChildren().clear();
+		firingSquibs.getChildren().clear();
+		
+		//Draw squibs to be fired
+		for (Squib squib : timestep.squibList) {
+			int x=50, y=50;
+			
+			Rectangle squibRectangle = new Rectangle();
+	        squibRectangle.setX(x + 93 + (squib.getLunchbox() * 93) + (squib.getSquib()*10));
+	        squibRectangle.setY(y + 7 + (squib.getFirebox() * 52));
+	        squibRectangle.setWidth(10);
+	        squibRectangle.setHeight(15);
+	        squibRectangle.setStroke(Color.BLACK);
+
+	        squibRectangle.getStyleClass().add("universe-firing");
+	        
+	        Text t = new Text();
+	        t.setFill(Color.BLACK);
+	        t.setX(x + 95 + (squib.getLunchbox() * 93) + (squib.getSquib() * 10));
+	        t.setY(y + 19 + (squib.getFirebox() * 52));
+	        t.setText("F");
+	        //t.setText(Integer.toString(s.getSquib()));
+	        firingSquibs.getChildren().add(squibRectangle);
+	        firingSquibs.getChildren().add(t);
+		}
+		
+		//Redraw previously drawn squibs to their old state
+		if (previousTimestep != null){
+			for (Squib squib : previousTimestep.squibList){
+				int x=50, y=50;
+				
+				Rectangle squibRectangle = new Rectangle();
+		        squibRectangle.setX(x + 93 + (squib.getLunchbox() * 93) + (squib.getSquib()*10));
+		        squibRectangle.setY(y + 7 + (squib.getFirebox() * 52));
+		        squibRectangle.setWidth(10);
+		        squibRectangle.setHeight(15);
+		        squibRectangle.setStroke(Color.BLACK);
+		        
+		        squibRectangle.getStyleClass().add("universe-green");
+		        
+		        Text t = new Text();
+		        t.setFill(Color.BLACK);
+		        t.setX(x + 95 + (squib.getLunchbox() * 93) + (squib.getSquib() * 10));
+		        t.setY(y + 19 + (squib.getFirebox() * 52));
+		        t.setText(Integer.toString(squib.getSquib()));
+		        //t.setText(Integer.toString(s.getSquib()));
+		        firingSquibs.getChildren().add(squibRectangle);
+		        firingSquibs.getChildren().add(t);
+			}
+		}
+		schematicContainer.getChildren().add(universeSchematic);
+        schematicContainer.getChildren().add(firingSquibs);
 	}
 }

@@ -10,10 +10,10 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         Parent root;
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("Views/UI-NewProject.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("Views/UI-ProgramStart.fxml"));
         root = (Parent)loader.load();
         
-        VcNewProjectSetup newProject = loader.<VcNewProjectSetup>getController();
+        VcProgramStart newProject = loader.<VcProgramStart>getController();
         newProject.setCurrentStage(stage);
         //Rectangle2D r = Screen.getPrimary().getBounds();
         

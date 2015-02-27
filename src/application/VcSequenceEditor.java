@@ -40,10 +40,10 @@ public class VcSequenceEditor extends VcMainController implements Observer {
 
 	// Included VisualSchematic View reference
 	@FXML TabPane visualSchematic;
-	@FXML VcVisualSchematicView visualSchematicController;
+	@FXML VcPtVisualSchematicView visualSchematicController;
 	
 	@FXML HBox timeLine;
-	@FXML VcTimeline timeLineController;
+	@FXML VcPtTimeline timeLineController;
 	
 	@FXML Label labelOutput;
 	
@@ -51,6 +51,7 @@ public class VcSequenceEditor extends VcMainController implements Observer {
 	String animationID;
 	
 	Group squibGroups = new Group();
+	// TODO: Squib group data should go into sequence, but we'll probably want to  save more info
 	public List<Integer> squibGroupSizes = new ArrayList<Integer>();
 
 	@Override
@@ -65,16 +66,12 @@ public class VcSequenceEditor extends VcMainController implements Observer {
 		    			
 		    			// Redraw universe to avoid drawing firing squib from previous sequence
 		    			visualSchematicController.drawUniverseSchematic();
-		    			
-			            if (sequenceSelection.getSelectedToggle() != null) {
-			            	System.out.println(sequenceSelection.getSelectedToggle().getUserData());
-			            	//setAnimation(sequenceSelection.getSelectedToggle().getUserData().toString());
-			            }
 		            }                
 		        });
 	}
 	
-	// Load the groups of squibs as defined by the user
+	// Load the groups of squibs stored in the sequence
+	// and create radio buttons to select individual groups
 	public void loadGroups () {
 		buildTimelineAnimation();
 		
@@ -92,6 +89,7 @@ public class VcSequenceEditor extends VcMainController implements Observer {
 		}
 	}
 	
+	// Add an animation to the timeline based on the selected animation and selected group
 	@FXML
 	public void addAnimation(){
 		String animation = sequenceSelection.getSelectedToggle().getUserData().toString();
@@ -108,12 +106,14 @@ public class VcSequenceEditor extends VcMainController implements Observer {
 		timeLineController.timelinePane.getChildren().add(squibGroups);
 	}
 	
+	// Clear all animation data and rebuild the timeline
 	@FXML
 	public void clearAnimation(){
 		sequence.timeLine.clear();
 		buildTimelineAnimation();
 	}
 	
+	// Load the currently selected animation
 	public void setAnimation(String s, Universe u){
 		// numTimesteps tracks how many timesteps inserted for new sequence part
 		int numTimesteps = 0;
@@ -144,6 +144,7 @@ public class VcSequenceEditor extends VcMainController implements Observer {
 		drawAnimationSubgroups(numTimesteps);
 	}
 	
+	// Build the animation, setting up calls to draw the currently firing squibs
 	public void buildTimelineAnimation(){
 		// Reset timeline
 		animationTimeline.getChildren().clear();
@@ -165,7 +166,6 @@ public class VcSequenceEditor extends VcMainController implements Observer {
 	            @Override
 	            public void handle(ActionEvent actionEvent) {
 	                visualSchematicController.drawFiringSquib(t, previousTimestep);
-	                System.out.println("Timeline time step");
 	            }
 	        });
 			Timeline tempTimeline = new Timeline();
@@ -181,9 +181,14 @@ public class VcSequenceEditor extends VcMainController implements Observer {
 	public void drawAnimationSubgroups(int numTimesteps){
 		squibGroupSizes.add(numTimesteps);
 		squibGroups.getChildren().clear();
+		// Get the total number of time steps in the animation sequence
 		int totalNumTimesteps = sequence.timeLine.size();
-		int stepSize = 665 / totalNumTimesteps;
+		// Calculate the step size based on the pixel width of the timeline
+		// and the total number of timesteps
+		float stepSize = 665 / totalNumTimesteps;
+		// Set the start position to draw at (10 is the same as the timeline)
 		int x = 10;
+		// Draw a rectangle for each sub animation
 		for (Integer i : squibGroupSizes){
 			Rectangle squibGroup = new Rectangle();
 			squibGroup.setX(x);

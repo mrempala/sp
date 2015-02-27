@@ -16,7 +16,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
-public class VcTimeline extends Observable {
+public class VcPtTimeline extends Observable {
 	@FXML Button playButton;
 	@FXML Button pauseButton;
 	@FXML Pane timelinePane;

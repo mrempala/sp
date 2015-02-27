@@ -45,21 +45,21 @@ public class VcMainController implements Initializable{
 	/*
 	 * Function calls to load various windows of the program
 	 * 
-	 * 
+	 * I tried to list the calls the order the program opens windows
 	 */
 	
-    @FXML protected void openNewProjectDetails(ActionEvent event){
+    @FXML protected void openSetup(ActionEvent event){
         Parent root;
         try {
         	// Load the next window
             FXMLLoader loader = new FXMLLoader(getClass().getResource("Views/UI-Setup.fxml"));
             root = (Parent)loader.load();            
-            VcNewProjectSetup newProjectController = loader.<VcNewProjectSetup>getController();
+            VcSetup newProjectController = loader.<VcSetup>getController();
     	    newProjectController.setSequence(sequence);
     	    
             Scene scene = new Scene(root, 500, 300);
             Stage stage = new Stage();
-            stage.setTitle("New Project - Details");
+            stage.setTitle("Setup: Project Details");
             stage.setScene(scene);
             stage.show();
             newProjectController.setCurrentStage(stage);
@@ -77,7 +77,7 @@ public class VcMainController implements Initializable{
     
     // Load Universe manual setup window
     @FXML 
-    protected void openUniverseManualConfig(ActionEvent event) throws IOException {    	
+    protected void openSetupManualLoad(ActionEvent event) throws IOException {    	
     	// Open new window
         Parent root;
 
@@ -91,34 +91,57 @@ public class VcMainController implements Initializable{
         
         Scene scene = new Scene(root, 300, 320);
         Stage stage = new Stage();
-        stage.setTitle("Universe Configuration");
+        stage.setTitle("Setup: Manual Universe Configuration");
         stage.setScene(scene);
         stage.show();
         setupManualController.setCurrentStage(stage);
         
         // Close the current window
         // get a handle to the stage
-        //Stage currentstage = (Stage) button_universeconfig.getScene().getWindow();
         currentStage.close();
     }
-	
-	// Load the visual organizer
-	@FXML 
-	protected void openVisualOrganizer(ActionEvent event) throws IOException{
-		Parent root;
+    
+    @FXML
+    protected void openSetupVisualLayout(ActionEvent event) throws IOException {    	
+    	// Open new window
+        Parent root;
+
     	// Load the next window
         FXMLLoader loader = new FXMLLoader(getClass().getResource("Views/UI-Setup-VisualLayout.fxml"));
         root = (Parent)loader.load();
+
+	    // Get a reference to the VisualSchematic controller so we can pass a reference of the universe to it.
+	    VcSetupVisualLayout setupVisualLayout = loader.<VcSetupVisualLayout>getController();
+	    setupVisualLayout.setSequence(sequence);
+        
+        Scene scene = new Scene(root, 1280, 720);
+        Stage stage = new Stage();
+        stage.setTitle("Setup: Universe Visual Layout");
+        stage.setScene(scene);
+        stage.show();
+        setupVisualLayout.setCurrentStage(stage);
+        
+        // Close the current window
+        currentStage.close();
+    }
+	
+	// Load the squib groups organizer
+	@FXML 
+	protected void openSetupSquibGroups(ActionEvent event) throws IOException{
+		Parent root;
+    	// Load the next window
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("Views/UI-Setup-SquibGroups.fxml"));
+        root = (Parent)loader.load();
         
         // Get a reference to the VisualSchematic controller so we can pass a reference of the universe to it.
-        VcSetupVisualLayout seqVisualLayoutController = loader.<VcSetupVisualLayout>getController();
+        VcSetupSquibGroups seqVisualLayoutController = loader.<VcSetupSquibGroups>getController();
         seqVisualLayoutController.setSequence(sequence);
         seqVisualLayoutController.visualSchematicController.setUniverse(sequence.universe);
         seqVisualLayoutController.visualSchematicController.drawUniverseSchematic();
 
         Scene scene = new Scene(root, 1000, 450);
         Stage stage = new Stage();
-        stage.setTitle("Visual Organization");
+        stage.setTitle("Setup: Squib Groups");
         stage.setScene(scene);
         stage.show();
         seqVisualLayoutController.setCurrentStage(stage);
@@ -130,7 +153,7 @@ public class VcMainController implements Initializable{
 	
 	// Load the Sequence Editor window
 	@FXML 
-	protected void loadSequenceEditor(ActionEvent event) throws IOException{
+	protected void openSequenceEditor(ActionEvent event) throws IOException{
 		Parent root;
     	// Load the next window
         FXMLLoader loader = new FXMLLoader(getClass().getResource("Views/UI-SequenceEditor.fxml"));
@@ -161,7 +184,7 @@ public class VcMainController implements Initializable{
 	
 	// Load the Sequence Preview window
 	@FXML 
-	protected void loadSequencePreview(ActionEvent event) throws IOException {
+	protected void openSequencePreview(ActionEvent event) throws IOException {
 		Parent root;
     	// Load the next window
         FXMLLoader loader = new FXMLLoader(getClass().getResource("Views/UI-SequencePreview.fxml"));

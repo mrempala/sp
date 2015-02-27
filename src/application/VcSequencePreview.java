@@ -19,10 +19,10 @@ public class VcSequencePreview extends VcMainController implements Observer {
 
 	// Included VisualSchematic View reference
 	@FXML TabPane visualSchematic;
-	@FXML VcVisualSchematicView visualSchematicController;
+	@FXML VcPtVisualSchematicView visualSchematicController;
 	
 	@FXML HBox timeLine;
-	@FXML VcTimeline timeLineController;
+	@FXML VcPtTimeline timeLineController;
 	
 	// Sequence info labels
 	@FXML Label lbProjectName;

@@ -8,6 +8,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TreeItem;
@@ -20,6 +21,8 @@ public class VcSetupManualLoad extends VcMainController{
     @FXML private TextField text_inputValue;
     @FXML private Label label_setTreeNode;
     @FXML private Label label_errorMessage;
+    @FXML private Button button_openVisualOrganizer;
+    
     private TreeItem<String> currentTreeNode;
     private String elementToSet;	//This defines which universe element to set, num set by elementNum
 

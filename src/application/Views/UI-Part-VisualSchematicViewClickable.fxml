@@ -3,7 +3,7 @@
 <?import javafx.scene.layout.* ?>
 <?import javafx.scene.control.* ?>
 
-<TabPane fx:controller="application.VcVisualSchematicViewClickable" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+<TabPane fx:controller="application.VcPtVisualSchematicViewClickable" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
 layoutX="20.0" layoutY="12.0" prefHeight="306.0" prefWidth="757.0" id="VisSchem" tabClosingPolicy="UNAVAILABLE">
   <tabs>
     <Tab text="Schematic">
