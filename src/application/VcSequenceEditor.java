@@ -111,6 +111,7 @@ public class VcSequenceEditor extends VcMainController implements Observer {
 	public void clearAnimation(){
 		sequence.timeLine.clear();
 		buildTimelineAnimation();
+		squibGroupSizes.clear();
 	}
 	
 	// Load the currently selected animation
@@ -194,7 +195,8 @@ public class VcSequenceEditor extends VcMainController implements Observer {
 			squibGroup.setX(x);
 			squibGroup.setY(5);
 			squibGroup.setHeight(25);
-			squibGroup.setWidth(i * stepSize);
+			// Make the squib group overlay 2px narrower to make them more distinguishable
+			squibGroup.setWidth(i * stepSize - 2);
 			squibGroup.getStyleClass().add("squib-group-overlay");
 			squibGroups.getChildren().add(squibGroup);
 			x += (i*stepSize);
