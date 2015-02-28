@@ -14,6 +14,7 @@ public class VcPtVisualSchematicViewClickable extends VcPtVisualSchematicView {
 	
 	// TODO: Figure out where this list of squibs should go, probably shouldn't stay here
 	public ArrayList<Squib> selectedSquibs = new ArrayList<Squib>();
+	public Boolean clickable = false;
 	
 	public void drawUniverseSchematic(){
 		// Clear any previously loaded universe schematic data
@@ -63,6 +64,9 @@ public class VcPtVisualSchematicViewClickable extends VcPtVisualSchematicView {
                     {
                         @Override
                         public void handle(MouseEvent t) {
+                        	if (!clickable){
+                        		return;
+                        	}
                             r.setFill(Color.BLUE);
                             // Select each squib in the universe
                             for (Lunchbox lb : fb.lunchboxList){
@@ -116,8 +120,6 @@ public class VcPtVisualSchematicViewClickable extends VcPtVisualSchematicView {
 		            squibRectangle.setStroke(Color.BLACK);
 		            // TODO: Change color here when simulating firing if squib is dead
 		            squibRectangle.getStyleClass().add("universe-green");
-		            squibRectangle.getStyleClass().add("fb" + s.getFirebox());
-		            squibRectangle.getStyleClass().add("lb" + s.getLunchbox());
 		            if (selectedSquibs.contains(s)){
 		            	squibRectangle.getStyleClass().add("universe-selected");
 		            }
@@ -132,6 +134,9 @@ public class VcPtVisualSchematicViewClickable extends VcPtVisualSchematicView {
 		            t.setOnMouseClicked(new EventHandler<MouseEvent>() {
 		                        @Override
 		                        public void handle(MouseEvent t) {
+		                        	if (!clickable){
+		                        		return;
+		                        	}
 		                            if (selectedSquibs.contains(s)){
 		                            	squibRectangle.getStyleClass().remove("universe-selected");
 		                            	selectedSquibs.remove(s);

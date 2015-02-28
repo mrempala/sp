@@ -16,16 +16,16 @@ styleClass="root" id="Container">
                <children>
                		<Label text="Select from canned sequence:" layoutX="10.0" layoutY="10.0" />
                		
-                 	<RadioButton layoutX="20.0" layoutY="40.0" mnemonicParsing="false" selected="false" text="Full Universe Sweep" userData="fullUniverseSweep">
+                 	<RadioButton layoutX="20.0" layoutY="40.0" mnemonicParsing="false" selected="true" text="Full Universe Sweep" userData="fullUniverseSweep">
         				<toggleGroup>
             				<ToggleGroup fx:id="sequenceSelection" />
          				</toggleGroup>
       				</RadioButton>
       				<RadioButton layoutX="20.0" layoutY="70.0" mnemonicParsing="false" text="Simultaneous Sweep" toggleGroup="$sequenceSelection" userData="simultaneousUniverseSweep" />
       				<RadioButton layoutX="20.0" layoutY="100.0" mnemonicParsing="false" text="Zig Zag Sequence" toggleGroup="$sequenceSelection" userData="zigZag" />
-					<RadioButton layoutX="20.0" layoutY="130.0" mnemonicParsing="false" text="Alternate Odd Even" toggleGroup="$sequenceSelection" userData="alternate" />
+					<!-- <RadioButton layoutX="20.0" layoutY="130.0" mnemonicParsing="false" text="Alternate Odd Even" toggleGroup="$sequenceSelection" userData="alternate" /> -->
       				<RadioButton layoutX="20.0" layoutY="160.0" mnemonicParsing="false" text="Random One at a Time" toggleGroup="$sequenceSelection" userData="randomUniverseSequence" />
-      				<RadioButton layoutX="20.0" layoutY="190.0" mnemonicParsing="false" text="Random One per FB" toggleGroup="$sequenceSelection" userData="randomPerFireboxUniverseSequence" />
+      				<RadioButton layoutX="20.0" layoutY="130.0" mnemonicParsing="false" text="Random One per FB" toggleGroup="$sequenceSelection" userData="randomPerFireboxUniverseSequence" />
       				
       				<Label text="Select group to apply sequence to:" layoutX="10.0" layoutY="220" />
       				<RadioButton layoutX="20.0" layoutY="250.0" mnemonicParsing="false" selected="true" text="Universe" userData="Universe">
@@ -34,8 +34,13 @@ styleClass="root" id="Container">
          				</toggleGroup>
       				</RadioButton>
       				
-      				<Button layoutX="10" layoutY = "375" mnemonicParsing="false" text="Add sequence" onAction="#addAnimation"/>
-      				<Button layoutX="110" layoutY = "375" mnemonicParsing="false" text="Clear" onAction="#clearAnimation"/>
+      				<ScrollBar fx:id="scroll_sequenceRate" layoutX="10.0" layoutY="440.0" min="1.0" max="10.0" value="1.0" prefHeight="14.0" prefWidth="170.0" />
+      				<Label layoutX="10.0" layoutY="420.0" text="Rate:" />
+      				<Label layoutX="25.0" layoutY="455.0" text="1" />
+      				<Label layoutX="155.0" layoutY="455.0" text="10" />
+      				
+      				<Button layoutX="10" layoutY = "475" mnemonicParsing="false" text="Add sequence" onAction="#addAnimation"/>
+      				<Button layoutX="110" layoutY = "475" mnemonicParsing="false" text="Clear" onAction="#clearAnimation"/>
                </children>
           </AnchorPane>
           <BorderPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" id="SeqEditorRightPane">
@@ -48,7 +53,7 @@ styleClass="root" id="Container">
                                  <fx:include fx:id="timeLine" source="UI-Part-Timeline.fxml" />
                               </children>
                            </HBox>
-                           <Button layoutX="715" layoutY = "375" mnemonicParsing="false" text="Next ->" fx:id="button_loadSequencePreview" onAction="#openSequencePreview"/>
+                           <Button layoutX="715" layoutY = "475" mnemonicParsing="false" text="Next ->" fx:id="button_loadSequencePreview" onAction="#openSequencePreview"/>
                         </children>
                      </AnchorPane>
                </center>

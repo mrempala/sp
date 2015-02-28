@@ -36,8 +36,9 @@ public class Sequence {
 	// Start at FB1-LB1-SQ1, fire each squib in LB1,
 	// step to LB2, until end of LB chain, then start
 	// over at FB2.
-	public int loadUniverseSweep(Universe universe){
+	public int loadUniverseSweep(Universe universe, int rate){
 		int numTimesteps = 0;
+		TimeStep blankTimestep = new TimeStep();
 		
 		// Populate timeline with new sequence
 		for(Firebox f : universe.fireboxList) {
@@ -51,6 +52,17 @@ public class Sequence {
 					if (newResult.intValue() == 0){
 						timeLine.add(t);
 						numTimesteps++;
+						// Insert blank timesteps to adjust the rate of the animation
+						// Use a decrementing loop becuase rate is value 1-10 and 10 is fastest
+						// (so we want 10-10=0 to be full speed
+						for (int i = 0; i > ((rate - 10) * 2); i-- ){
+							// Validate the timestep to properly decrement firbox's time to sleep
+							// but no need to check what validate returns as it is simply a blank timestep
+							validate(blankTimestep);
+							timeLine.add(blankTimestep);
+							numTimesteps++;
+						}
+						
 						System.out.println("Inserted timestep");
 					}
 					else {

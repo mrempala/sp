@@ -19,6 +19,7 @@ import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.ScrollBar;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
@@ -37,15 +38,14 @@ public class VcSequenceEditor extends VcMainController implements Observer {
 	
 	@FXML ToggleGroup groupSelection;
 	@FXML AnchorPane SeqEditorLeftPane;
-
+	@FXML Label labelOutput;
+	@FXML ScrollBar scroll_sequenceRate;
+	
 	// Included VisualSchematic View reference
 	@FXML TabPane visualSchematic;
 	@FXML VcPtVisualSchematicView visualSchematicController;
-	
 	@FXML HBox timeLine;
 	@FXML VcPtTimeline timeLineController;
-	
-	@FXML Label labelOutput;
 	
 	SequentialTransition animationTimeline = new SequentialTransition();
 	String animationID;
@@ -60,12 +60,7 @@ public class VcSequenceEditor extends VcMainController implements Observer {
 		sequenceSelection.selectedToggleProperty().addListener(new ChangeListener<Toggle>(){
 		    public void changed(ObservableValue<? extends Toggle> ov,
 		        Toggle old_toggle, Toggle new_toggle) {
-		    			// Stop the currently playing animation
-		    			timeLineController.cursorAnimation.stop();
-		    			animationTimeline.stop();
-		    			
-		    			// Redraw universe to avoid drawing firing squib from previous sequence
-		    			visualSchematicController.drawUniverseSchematic();
+		    			stopAnimation();
 		            }                
 		        });
 	}
@@ -94,33 +89,45 @@ public class VcSequenceEditor extends VcMainController implements Observer {
 	public void addAnimation(){
 		String animation = sequenceSelection.getSelectedToggle().getUserData().toString();
 		String group = groupSelection.getSelectedToggle().getUserData().toString();
+		int rate = (int) scroll_sequenceRate.getValue();
 		Universe u;
+		
 		if (group.equals("Universe")) {
 			u = sequence.universe;
 		}
 		else {
 			u = sequence.squibGroups.get(Integer.parseInt(group));
 		}
+		
+		// Stop the currently playing animation (if there is one)
+		stopAnimation();
+		
+		// Clear the animation group overlays to be drawn on the timeline
 		timeLineController.timelinePane.getChildren().remove(squibGroups);
-		setAnimation(animation, u);
+		
+		setAnimation(animation, u, rate);
+		
+		// Set the new animation group overlays to be drawn on the timeline
 		timeLineController.timelinePane.getChildren().add(squibGroups);
+		
+		System.out.println(scroll_sequenceRate.getValue());
 	}
 	
 	// Clear all animation data and rebuild the timeline
 	@FXML
 	public void clearAnimation(){
 		sequence.timeLine.clear();
-		buildTimelineAnimation();
 		squibGroupSizes.clear();
+		buildTimelineAnimation();
 	}
 	
 	// Load the currently selected animation
-	public void setAnimation(String s, Universe u){
+	public void setAnimation(String s, Universe u, int rate){
 		// numTimesteps tracks how many timesteps inserted for new sequence part
 		int numTimesteps = 0;
 		animationID = s;
 		if (s.equals("fullUniverseSweep")){
-			numTimesteps = sequence.loadUniverseSweep(u);
+			numTimesteps = sequence.loadUniverseSweep(u, rate);
 		}
 		else if (s.equals("simultaneousUniverseSweep")){
 			numTimesteps = sequence.loadUniverseSimultaneousSweep(u);
@@ -186,9 +193,9 @@ public class VcSequenceEditor extends VcMainController implements Observer {
 		int totalNumTimesteps = sequence.timeLine.size();
 		// Calculate the step size based on the pixel width of the timeline
 		// and the total number of timesteps
-		float stepSize = 665 / totalNumTimesteps;
-		// Set the start position to draw at (10 is the same as the timeline)
-		int x = 10;
+		float stepSize = 665 / (float)totalNumTimesteps;
+		// Set the start position to draw at (the timeline starts at 10, we'll use 11 to get spacing between groups)
+		int x = 11;
 		// Draw a rectangle for each sub animation
 		for (Integer i : squibGroupSizes){
 			Rectangle squibGroup = new Rectangle();
@@ -196,7 +203,7 @@ public class VcSequenceEditor extends VcMainController implements Observer {
 			squibGroup.setY(5);
 			squibGroup.setHeight(25);
 			// Make the squib group overlay 2px narrower to make them more distinguishable
-			squibGroup.setWidth(i * stepSize - 2);
+			squibGroup.setWidth(i * stepSize - 3);
 			squibGroup.getStyleClass().add("squib-group-overlay");
 			squibGroups.getChildren().add(squibGroup);
 			x += (i*stepSize);
@@ -209,6 +216,15 @@ public class VcSequenceEditor extends VcMainController implements Observer {
 	
 	public void pauseTimelineAnimation(){
 		animationTimeline.pause();
+	}
+	
+	public void stopAnimation(){
+		// Stop the currently playing animation
+		timeLineController.cursorAnimation.stop();
+		animationTimeline.stop();
+		
+		// Redraw universe to avoid drawing firing squib from previous sequence
+		visualSchematicController.drawUniverseSchematic();
 	}
 
 	@Override

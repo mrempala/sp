@@ -48,7 +48,7 @@ public class VcPtTimeline extends Observable {
     }
     
     public void buildTimeline(int length){
-    	int timelineLength = drawTimeline(length);
+    	float timelineLength = drawTimeline(length);
         
         KeyValue kv1 = new KeyValue(timelineCursor.startXProperty(), timelineLength + 10 );
         KeyValue kv2 = new KeyValue(timelineCursor.endXProperty(), timelineLength + 10 );
@@ -58,19 +58,19 @@ public class VcPtTimeline extends Observable {
         cursorAnimation.getKeyFrames().add(kf);
     }
     
-    public int drawTimeline(int length){
+    public float drawTimeline(int length){
     	// Timeline width: 600 height: 35
         timelinePane.getChildren().clear();
         timelineGroup.getChildren().clear();
         
     	System.out.println("Length: " + length);
-    	int stepSize = 0;
-    	int step = 10;
+    	float stepSize = 0;
+    	float step = 10;
     	int mark;
-    	int timelineLength;
+    	float timelineLength;
     	
     	if (length != 0){
-    		stepSize = 665 / length;
+    		stepSize = 665 / (float)length;
     	}
     	
     	if ((length/1000) >= 1) {

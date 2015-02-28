@@ -20,7 +20,6 @@
       <items>
          <MenuItem text="Edit Sequence" />
          <MenuItem text="Edit Universe Layout" />
-         <MenuItem text="Detect Universe Config" />
          <MenuItem text="Check Universe Errors" />
       </items>
    </Menu>

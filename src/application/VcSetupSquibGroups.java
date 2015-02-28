@@ -36,8 +36,6 @@ public class VcSetupSquibGroups extends VcMainController{
 		listview_squibGroups.setItems(items);
 		listview_squibGroups.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
 		    public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-		        // TODO: When the user selects the group, reselect corresponding squibs in schematic view
-		    	//       and color appropriately, allowing user to edit the given group.
 		        System.out.println("Selected item: " + newValue);
                 String elements[] = newValue.split(" ");
                 groupToEdit = Integer.parseInt(elements[1]);
@@ -47,10 +45,24 @@ public class VcSetupSquibGroups extends VcMainController{
 	}
 	
 	@FXML void newSquibGroup(){
+		// Create a Universe object for the new squib group and add it to the list of groups
 		Universe squibGroup = new Universe();
 		sequence.squibGroups.add(squibGroup);
+		
+		// Create a new list item for group and select it
 		items.add("Group " + groupCount);
 		listview_squibGroups.setItems(items);
+		listview_squibGroups.getSelectionModel().selectLast();
+		
+		// TODO: Should we check to see if this is the first group or just reset the variable each time?
+		// Enable clickable
+		visualSchematicController.clickable = true;
+		
+		// Clear the selected squibs
+		visualSchematicController.selectedSquibs.clear();
+		
+		// Redraw the universe to erase previous selections
+		visualSchematicController.drawUniverseSchematic();
 		groupToEdit = groupCount;
 		groupCount++;
 	}
@@ -81,12 +93,6 @@ public class VcSetupSquibGroups extends VcMainController{
 		
 		sequence.squibGroups.remove(groupToEdit);
 		sequence.squibGroups.add(groupToEdit, squibGroup);
-		
-		// Clear the selected squibs
-		//visualSchematicController.selectedSquibs.clear();
-		
-		// Redraw the universe to erase previous selections
-		//visualSchematicController.drawUniverseSchematic();
 		
 		// Check all the universes in the list
 		for (Universe squibList : sequence.squibGroups){

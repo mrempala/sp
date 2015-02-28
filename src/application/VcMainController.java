@@ -170,7 +170,7 @@ public class VcMainController implements Initializable{
         // Register the sequence preview as an observer of the time line to get play and pause events
         seqEditorController.timeLineController.addObserver(seqEditorController);
         
-        Scene scene = new Scene(root, 1000, 450);
+        Scene scene = new Scene(root, 1000, 550);
         Stage stage = new Stage();
         stage.setTitle("Sequence Selector");
         stage.setScene(scene);
