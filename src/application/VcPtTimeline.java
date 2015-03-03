@@ -1,5 +1,7 @@
 package application;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Observable;
 
 import javafx.animation.KeyFrame;
@@ -10,6 +12,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
@@ -19,12 +22,15 @@ import javafx.util.Duration;
 public class VcPtTimeline extends Observable {
 	@FXML Button playButton;
 	@FXML Button pauseButton;
+	@FXML VBox timelineContainer;
 	@FXML Pane timelinePane;
 	
 	Timeline cursorAnimation = new Timeline();
 	Line timelineCursor;
 	
 	Group timelineGroup = new Group();
+	
+	List<Pane> timelines = new ArrayList<Pane>();
 	
     @FXML protected void playAnimation(ActionEvent event) {
     	setChanged();
@@ -45,6 +51,16 @@ public class VcPtTimeline extends Observable {
     	setChanged();
     	notifyObservers("Pause");
     	cursorAnimation.pause();
+    }
+    
+    public void addGroupTimeline(){
+    	// Create a new pane and add it to the timelineContainer VBox
+    	Pane newPane = new Pane();
+    	newPane.setPrefHeight(35);
+    	newPane.setPrefWidth(675);
+    	newPane.getStyleClass().add("TimelinePane");
+    	
+    	timelineContainer.getChildren().add(newPane);
     }
     
     public void buildTimeline(int length){

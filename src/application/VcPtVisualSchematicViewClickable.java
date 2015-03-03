@@ -163,17 +163,22 @@ public class VcPtVisualSchematicViewClickable extends VcPtVisualSchematicView {
 	            
 	            // set squibcount to 0 to draw in all boxes
 	            squibcount = 0;
+	            
 	            // Draw blank squibs to keep alignment easy to maintain
 	            while (squibcount < 8){
-	            	Rectangle squibRectangle = new Rectangle();
-		            squibRectangle.setX(x + 93);
-		            squibRectangle.setY(y + 7);
-		            squibRectangle.setWidth(10);
-		            squibRectangle.setHeight(15);
-		            squibRectangle.setStroke(Color.BLACK);
-		            squibRectangle.setFill(Color.TRANSPARENT);
-		            
-		            universeSchematic.getChildren().add(squibRectangle);
+	            	// Check to see if the lunchbox already has a squib at the channel,
+	            	// if no draw a blank squib to keep alignment
+	            	if (!lb.hasSquibAtChannel(squibcount + 1)){
+		            	Rectangle squibRectangle = new Rectangle();
+			            squibRectangle.setX(x + 93);
+			            squibRectangle.setY(y + 7);
+			            squibRectangle.setWidth(10);
+			            squibRectangle.setHeight(15);
+			            squibRectangle.setStroke(Color.BLACK);
+			            squibRectangle.setFill(Color.TRANSPARENT);
+			            universeSchematic.getChildren().add(squibRectangle);   
+	            	}
+
 		            x += 10;
 	            	squibcount++;
 	            }

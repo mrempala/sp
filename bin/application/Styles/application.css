@@ -122,8 +122,13 @@
 	-fx-spacing: 6px;
 }
 
-#TimelinePane {
-	/*-fx-background-color: pink;*/
+#Timeline {
+	-fx-spacing: 5px;
+}
+
+.TimelinePane {
+	-fx-background-color: pink;
+	-fx-padding: 10px 0 0 0;
 }
 
 #SeqPreviewLeft {

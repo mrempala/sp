@@ -7,8 +7,8 @@
 <HBox fx:controller="application.VcPtTimeline" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" id="TimelineContainer">
 	<Button fx:id="playButton" prefHeight="35.0" prefWidth="35.0" onAction="#playAnimation" mnemonicParsing="false" />
 	<Button fx:id="pauseButton" prefHeight="35.0" prefWidth="35.0" layoutX="50" onAction="#pauseAnimation" mnemonicParsing="false" />
-	<VBox fx:id="timelineContainer">
-		<Pane fx:id="timelinePane" prefHeight="35.0" prefWidth="675.0" id="TimelinePane" />
+	<VBox fx:id="timelineContainer" id="Timeline">
+		<Pane fx:id="timelinePane" prefHeight="35.0" prefWidth="675.0"  />
 	</VBox>
 	<stylesheets>
 		<URL value="@../Styles/application.css" />

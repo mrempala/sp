@@ -51,6 +51,7 @@ public class VcSequenceEditor extends VcMainController implements Observer {
 	String animationID;
 	
 	Group squibGroups = new Group();
+	
 	// TODO: Squib group data should go into sequence, but we'll probably want to  save more info
 	public List<Integer> squibGroupSizes = new ArrayList<Integer>();
 
@@ -73,6 +74,7 @@ public class VcSequenceEditor extends VcMainController implements Observer {
 		int y = 280;
 		// Populate the radio button group
 		for (int i = 0; i < sequence.squibGroups.size(); i++) {
+			// Create a radio button for each group
 			RadioButton rb = new RadioButton();
 			rb.toggleGroupProperty().set(groupSelection);
 			rb.setLayoutX(20.0);
@@ -81,6 +83,9 @@ public class VcSequenceEditor extends VcMainController implements Observer {
 			rb.setText("Group " + i);
 			rb.setUserData(i);
 			SeqEditorLeftPane.getChildren().add(rb);
+			
+			// Draw a new timeline pane for each group
+			timeLineController.addGroupTimeline();
 		}
 	}
 	
