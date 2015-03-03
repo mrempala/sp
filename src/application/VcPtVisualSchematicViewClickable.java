@@ -44,7 +44,7 @@ public class VcPtVisualSchematicViewClickable extends VcPtVisualSchematicView {
                 Circle c = new Circle();
                 c.setCenterX(x + 40);
                 c.setCenterY(y - 1);
-                c.setRadius(3);
+                c.setRadius(1);
                 c.setFill(Color.BLACK);
                 
                 universeSchematic.getChildren().add(l);
@@ -110,10 +110,15 @@ public class VcPtVisualSchematicViewClickable extends VcPtVisualSchematicView {
 	            universeSchematic.getChildren().add(c2);
 	            
 	            int squibcount = 0;
+	            
 	            for (Squib s : lb.squibList){
+	            	// used to draw each squib in appropriate channel
+	            	int cX = (s.getChannel() * 10) + x + 83;
+	            	
 	            	// Draw the individual squibs in the lunchboxes
 		        	Rectangle squibRectangle = new Rectangle();
-		            squibRectangle.setX(x + 93);
+		        	squibRectangle.setX(cX);
+		        	//squibRectangle.setX(x + 93);
 		            squibRectangle.setY(y + 7);
 		            squibRectangle.setWidth(10);
 		            squibRectangle.setHeight(15);
@@ -126,7 +131,8 @@ public class VcPtVisualSchematicViewClickable extends VcPtVisualSchematicView {
 
 		            Text t = new Text();
 		            t.setFill(Color.BLACK);
-		            t.setX(x + 95);
+		            t.setX(cX + 2);
+		            //t.setX(x + 95);
 		            t.setY(y + 19);
 		            t.setText(Integer.toString(s.getSquib()));
 		            
@@ -151,10 +157,12 @@ public class VcPtVisualSchematicViewClickable extends VcPtVisualSchematicView {
 		            universeSchematic.getChildren().add(squibRectangle);
 		            universeSchematic.getChildren().add(t);
 		            
-		            x += 10;
+		            //x += 10;
 		            squibcount++;
-	            }
+	            }  
 	            
+	            // set squibcount to 0 to draw in all boxes
+	            squibcount = 0;
 	            // Draw blank squibs to keep alignment easy to maintain
 	            while (squibcount < 8){
 	            	Rectangle squibRectangle = new Rectangle();

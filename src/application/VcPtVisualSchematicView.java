@@ -155,9 +155,12 @@ public class VcPtVisualSchematicView implements Initializable {
 	            
 	            int squibcount = 0;
 	            for (Squib s : lb.squibList){
+	            	// used to draw each squib in appropriate channel
+	            	int cX = (s.getChannel() * 10) + x + 83;
+	            	
 	            	// Draw the individual squibs in the lunchboxes
 		        	Rectangle squibRectangle = new Rectangle();
-		            squibRectangle.setX(x + 93);
+		            squibRectangle.setX(cX);
 		            squibRectangle.setY(y + 7);
 		            squibRectangle.setWidth(10);
 		            squibRectangle.setHeight(15);
@@ -167,17 +170,19 @@ public class VcPtVisualSchematicView implements Initializable {
 
 		            Text t = new Text();
 		            t.setFill(Color.BLACK);
-		            t.setX(x + 95);
+		            t.setX(cX + 2);
 		            t.setY(y + 19);
-		            t.setText(Integer.toString(s.getSquib()));
+		            t.setText(Integer.toString(s.getSquib()));/////////////////////////////////////////////////////////////////////////////////
 		            
 		            universeSchematic.getChildren().add(squibRectangle);
 		            universeSchematic.getChildren().add(t);
 		            
-		            x += 10;
+		            //x += 10;
 		            squibcount++;
 	            }
 	            
+	            // set squibcount to 0 to draw in all boxes
+	            squibcount = 0;
 	            // Draw blank squibs to keep alignment easy to maintain
 	            while (squibcount < 8){
 	            	Rectangle squibRectangle = new Rectangle();
@@ -222,7 +227,7 @@ public class VcPtVisualSchematicView implements Initializable {
 			int x=50, y=50;
 			
 			Rectangle squibRectangle = new Rectangle();
-	        squibRectangle.setX(x + 93 + (squib.getLunchbox() * 93) + (squib.getSquib()*10));
+	        squibRectangle.setX(x + 93 + (squib.getLunchbox() * 93) + ((squib.getChannel() - 1) * 10));
 	        squibRectangle.setY(y + 7 + (squib.getFirebox() * 52));
 	        squibRectangle.setWidth(10);
 	        squibRectangle.setHeight(15);
@@ -232,7 +237,7 @@ public class VcPtVisualSchematicView implements Initializable {
 	        
 	        Text t = new Text();
 	        t.setFill(Color.BLACK);
-	        t.setX(x + 95 + (squib.getLunchbox() * 93) + (squib.getSquib() * 10));
+	        t.setX(x + 95 + (squib.getLunchbox() * 93) + ((squib.getChannel() - 1) * 10));
 	        t.setY(y + 19 + (squib.getFirebox() * 52));
 	        t.setText("F");
 	        //t.setText(Integer.toString(s.getSquib()));
@@ -246,7 +251,7 @@ public class VcPtVisualSchematicView implements Initializable {
 				int x=50, y=50;
 				
 				Rectangle squibRectangle = new Rectangle();
-		        squibRectangle.setX(x + 93 + (squib.getLunchbox() * 93) + (squib.getSquib()*10));
+		        squibRectangle.setX(x + 93 + (squib.getLunchbox() * 93) + ((squib.getChannel() - 1) * 10));
 		        squibRectangle.setY(y + 7 + (squib.getFirebox() * 52));
 		        squibRectangle.setWidth(10);
 		        squibRectangle.setHeight(15);
@@ -256,7 +261,7 @@ public class VcPtVisualSchematicView implements Initializable {
 		        
 		        Text t = new Text();
 		        t.setFill(Color.BLACK);
-		        t.setX(x + 95 + (squib.getLunchbox() * 93) + (squib.getSquib() * 10));
+		        t.setX(x + 95 + (squib.getLunchbox() * 93) + ((squib.getChannel() - 1) * 10));
 		        t.setY(y + 19 + (squib.getFirebox() * 52));
 		        t.setText(Integer.toString(squib.getSquib()));
 		        //t.setText(Integer.toString(s.getSquib()));
