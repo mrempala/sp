@@ -1,8 +1,6 @@
 package application;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.ResourceBundle;
@@ -15,7 +13,6 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
@@ -25,7 +22,6 @@ import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
 public class VcSequenceEditor extends VcMainController implements Observer {
@@ -49,11 +45,6 @@ public class VcSequenceEditor extends VcMainController implements Observer {
 	
 	SequentialTransition animationTimeline = new SequentialTransition();
 	String animationID;
-	
-	Group squibGroups = new Group();
-	
-	// TODO: remove this list
-	public List<Integer> squibGroupSizes = new ArrayList<Integer>();
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -119,28 +110,22 @@ public class VcSequenceEditor extends VcMainController implements Observer {
 		// Stop the currently playing animation (if there is one)
 		stopAnimation();
 		
-		// Clear the animation group overlays to be drawn on the timeline
-		timeLineController.timelinePane.getChildren().remove(squibGroups);
-		
 		numTimesteps = setAnimation(animation, u, rate);
 		buildTimelineAnimation();
 		// Update the physical time line in the view
 		timeLineController.buildTimeline(sequence.timeLine.size());
+		// Update the groups playing overlays
 		timeLineController.updatePlayOverlays(sequence.timeLine.size(), numTimesteps, selectedGroup);
-		drawAnimationSubgroups(numTimesteps);
-		
-		// Set the new animation group overlays to be drawn on the timeline
-		timeLineController.timelinePane.getChildren().add(squibGroups);
-		
-		System.out.println(scroll_sequenceRate.getValue());
 	}
 	
 	// Clear all animation data and rebuild the timeline
 	@FXML
 	public void clearAnimation(){
+		stopAnimation();
 		sequence.timeLine.clear();
-		squibGroupSizes.clear();
+		timeLineController.clearGroupTimeline();
 		buildTimelineAnimation();
+		timeLineController.buildTimeline(sequence.timeLine.size());
 	}
 	
 	// Load the currently selected animation
@@ -201,31 +186,6 @@ public class VcSequenceEditor extends VcMainController implements Observer {
 			tempTimeline.getKeyFrames().add(kf);
 			animationTimeline.getChildren().add(tempTimeline);
 			i++;
-		}
-	}
-	
-	// TODO: Remove this function
-	public void drawAnimationSubgroups(int numTimesteps){
-		squibGroupSizes.add(numTimesteps);
-		squibGroups.getChildren().clear();
-		// Get the total number of time steps in the animation sequence
-		int totalNumTimesteps = sequence.timeLine.size();
-		// Calculate the step size based on the pixel width of the timeline
-		// and the total number of timesteps
-		float stepSize = 665 / (float)totalNumTimesteps;
-		// Set the start position to draw at (the timeline starts at 10, we'll use 11 to get spacing between groups)
-		int x = 11;
-		// Draw a rectangle for each sub animation
-		for (Integer i : squibGroupSizes){
-			Rectangle squibGroup = new Rectangle();
-			squibGroup.setX(x);
-			squibGroup.setY(5);
-			squibGroup.setHeight(25);
-			// Make the squib group overlay 2px narrower to make them more distinguishable
-			squibGroup.setWidth(i * stepSize - 3);
-			squibGroup.getStyleClass().add("squib-group-overlay");
-			squibGroups.getChildren().add(squibGroup);
-			x += (i*stepSize);
 		}
 	}
 	

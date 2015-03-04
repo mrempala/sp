@@ -35,7 +35,7 @@ public class PtSquibGroupsTimeline {
 		float stepSize = 665 / (float)totalNumTimesteps;
 		// Set the start position to draw at (the timeline starts at 10, we'll use 11 to get spacing between groups)
 		int x = 11;
-		// Draw a rectangle for each sub animation
+		// Draw a rectangle for each period during which the group is playing an animation
 		for (Integer i : squibGroupSizes){
 			if (i > 0){
 				Rectangle squibGroup = new Rectangle();
@@ -106,5 +106,13 @@ public class PtSquibGroupsTimeline {
 	        timelineGroup.getChildren().add(frameMarker);
         }
         timelinePane.getChildren().add(timelineGroup);
+    }
+    
+    public void clear() {
+    	timelineGroup.getChildren().clear();
+    	timelinePlayOverlay.getChildren().clear();
+    	squibGroupSizes.clear();
+    	timelinePane.getChildren().clear();
+    	
     }
 }

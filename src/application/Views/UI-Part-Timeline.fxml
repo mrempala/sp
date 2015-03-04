@@ -8,7 +8,7 @@
 	<Button fx:id="playButton" prefHeight="35.0" prefWidth="35.0" onAction="#playAnimation" mnemonicParsing="false" />
 	<Button fx:id="pauseButton" prefHeight="35.0" prefWidth="35.0" layoutX="50" onAction="#pauseAnimation" mnemonicParsing="false" />
 	<VBox fx:id="timelineContainer" id="Timeline">
-		<Pane fx:id="timelinePane" prefHeight="35.0" prefWidth="675.0"  />
+		<Pane fx:id="timelinePane" prefHeight="0.0" prefWidth="675.0"  />
 	</VBox>
 	<stylesheets>
 		<URL value="@../Styles/application.css" />

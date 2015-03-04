@@ -127,7 +127,7 @@
 }
 
 .TimelinePane {
-	-fx-background-color: pink;
+	/*-fx-background-color: pink;*/
 	-fx-padding: 10px 0 0 0;
 }
 

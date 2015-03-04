@@ -33,7 +33,7 @@ public class VcPtTimeline extends Observable {
 	// List of squib group timelines to be drawn, including the main universe
 	List<PtSquibGroupsTimeline> timelines = new ArrayList<PtSquibGroupsTimeline>();
 	
-	int timelineCursorHeight = 35;
+	int timelineCursorHeight = 0;
 	
     @FXML protected void playAnimation(ActionEvent event) {
     	setChanged();
@@ -43,7 +43,7 @@ public class VcPtTimeline extends Observable {
     	timelineCursor.setStartX(10);
         timelineCursor.setStartY(0);
         timelineCursor.setEndX(10);
-        timelineCursor.setEndY(timelineCursorHeight);
+        timelineCursor.setEndY(-timelineCursorHeight);
     	
     	cursorAnimation.play();
     }
@@ -54,9 +54,15 @@ public class VcPtTimeline extends Observable {
     	cursorAnimation.pause();
     }
     
+    public void clearGroupTimeline(){
+    	for (PtSquibGroupsTimeline t : timelines){
+    		t.clear();
+    	}
+    	
+    }
     public void addGroupTimeline(){
     	// Update the height of the cursor to span all timelines
-    	//timelineCursorHeight += 40;
+    	timelineCursorHeight += 40;
     	PtSquibGroupsTimeline timeline = new PtSquibGroupsTimeline();
     	timelines.add(timeline);
     	timelineContainer.getChildren().add(timeline.timelinePane);
@@ -73,7 +79,6 @@ public class VcPtTimeline extends Observable {
     		}
     		
     		t.updateTimelinePlayOverlay(totalNumTimesteps, tempTimesteps);
-    		System.out.println("Group: " + group + "  i: " + i + "  Inserted timesteps: " + insertedTimesteps);
     		i++;
     	}
     }
@@ -107,7 +112,7 @@ public class VcPtTimeline extends Observable {
         timelineCursor.setStartX(10);
         timelineCursor.setStartY(0);
         timelineCursor.setEndX(10);
-        timelineCursor.setEndY(timelineCursorHeight);
+        timelineCursor.setEndY(-timelineCursorHeight);
         timelineCursor.setStroke(Color.RED);
         
         timelinePane.getChildren().clear();
@@ -119,6 +124,8 @@ public class VcPtTimeline extends Observable {
     	for (PtSquibGroupsTimeline t : timelines){
     		t.drawTimeline(length, timelineLength, stepSize, mark);
     	}
+    	
+    	timelinePane.toFront();
 
         KeyValue kv1 = new KeyValue(timelineCursor.startXProperty(), timelineLength + 10 );
         KeyValue kv2 = new KeyValue(timelineCursor.endXProperty(), timelineLength + 10 );

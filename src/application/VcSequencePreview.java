@@ -71,6 +71,7 @@ public class VcSequencePreview extends VcMainController implements Observer {
 		}
 		
 		// Update the physical time line in the view
+		timeLineController.addGroupTimeline();
 		timeLineController.buildTimeline(sequence.timeLine.size());
 	}
 	
