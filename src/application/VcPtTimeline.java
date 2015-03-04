@@ -30,21 +30,22 @@ public class VcPtTimeline extends Observable {
 	
 	Group timelineGroup = new Group();
 	
-	List<Pane> timelines = new ArrayList<Pane>();
+	// List of squib group timelines to be drawn, including the main universe
+	List<PtSquibGroupsTimeline> timelines = new ArrayList<PtSquibGroupsTimeline>();
+	
+	int timelineCursorHeight = 35;
 	
     @FXML protected void playAnimation(ActionEvent event) {
     	setChanged();
     	notifyObservers("Play");
     	
     	// Reset cursor
-    	// Currently throws exception when animation is played in sequence preview b/c time line isn't implemented there yet
     	timelineCursor.setStartX(10);
         timelineCursor.setStartY(0);
         timelineCursor.setEndX(10);
-        timelineCursor.setEndY(35);
+        timelineCursor.setEndY(timelineCursorHeight);
     	
     	cursorAnimation.play();
-        //System.out.println("Play button pressed.");
     }
     
     @FXML protected void pauseAnimation(ActionEvent event) {
@@ -54,40 +55,39 @@ public class VcPtTimeline extends Observable {
     }
     
     public void addGroupTimeline(){
-    	// Create a new pane and add it to the timelineContainer VBox
-    	Pane newPane = new Pane();
-    	newPane.setPrefHeight(35);
-    	newPane.setPrefWidth(675);
-    	newPane.getStyleClass().add("TimelinePane");
-    	
-    	timelineContainer.getChildren().add(newPane);
+    	// Update the height of the cursor to span all timelines
+    	//timelineCursorHeight += 40;
+    	PtSquibGroupsTimeline timeline = new PtSquibGroupsTimeline();
+    	timelines.add(timeline);
+    	timelineContainer.getChildren().add(timeline.timelinePane);
+    }
+    
+    public void updatePlayOverlays(int totalNumTimesteps, int insertedTimesteps, int group){
+    	int i = 0;
+    	for (PtSquibGroupsTimeline t : timelines){
+    		int tempTimesteps = insertedTimesteps;
+    		// If the animation was not applied to the current group, make inserted timesteps negative
+    		// PtSquibGroupsTimeline skips drawing an overlay if the input is negative
+    		if (i != group){
+    			tempTimesteps *= -1;
+    		}
+    		
+    		t.updateTimelinePlayOverlay(totalNumTimesteps, tempTimesteps);
+    		System.out.println("Group: " + group + "  i: " + i + "  Inserted timesteps: " + insertedTimesteps);
+    		i++;
+    	}
     }
     
     public void buildTimeline(int length){
-    	float timelineLength = drawTimeline(length);
-        
-        KeyValue kv1 = new KeyValue(timelineCursor.startXProperty(), timelineLength + 10 );
-        KeyValue kv2 = new KeyValue(timelineCursor.endXProperty(), timelineLength + 10 );
-        
-        KeyFrame kf = new KeyFrame(Duration.millis(35 * length), kv1, kv2);
-        cursorAnimation.getKeyFrames().clear();
-        cursorAnimation.getKeyFrames().add(kf);
-    }
-    
-    public float drawTimeline(int length){
-    	// Timeline width: 600 height: 35
-        timelinePane.getChildren().clear();
-        timelineGroup.getChildren().clear();
-        
-    	System.out.println("Length: " + length);
     	float stepSize = 0;
-    	float step = 10;
+    	float timelineLength; 
     	int mark;
-    	float timelineLength;
     	
     	if (length != 0){
     		stepSize = 665 / (float)length;
     	}
+    	
+    	timelineLength = stepSize * length;
     	
     	if ((length/1000) >= 1) {
     		mark = 100;
@@ -101,7 +101,41 @@ public class VcPtTimeline extends Observable {
     	else {
     		mark = 1;
     	}
-    	timelineLength = stepSize * length;
+    	
+        timelineCursor = new Line();
+        timelineCursor.setStrokeWidth(4);
+        timelineCursor.setStartX(10);
+        timelineCursor.setStartY(0);
+        timelineCursor.setEndX(10);
+        timelineCursor.setEndY(timelineCursorHeight);
+        timelineCursor.setStroke(Color.RED);
+        
+        timelinePane.getChildren().clear();
+        timelineGroup.getChildren().clear();
+        timelineGroup.getChildren().add(timelineCursor);
+        timelinePane.getChildren().add(timelineGroup);
+
+    	//drawTimeline(length, timelineLength, stepSize, mark);
+    	for (PtSquibGroupsTimeline t : timelines){
+    		t.drawTimeline(length, timelineLength, stepSize, mark);
+    	}
+
+        KeyValue kv1 = new KeyValue(timelineCursor.startXProperty(), timelineLength + 10 );
+        KeyValue kv2 = new KeyValue(timelineCursor.endXProperty(), timelineLength + 10 );
+        
+        KeyFrame kf = new KeyFrame(Duration.millis(35 * length), kv1, kv2);
+        cursorAnimation.getKeyFrames().clear();
+        cursorAnimation.getKeyFrames().add(kf);
+    }
+    
+    public void drawTimeline(int length, float timelineLength, float stepSize, int mark){
+    	float step = 10;
+    	
+    	// Timeline width: 600 height: 35
+        timelinePane.getChildren().clear();
+        timelineGroup.getChildren().clear();
+        
+    	System.out.println("Length: " + length);
     	
     	Rectangle background = new Rectangle();
     	background.setX(10);
@@ -117,7 +151,7 @@ public class VcPtTimeline extends Observable {
         timelineCursor.setStartX(10);
         timelineCursor.setStartY(0);
         timelineCursor.setEndX(10);
-        timelineCursor.setEndY(35);
+        timelineCursor.setEndY(timelineCursorHeight);
         timelineCursor.setStroke(Color.RED);
         
         timelineGroup.getChildren().add(background);
@@ -153,6 +187,5 @@ public class VcPtTimeline extends Observable {
 	        timelineGroup.getChildren().add(frameMarker);
         }
         timelinePane.getChildren().add(timelineGroup);
-        return timelineLength;
     }
 }

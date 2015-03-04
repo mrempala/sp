@@ -34,7 +34,7 @@ styleClass="root" id="Container">
          				</toggleGroup>
       				</RadioButton>
       				
-      				<ScrollBar fx:id="scroll_sequenceRate" layoutX="10.0" layoutY="440.0" min="1.0" max="10.0" value="1.0" prefHeight="14.0" prefWidth="170.0" />
+      				<ScrollBar fx:id="scroll_sequenceRate" layoutX="10.0" layoutY="440.0" min="1.0" max="10.0" value="10.0" prefHeight="14.0" prefWidth="170.0" />
       				<Label layoutX="10.0" layoutY="420.0" text="Rate:" />
       				<Label layoutX="25.0" layoutY="455.0" text="1" />
       				<Label layoutX="155.0" layoutY="455.0" text="10" />

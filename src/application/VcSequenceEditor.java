@@ -52,7 +52,7 @@ public class VcSequenceEditor extends VcMainController implements Observer {
 	
 	Group squibGroups = new Group();
 	
-	// TODO: Squib group data should go into sequence, but we'll probably want to  save more info
+	// TODO: remove this list
 	public List<Integer> squibGroupSizes = new ArrayList<Integer>();
 
 	@Override
@@ -68,10 +68,13 @@ public class VcSequenceEditor extends VcMainController implements Observer {
 	
 	// Load the groups of squibs stored in the sequence
 	// and create radio buttons to select individual groups
-	public void loadGroups () {
-		buildTimelineAnimation();
-		
+	public void loadGroups () {	
+		// y is the starting position of the radio buttons
 		int y = 280;
+		
+		// Add a timeline for the main universe
+		timeLineController.addGroupTimeline();
+		
 		// Populate the radio button group
 		for (int i = 0; i < sequence.squibGroups.size(); i++) {
 			// Create a radio button for each group
@@ -84,9 +87,13 @@ public class VcSequenceEditor extends VcMainController implements Observer {
 			rb.setUserData(i);
 			SeqEditorLeftPane.getChildren().add(rb);
 			
-			// Draw a new timeline pane for each group
+			// Add a timeline for each subgroup of squibs
 			timeLineController.addGroupTimeline();
 		}
+		
+		// Draw the timelines initially so they aren't blank on window load
+		//buildTimelineAnimation();
+		timeLineController.buildTimeline(sequence.timeLine.size());
 	}
 	
 	// Add an animation to the timeline based on the selected animation and selected group
@@ -96,12 +103,17 @@ public class VcSequenceEditor extends VcMainController implements Observer {
 		String group = groupSelection.getSelectedToggle().getUserData().toString();
 		int rate = (int) scroll_sequenceRate.getValue();
 		Universe u;
+		int numTimesteps;
+		int selectedGroup;
 		
 		if (group.equals("Universe")) {
 			u = sequence.universe;
+			selectedGroup = 0;
 		}
 		else {
 			u = sequence.squibGroups.get(Integer.parseInt(group));
+			// Need to offset selected group by 1 because group = Universe takes the 0 slot
+			selectedGroup = Integer.parseInt(group) + 1;
 		}
 		
 		// Stop the currently playing animation (if there is one)
@@ -110,7 +122,12 @@ public class VcSequenceEditor extends VcMainController implements Observer {
 		// Clear the animation group overlays to be drawn on the timeline
 		timeLineController.timelinePane.getChildren().remove(squibGroups);
 		
-		setAnimation(animation, u, rate);
+		numTimesteps = setAnimation(animation, u, rate);
+		buildTimelineAnimation();
+		// Update the physical time line in the view
+		timeLineController.buildTimeline(sequence.timeLine.size());
+		timeLineController.updatePlayOverlays(sequence.timeLine.size(), numTimesteps, selectedGroup);
+		drawAnimationSubgroups(numTimesteps);
 		
 		// Set the new animation group overlays to be drawn on the timeline
 		timeLineController.timelinePane.getChildren().add(squibGroups);
@@ -127,7 +144,7 @@ public class VcSequenceEditor extends VcMainController implements Observer {
 	}
 	
 	// Load the currently selected animation
-	public void setAnimation(String s, Universe u, int rate){
+	public int setAnimation(String s, Universe u, int rate){
 		// numTimesteps tracks how many timesteps inserted for new sequence part
 		int numTimesteps = 0;
 		animationID = s;
@@ -153,8 +170,7 @@ public class VcSequenceEditor extends VcMainController implements Observer {
 			// Clear the timeline
 			sequence.timeLine.clear();
 		}
-		buildTimelineAnimation();
-		drawAnimationSubgroups(numTimesteps);
+		return numTimesteps;
 	}
 	
 	// Build the animation, setting up calls to draw the currently firing squibs
@@ -186,11 +202,9 @@ public class VcSequenceEditor extends VcMainController implements Observer {
 			animationTimeline.getChildren().add(tempTimeline);
 			i++;
 		}
-		
-		// Update the physical time line in the view
-		timeLineController.buildTimeline(sequence.timeLine.size());
 	}
 	
+	// TODO: Remove this function
 	public void drawAnimationSubgroups(int numTimesteps){
 		squibGroupSizes.add(numTimesteps);
 		squibGroups.getChildren().clear();
