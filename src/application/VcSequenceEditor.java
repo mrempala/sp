@@ -137,16 +137,16 @@ public class VcSequenceEditor extends VcMainController implements Observer {
 			numTimesteps = sequence.loadUniverseSweep(u, rate);
 		}
 		else if (s.equals("simultaneousUniverseSweep")){
-			numTimesteps = sequence.loadUniverseSimultaneousSweep(u);
+			numTimesteps = sequence.loadUniverseSimultaneousSweep(u, rate);
 		}
 		else if (s.equals("randomUniverseSequence")){
-			numTimesteps = sequence.loadRandomOneAtATimeSequence(u);
+			numTimesteps = sequence.loadRandomOneAtATimeSequence(u, rate);
 		}
 		else if (s.equals("randomPerFireboxUniverseSequence")){
-			numTimesteps = sequence.loadRandomOnePerFireboxSequence(u, 100);
+			numTimesteps = sequence.loadRandomOnePerFireboxSequence(u, 100, rate);
 		}
 		else if (s.equals("zigZag")){
-			numTimesteps = sequence.loadUniverseZigZag(u);
+			numTimesteps = sequence.loadUniverseZigZag(u, rate);
 		}
 		else if (s.equals("alternate")){
 			numTimesteps = sequence.loadUniverseAlternate(u);

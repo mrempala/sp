@@ -33,12 +33,27 @@ public class Sequence {
 		this.universe = universe;
 	}
 	
+	private int insertRatePadding(int rate){
+		int insertedTimesteps = 0;
+		TimeStep blankTimestep = new TimeStep();
+		// Insert blank timesteps to adjust the rate of the animation
+		// Use a decrementing loop becuase rate is value 1-10 and 10 is fastest
+		// (so we want 10-10=0 to be full speed
+		for (int i = 0; i > ((rate - 10) * 2); i-- ){
+			// Validate the timestep to properly decrement firbox's time to sleep
+			// but no need to check what validate returns as it is simply a blank timestep
+			validate(blankTimestep);
+			timeLine.add(blankTimestep);
+			insertedTimesteps++;
+		}
+		return insertedTimesteps;
+	}
+	
 	// Start at FB1-LB1-SQ1, fire each squib in LB1,
 	// step to LB2, until end of LB chain, then start
 	// over at FB2.
 	public int loadUniverseSweep(Universe universe, int rate){
 		int numTimesteps = 0;
-		TimeStep blankTimestep = new TimeStep();
 		
 		// Populate timeline with new sequence
 		for(Firebox f : universe.fireboxList) {
@@ -52,16 +67,9 @@ public class Sequence {
 					if (newResult.intValue() == 0){
 						timeLine.add(t);
 						numTimesteps++;
-						// Insert blank timesteps to adjust the rate of the animation
-						// Use a decrementing loop becuase rate is value 1-10 and 10 is fastest
-						// (so we want 10-10=0 to be full speed
-						for (int i = 0; i > ((rate - 10) * 2); i-- ){
-							// Validate the timestep to properly decrement firbox's time to sleep
-							// but no need to check what validate returns as it is simply a blank timestep
-							validate(blankTimestep);
-							timeLine.add(blankTimestep);
-							numTimesteps++;
-						}
+						
+						// Add blank timesteps to adjust rate
+						numTimesteps += insertRatePadding(rate);
 						
 						System.out.println("Inserted timestep");
 					}
@@ -81,13 +89,13 @@ public class Sequence {
 	}
 	
 	//Default for loadRandomOneAtATimeSequence
-	public int loadRandomOneAtATimeSequence(Universe universe){
-		return loadRandomOneAtATimeSequence(universe, 100);
+	public int loadRandomOneAtATimeSequence(Universe universe, int rate){
+		return loadRandomOneAtATimeSequence(universe, 100, rate);
 	}
 	
 	//A sequence that fires one random squib at a time from
 	//anywhere in the universe per time step.
-	public int loadRandomOneAtATimeSequence(Universe universe, int numTimeSteps){
+	public int loadRandomOneAtATimeSequence(Universe universe, int numTimeSteps, int rate){
 		int numTimesteps = 0;
 		
 		// Populate timeline with new sequence
@@ -114,6 +122,9 @@ public class Sequence {
 				if (newResult.intValue() == 0){
 					timeLine.add(t);
 					numTimesteps++;
+					
+					// Add blank timesteps to adjust rate
+					numTimesteps += insertRatePadding(rate);
 					System.out.println("Inserted timestep");
 				}
 				else {
@@ -137,7 +148,7 @@ public class Sequence {
 	//A sequence that fires one random squib from each firebox
 	//per timestep so that multiple squibs are fired per time step
 	//if there are multiple fireboxes with squibs.
-	public int loadRandomOnePerFireboxSequence(Universe universe, int numTimeSteps){
+	public int loadRandomOnePerFireboxSequence(Universe universe, int numTimeSteps, int rate){
 		int numTimesteps = 0;
 		
 		// Populate timeline with new sequence
@@ -166,6 +177,8 @@ public class Sequence {
 			if (newResult.intValue() == 0){
 				timeLine.add(t);
 				numTimesteps++;
+				
+				numTimesteps += insertRatePadding(rate);
 				System.out.println("Inserted timestep");
 			}
 			else {
@@ -187,7 +200,7 @@ public class Sequence {
 	// zig zags through the current setup starting at the first firebox,
 	// going through all its squibs, going to the last squib of the next
 	// firebox, go back through those squibs, etc.
-	public int loadUniverseZigZag(Universe universe)
+	public int loadUniverseZigZag(Universe universe, int rate)
 	{
 		int numTimesteps = 0;
 		
@@ -211,6 +224,8 @@ public class Sequence {
 						{
 							timeLine.add(t);
 							numTimesteps++;
+							
+							numTimesteps += insertRatePadding(rate);
 							System.out.println("Inserted timestep");
 						}
 						else
@@ -240,6 +255,7 @@ public class Sequence {
 						{
 							timeLine.add(t);
 							numTimesteps++;
+							numTimesteps += insertRatePadding(rate);
 							System.out.println("Inserted timestep");
 						}
 						else
@@ -264,7 +280,7 @@ public class Sequence {
 	}
 		
 	// simultaneously sweep through squibs 1-8 in each firebox
-	public int loadUniverseSimultaneousSweep(Universe universe)
+	public int loadUniverseSimultaneousSweep(Universe universe, int rate)
 	{
 		int numTimesteps = 0;
 		
@@ -294,6 +310,8 @@ public class Sequence {
 						if (newResult.intValue() == 0){
 							timeLine.add(t);
 							numTimesteps++;
+							
+							numTimesteps += insertRatePadding(rate);
 							System.out.println("Inserted timestep");
 						}
 						else {
