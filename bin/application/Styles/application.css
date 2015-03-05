@@ -67,6 +67,12 @@
 	-fx-font-weight: bold;
 }
 
+/* Notification Messages */
+.notification {
+	-fx-background-color: lightgreen;
+	-fx-font-weight: bold;
+}
+
 /* Schematic View Styling */
 .universe-green {
 	-fx-fill: lightgreen;

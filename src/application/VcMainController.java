@@ -65,9 +65,6 @@ public class VcMainController implements Initializable{
             newProjectController.setCurrentStage(stage);
             
             // Close the current window
-            // get a handle to the stage
-            //Stage currentstage = (Stage) button_newproject.getScene().getWindow();
-            // and close it
             currentStage.close();
 
         } catch (IOException e) {
@@ -97,7 +94,6 @@ public class VcMainController implements Initializable{
         setupManualController.setCurrentStage(stage);
         
         // Close the current window
-        // get a handle to the stage
         currentStage.close();
     }
     
@@ -146,8 +142,6 @@ public class VcMainController implements Initializable{
         stage.show();
         seqVisualLayoutController.setCurrentStage(stage);
         
-        // Get a handle to the stage, close the current window 
-        //Stage currentstage = (Stage) button_openVisualOrganizer.getScene().getWindow();
         currentStage.close();
 	}
 	
@@ -177,8 +171,6 @@ public class VcMainController implements Initializable{
         stage.show();
         seqEditorController.setCurrentStage(stage);
         
-        // Get a handle to the stage, close the current window 
-        //Stage currentstage = (Stage) button_loadSequencePreview.getScene().getWindow();
         currentStage.close();
 	}
 	

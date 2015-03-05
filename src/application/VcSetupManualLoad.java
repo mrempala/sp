@@ -140,6 +140,7 @@ public class VcSetupManualLoad extends VcMainController{
 		// Populate the universe based on users setting
 		// TODO: Move this call to openVisualOrganizer once testing done.
 		populateUniverse(rootTreeNode, 0);
+		button_openVisualOrganizer.setDisable(false);
 	}
 	
 	public void traverseTree (TreeItem<String> t){

@@ -22,6 +22,7 @@ public class VcSetupSquibGroups extends VcMainController{
 	@FXML VcPtVisualSchematicViewClickable visualSchematicController;
 	
 	@FXML Button button_loadSequencePreview;
+	@FXML Button button_setGroup;
 	@FXML Pane sceneContainer;
 	@FXML AnchorPane squibsToPlace;
 	@FXML Label label_message;
@@ -65,6 +66,9 @@ public class VcSetupSquibGroups extends VcMainController{
 		visualSchematicController.drawUniverseSchematic();
 		groupToEdit = groupCount;
 		groupCount++;
+		
+		label_message.setText("  Created Group " + groupToEdit + ".  ");
+		button_setGroup.setDisable(false);
 	}
 	
 	@FXML
@@ -99,7 +103,7 @@ public class VcSetupSquibGroups extends VcMainController{
 			squibList.traverseUniverse();
 		}
 		
-		label_message.setText("Group " + groupToEdit + " updated.");
+		label_message.setText("  Group " + groupToEdit + " updated.  ");
 	}
 	
 	public void selectSquibGroup(int index){
