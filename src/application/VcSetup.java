@@ -38,7 +38,6 @@ public class VcSetup extends VcMainController {
     	
     	System.out.println(projectName + " " + venue + " " + show + " " + dj);
     	*/
-    	// TODO: For some reason these values aren't carrying through the project
     	sequence.setProjectName(projectName);
     	sequence.setDj(dj);
     	sequence.setShow(show);

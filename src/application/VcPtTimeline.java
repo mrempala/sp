@@ -60,10 +60,10 @@ public class VcPtTimeline extends Observable {
     	}
     	
     }
-    public void addGroupTimeline(){
+    public void addGroupTimeline(SquibGroup squibGroup){
     	// Update the height of the cursor to span all timelines
     	timelineCursorHeight += 40;
-    	PtSquibGroupsTimeline timeline = new PtSquibGroupsTimeline();
+    	PtSquibGroupsTimeline timeline = new PtSquibGroupsTimeline(squibGroup);
     	timelines.add(timeline);
     	timelineContainer.getChildren().add(timeline.timelinePane);
     }

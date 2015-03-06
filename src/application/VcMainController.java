@@ -98,7 +98,14 @@ public class VcMainController implements Initializable{
     }
     
     @FXML
-    protected void openSetupVisualLayout(ActionEvent event) throws IOException {    	
+    protected void openSetupVisualLayout(ActionEvent event) throws IOException {
+    	// TODO: Move this initial squibGroup setup elsewhere
+		// Add the newly created universe to the sequence's SquibGroup list
+		SquibGroup squibGroup = new SquibGroup();
+		squibGroup.setUniverse(sequence.universe);
+		squibGroup.setGroupName("Universe");
+		sequence.squibGroups.add(squibGroup);
+		
     	// Open new window
         Parent root;
 

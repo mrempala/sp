@@ -64,10 +64,10 @@ public class VcSequenceEditor extends VcMainController implements Observer {
 		int y = 280;
 		
 		// Add a timeline for the main universe
-		timeLineController.addGroupTimeline();
+		timeLineController.addGroupTimeline(sequence.squibGroups.get(0));
 		
 		// Populate the radio button group
-		for (int i = 0; i < sequence.squibGroups.size(); i++) {
+		for (int i = 1; i < sequence.squibGroups.size(); i++) {
 			// Create a radio button for each group
 			RadioButton rb = new RadioButton();
 			rb.toggleGroupProperty().set(groupSelection);
@@ -79,7 +79,7 @@ public class VcSequenceEditor extends VcMainController implements Observer {
 			SeqEditorLeftPane.getChildren().add(rb);
 			
 			// Add a timeline for each subgroup of squibs
-			timeLineController.addGroupTimeline();
+			timeLineController.addGroupTimeline(sequence.squibGroups.get(i));
 		}
 		
 		// Draw the timelines initially so they aren't blank on window load
@@ -97,15 +97,8 @@ public class VcSequenceEditor extends VcMainController implements Observer {
 		int numTimesteps;
 		int selectedGroup;
 		
-		if (group.equals("Universe")) {
-			u = sequence.universe;
-			selectedGroup = 0;
-		}
-		else {
-			u = sequence.squibGroups.get(Integer.parseInt(group));
-			// Need to offset selected group by 1 because group = Universe takes the 0 slot
-			selectedGroup = Integer.parseInt(group) + 1;
-		}
+		u = sequence.squibGroups.get(Integer.parseInt(group)).squibs;
+		selectedGroup = Integer.parseInt(group);
 		
 		// Stop the currently playing animation (if there is one)
 		stopAnimation();

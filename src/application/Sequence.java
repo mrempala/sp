@@ -12,8 +12,10 @@ public class Sequence {
 	
 	// A list to contain the user defined groups of squibs
 	// Stored as universe objects so we can apply various animations
-	// to sub groups without changing the way we create the animations
-	public List<Universe> squibGroups = new ArrayList<Universe>();
+	// to sub groups without changing the way we create the animations	
+	// Note that the first element at squibGroups.get(0) should always
+	// be the group for the main universe
+	public List<SquibGroup> squibGroups = new ArrayList<SquibGroup>();
 	
 	// TODO: As pointed out by Vance, these fields only make sense at a
 	// concert, we may need to generalize more or have a new layer

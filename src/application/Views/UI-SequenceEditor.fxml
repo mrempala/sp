@@ -28,7 +28,7 @@ styleClass="root" id="Container">
       				<RadioButton layoutX="20.0" layoutY="130.0" mnemonicParsing="false" text="Random One per FB" toggleGroup="$sequenceSelection" userData="randomPerFireboxUniverseSequence" />
       				
       				<Label text="Select group to apply sequence to:" layoutX="10.0" layoutY="220" />
-      				<RadioButton layoutX="20.0" layoutY="250.0" mnemonicParsing="false" selected="true" text="Universe" userData="Universe">
+      				<RadioButton layoutX="20.0" layoutY="250.0" mnemonicParsing="false" selected="true" text="Universe" userData="0">
         				<toggleGroup>
             				<ToggleGroup fx:id="groupSelection" />
          				</toggleGroup>

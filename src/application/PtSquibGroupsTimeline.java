@@ -1,8 +1,5 @@
 package application;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javafx.scene.Group;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -11,12 +8,12 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
 public class PtSquibGroupsTimeline {
-	Pane timelinePane; // Pane to contain the timeline
-	Group timelineGroup; // Group to hold the timeline drawing
-	Group timelinePlayOverlay; // Group to hold the overlay when the given group is actually playing
-	public List<Integer> squibGroupSizes = new ArrayList<Integer>(); // If value in list is negative, it is just a placeholder of timesteps
+	public Pane timelinePane; // Pane to contain the timeline
+	public Group timelineGroup; // Group to hold the timeline drawing
+	public Group timelinePlayOverlay; // Group to hold the overlay when the given group is actually playing	
+	public SquibGroup squibGroup;
 	
-	PtSquibGroupsTimeline(){
+	PtSquibGroupsTimeline(SquibGroup squibGroup){
 		timelinePane = new Pane();
 		timelineGroup = new Group();
 		timelinePlayOverlay = new Group();
@@ -24,10 +21,12 @@ public class PtSquibGroupsTimeline {
 		timelinePane.setPrefHeight(35);
 		timelinePane.setPrefWidth(675);
 		timelinePane.getStyleClass().add("TimelinePane");
+		
+		this.squibGroup = squibGroup;
 	}
 	
 	public void updateTimelinePlayOverlay(int totalNumTimesteps, int insertedTimesteps){
-		squibGroupSizes.add(insertedTimesteps);
+		squibGroup.squibPlayGroups.add(insertedTimesteps);
 		timelinePlayOverlay.getChildren().clear();
 
 		// Calculate the step size based on the pixel width of the timeline
@@ -36,7 +35,7 @@ public class PtSquibGroupsTimeline {
 		// Set the start position to draw at (the timeline starts at 10, we'll use 11 to get spacing between groups)
 		int x = 11;
 		// Draw a rectangle for each period during which the group is playing an animation
-		for (Integer i : squibGroupSizes){
+		for (Integer i : squibGroup.squibPlayGroups){
 			if (i > 0){
 				Rectangle squibGroup = new Rectangle();
 				squibGroup.setX(x);
@@ -111,8 +110,7 @@ public class PtSquibGroupsTimeline {
     public void clear() {
     	timelineGroup.getChildren().clear();
     	timelinePlayOverlay.getChildren().clear();
-    	squibGroupSizes.clear();
+    	squibGroup.squibPlayGroups.clear();
     	timelinePane.getChildren().clear();
-    	
     }
 }
