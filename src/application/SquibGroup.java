@@ -7,6 +7,7 @@ public class SquibGroup {
 	public Universe squibs;
 	public List<Integer> squibPlayGroups; // If value in list is negative, it is just a placeholder of timesteps
 	public String groupName;
+	public List<TimeStep> timeLine = new ArrayList<TimeStep>();
 	
 	SquibGroup(){
 		squibs = new Universe();

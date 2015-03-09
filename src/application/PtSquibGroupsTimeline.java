@@ -111,6 +111,7 @@ public class PtSquibGroupsTimeline {
     	timelineGroup.getChildren().clear();
     	timelinePlayOverlay.getChildren().clear();
     	squibGroup.squibPlayGroups.clear();
+    	squibGroup.timeLine.clear();
     	timelinePane.getChildren().clear();
     }
 }

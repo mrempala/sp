@@ -103,7 +103,7 @@ public class VcSequenceEditor extends VcMainController implements Observer {
 		// Stop the currently playing animation (if there is one)
 		stopAnimation();
 		
-		numTimesteps = setAnimation(animation, u, rate);
+		numTimesteps = setAnimation(animation, u, rate, Integer.parseInt(group));
 		buildTimelineAnimation();
 		// Update the physical time line in the view
 		timeLineController.buildTimeline(sequence.timeLine.size());
@@ -122,24 +122,24 @@ public class VcSequenceEditor extends VcMainController implements Observer {
 	}
 	
 	// Load the currently selected animation
-	public int setAnimation(String s, Universe u, int rate){
+	public int setAnimation(String s, Universe u, int rate, int squibGroup){
 		// numTimesteps tracks how many timesteps inserted for new sequence part
 		int numTimesteps = 0;
 		animationID = s;
 		if (s.equals("fullUniverseSweep")){
-			numTimesteps = sequence.loadUniverseSweep(u, rate);
+			numTimesteps = sequence.loadUniverseSweep(u, rate, squibGroup);
 		}
 		else if (s.equals("simultaneousUniverseSweep")){
-			numTimesteps = sequence.loadUniverseSimultaneousSweep(u, rate);
+			numTimesteps = sequence.loadUniverseSimultaneousSweep(u, rate, squibGroup);
 		}
 		else if (s.equals("randomUniverseSequence")){
-			numTimesteps = sequence.loadRandomOneAtATimeSequence(u, rate);
+			numTimesteps = sequence.loadRandomOneAtATimeSequence(u, rate, squibGroup);
 		}
 		else if (s.equals("randomPerFireboxUniverseSequence")){
-			numTimesteps = sequence.loadRandomOnePerFireboxSequence(u, 100, rate);
+			numTimesteps = sequence.loadRandomOnePerFireboxSequence(u, 100, rate, squibGroup);
 		}
 		else if (s.equals("zigZag")){
-			numTimesteps = sequence.loadUniverseZigZag(u, rate);
+			numTimesteps = sequence.loadUniverseZigZag(u, rate, squibGroup);
 		}
 		else if (s.equals("alternate")){
 			numTimesteps = sequence.loadUniverseAlternate(u);
