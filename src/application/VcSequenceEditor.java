@@ -40,6 +40,7 @@ public class VcSequenceEditor extends VcMainController implements Observer {
 	// Included VisualSchematic View reference
 	@FXML TabPane visualSchematic;
 	@FXML VcPtVisualSchematicView visualSchematicController;
+	@FXML VcPtMenu PTMenuController;
 	@FXML HBox timeLine;
 	@FXML VcPtTimeline timeLineController;
 	

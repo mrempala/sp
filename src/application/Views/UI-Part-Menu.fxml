@@ -4,16 +4,16 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<MenuBar fx:controller="application.VcPtMenu" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<MenuBar xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.VcPtMenu">
   <menus>
    <Menu text="File">
       <items>
-         <MenuItem text="New"/>
-         <MenuItem text="Open"/>
-         <MenuItem text="Save"/>
-         <MenuItem text="Save As"/>
-         <SeparatorMenuItem  />
-         <MenuItem text="Exit"/>
+         <MenuItem text="New" />
+         <MenuItem onAction="#Load" text="Open" />
+         <MenuItem text="Save" />
+         <MenuItem onAction="#SaveAs" text="Save As" />
+         <SeparatorMenuItem />
+         <MenuItem onAction="#Exit" text="Exit" />
       </items>
    </Menu>
    <Menu text="Edit">
@@ -30,9 +30,8 @@
          <MenuItem text="Online Manual" visible="false"/>
          <SeparatorMenuItem /> 
          -->
-         <MenuItem text="About"/>
+         <MenuItem text="About" />
       </items>
    </Menu>
 </menus>
 </MenuBar>
-

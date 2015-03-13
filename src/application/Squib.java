@@ -1,16 +1,25 @@
- package application;
+package application;
 
-public class Squib {
+import java.io.Serializable;
+
+public class Squib implements Serializable {
+	private static final long serialVersionUID = 1L;
 	private int firebox;
 	private int lunchbox;
 	private int squib;
 	private int channel;  // Can be a value of 1-8
 	private int firecount;
 	private int audiolevel; // Set to 1 for soft, 2 for loud
-	//private bool health;
-	
-	Squib () {
-		firecount = 0;
+	/*private bool health;
+	*/
+	public Squib () {
+		this.firebox = -1;
+		this.lunchbox = -1;
+		this.squib = -1;
+		
+		this.channel = -1;
+		this.audiolevel = -1;
+		this.firecount = -1;
 	}
 	
 	Squib(int firebox, int lunchbox, int squib, int channel) {
@@ -81,6 +90,10 @@ public class Squib {
 	public String toString() {
 		return firebox + "-" + lunchbox
 				+ "-" + squib;
+	}
+
+	public void setLunchbox(int lunchbox) {
+		this.lunchbox = lunchbox;
 	}
 	
 }

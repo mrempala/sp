@@ -2,19 +2,30 @@ package application;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.io.*;
 
-public class Lunchbox {
-	public List<Squib> squibList;
+public class Lunchbox implements Serializable {
+	private static final long serialVersionUID = 1L;
+	private List<Squib> squibList;
 	private int id;
 	private int grandParent;
 	
-	// Constructor
-	Lunchbox(List<Squib> squibList) {
+	public Lunchbox() {
 		this.squibList = new ArrayList<Squib>();
-		this.squibList = squibList;
+		
+		this.id = -1;
+		this.grandParent = -1;
 	}
 	
-	Lunchbox(int id, int grandParent){
+	// Constructor
+	public Lunchbox(List<Squib> squibList) {
+		this.squibList = squibList;
+		this.id = -1;
+		this.grandParent = -1;
+		
+	}
+	
+	public Lunchbox(int id, int grandParent){
 		this.id = id;
 		this.grandParent = grandParent;
 		this.squibList = new ArrayList<Squib>();
@@ -60,5 +71,23 @@ public class Lunchbox {
 		for (Squib s : squibList){
 			s.traverseUniverse();
 		}
+	}
+
+	public void setSquibList(List<Squib> squibList) {
+		this.squibList = squibList;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public void setGrandParent(int grandParent) {
+		this.grandParent = grandParent;
+	}
+
+	@Override
+	public String toString() {
+		return "Lunchbox [squibList=" + squibList + ", id=" + id
+				+ ", grandParent=" + grandParent + "]";
 	}
 }

@@ -1,17 +1,20 @@
 package application;
 
+import java.beans.XMLDecoder;
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.PrintWriter;
 import java.util.*;
 
-public class Universe {
+public class Universe implements java.io.Serializable {
 	public List<Firebox> fireboxList;
 	
-	Universe (){
+	public Universe (){
 		this.fireboxList = new ArrayList<Firebox>();
 	}
 	
-	Universe (List<Firebox> fireboxList) {
+	public Universe (List<Firebox> fireboxList) {
 		this.fireboxList = fireboxList;
 	}
 	
@@ -36,77 +39,18 @@ public class Universe {
 			f.traverseUniverse();
 		}
 	}
-	
-	public void readUniverse(String inFile) {
-		try {
-			Scanner fileReader = new Scanner(new File(inFile));
-			
-			int numFB = fileReader.nextInt();
-			this.fireboxList = new ArrayList<Firebox>();
-			
-			for (int i = 0; i < numFB; i++) {
-				int FBID = fileReader.nextInt();
-				Firebox fb = new Firebox(FBID);
-				
-				int numLB = fileReader.nextInt();
-				
-				for (int j = 0; j < numLB; j++) {
-					int LBID = fileReader.nextInt();
-					Lunchbox lb = new Lunchbox(LBID, FBID);
-					
-					int numSquib = fileReader.nextInt();
-					for (int k = 0; k < numSquib; k++) {
-						int squibNum = fileReader.nextInt();
-						//TODO: Get/Save Channel number of squibs
-						int squibChannel = 1;
-						lb.addSquib(new Squib(FBID, LBID, squibNum, squibChannel));
-					}
-					
-					fb.addLunchbox(lb);
-				}
-				this.fireboxList.add(fb);
-			}
-			fileReader.close();
-		} catch (Exception e) {
-			System.out.println(e.toString());
-		}
-	}
-	
-	public void writeUniverse(String outFile) {
-		try {
-			PrintWriter writer = new PrintWriter(outFile, "ASCII");
-			int numFB = this.fireboxList.size();
-			writer.println(numFB);
-			
-			for (int i = 0; i < numFB; i++) {
-				 Firebox fb = fireboxList.get(i);
-				 int FBID = fb.getId(); 
-				 
-				 writer.println(FBID);
-				
-				 int numLB = fb.getLunchboxList().size();
-				 writer.println(numLB);
-				 
-				for (int j = 0; j < numLB; j++) {
-					Lunchbox lb = fb.getLunchboxList().get(j);
-					int LBID = lb.getId();
-					
-					writer.println(LBID);
-					
-					int numSquib = lb.getSquibList().size();
-					writer.println(numSquib);
-					
-					List<Squib> list = lb.getSquibList();
-					for (int k = 0; k < numSquib; k++) {
-						writer.println(list.get(k).getSquib());
-					}
-					
-				}
-			}
-			writer.close();
-		} catch (Exception e) {
-			this.fireboxList.size();
-		}
 
+	public List<Firebox> getFireboxList() {
+		return fireboxList;
 	}
+
+	public void setFireboxList(List<Firebox> fireboxList) {
+		this.fireboxList = fireboxList;
+	}
+
+	@Override
+	public String toString() {
+		return "Universe [fireboxList=" + fireboxList + "]";
+	}
+	
 }

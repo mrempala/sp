@@ -70,7 +70,7 @@ public class VcPtVisualSchematicViewClickable extends VcPtVisualSchematicView {
                             r.setFill(Color.BLUE);
                             // Select each squib in the universe
                             for (Lunchbox lb : fb.lunchboxList){
-                            	for (Squib s : lb.squibList){
+                            	for (Squib s : lb.getSquibList()){
                             		selectedSquibs.add(s);
                             	}
                             }
@@ -111,7 +111,7 @@ public class VcPtVisualSchematicViewClickable extends VcPtVisualSchematicView {
 	            
 	            int squibcount = 0;
 	            
-	            for (Squib s : lb.squibList){
+	            for (Squib s : lb.getSquibList()){
 	            	// used to draw each squib in appropriate channel
 	            	int cX = (s.getChannel() * 10) + x + 83;
 	            	

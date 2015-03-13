@@ -154,7 +154,7 @@ public class VcPtVisualSchematicView implements Initializable {
 	            universeSchematic.getChildren().add(c2);
 	            
 	            int squibcount = 0;
-	            for (Squib s : lb.squibList){
+	            for (Squib s : lb.getSquibList()){
 	            	// used to draw each squib in appropriate channel
 	            	int cX = (s.getChannel() * 10) + x + 83;
 	            	

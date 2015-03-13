@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<java version="1.8.0_25" class="java.beans.XMLDecoder">
+ <object class="application.Universe" id="Universe0"/>
+<void class="application.Firebox" id="Field0" method="getField">
+ <string>lunchboxList</string>
+ <void id="ArrayList0" method="get">
+  <object class="application.Firebox" id="Firebox0"/>
+  <void method="add">
+   <object class="application.Lunchbox" id="Lunchbox0">
+    <void property="squibList">
+     <void method="add">
+      <object class="application.Squib"/>
+     </void>
+    </void>
+   </object>
+  </void>
+ </void>
+</void>
+<void idref="ArrayList0"/>
+<void class="application.Universe" id="Field1" method="getField">
+ <string>fireboxList</string>
+ <void id="ArrayList1" method="get">
+  <object idref="Universe0"/>
+  <void method="add">
+   <object idref="Firebox0"/>
+  </void>
+ </void>
+</void>
+<void idref="ArrayList1"/>
+</java>

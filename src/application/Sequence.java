@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class Sequence {
+public class Sequence implements java.io.Serializable{
 	public Universe universe;
 	
 	// The master timeline to be sent to the universe
@@ -27,11 +27,11 @@ public class Sequence {
 	public String show = "Temp Show";
 	public String dj = "Temp dj"; 
 
-	Sequence () {
+	public Sequence () {
 		
 	}
 	
-	Sequence(Universe universe) {
+	public Sequence(Universe universe) {
 		this.universe = universe;
 	}
 	
@@ -92,7 +92,7 @@ public class Sequence {
 		// Populate timeline with new sequence
 		for(Firebox f : universe.fireboxList) {
 			for(Lunchbox l : f.lunchboxList) {
-				for(Squib s : l.squibList) {
+				for(Squib s : l.getSquibList()) {
 					TimeStep t = new TimeStep();
 					t.squibList.add(s);
 					Object[] result = validate(t);
@@ -143,7 +143,7 @@ public class Sequence {
 		List<Squib>tempSquibList = new ArrayList<Squib>();
 		for(Firebox f : universe.fireboxList) {
 			for(Lunchbox l : f.lunchboxList) {
-				for(Squib s : l.squibList) {
+				for(Squib s : l.getSquibList()) {
 					tempSquibList.add(s);
 				}
 			}
@@ -206,7 +206,7 @@ public class Sequence {
 				//will not be recreated multiple times
 				List<Squib>tempSquibList = new ArrayList<Squib>();
 				for(Lunchbox l : f.lunchboxList) {
-					for(Squib s : l.squibList) {
+					for(Squib s : l.getSquibList()) {
 						tempSquibList.add(s);
 					}
 				}
@@ -265,7 +265,7 @@ public class Sequence {
 			{
 				for(Lunchbox l : f.lunchboxList)
 				{
-					for(Squib s : l.squibList)
+					for(Squib s : l.getSquibList())
 					{
 						TimeStep t = new TimeStep();
 						t.squibList.add(s);
@@ -295,9 +295,9 @@ public class Sequence {
 				{
 					Lunchbox l = f.lunchboxList.get(i);
 					
-					for(int j = l.squibList.size() - 1; j >= 0; j--)//for(Squib s : l.squibList)
+					for(int j = l.getSquibList().size() - 1; j >= 0; j--)//for(Squib s : l.squibList)
 					{
-						Squib s = l.squibList.get(j);
+						Squib s = l.getSquibList().get(j);
 						TimeStep t = new TimeStep();
 						t.squibList.add(s);
 						Object[] result = validate(t);
@@ -351,9 +351,9 @@ public class Sequence {
 			{
 				for(Lunchbox l : f.lunchboxList)
 				{
-					if(l.squibList.size() > i)
+					if(l.getSquibList().size() > i)
 					{
-						Squib s = l.squibList.get(i);
+						Squib s = l.getSquibList().get(i);
 						t.squibList.add(s);
 						Object[] result = validate(t);
 						Integer newResult = (Integer)result[0];
@@ -418,9 +418,9 @@ public class Sequence {
 						if(j % 2 == 0)
 						{
 							Lunchbox l = f.lunchboxList.get(j);
-							if(l.squibList.size() > 0)
+							if(l.getSquibList().size() > 0)
 							{
-								Squib s = l.squibList.get(0);
+								Squib s = l.getSquibList().get(0);
 								t.squibList.add(s);
 								Object[] result = validate(t);
 								Integer newResult = (Integer)result[0];
@@ -458,9 +458,9 @@ public class Sequence {
 						if(j % 2 != 0)
 						{
 							Lunchbox l = f.lunchboxList.get(j);
-							if(l.squibList.size() > 0)
+							if(l.getSquibList().size() > 0)
 							{
-								Squib s = l.squibList.get(0);
+								Squib s = l.getSquibList().get(0);
 								t.squibList.add(s);
 								Object[] result = validate(t);
 								Integer newResult = (Integer)result[0];
@@ -614,5 +614,29 @@ public class Sequence {
 
 	public void setDj(String dj) {
 		this.dj = dj;
+	}
+
+	public Universe getUniverse() {
+		return universe;
+	}
+
+	public void setUniverse(Universe universe) {
+		this.universe = universe;
+	}
+
+	public List<TimeStep> getTimeLine() {
+		return timeLine;
+	}
+
+	public void setTimeLine(List<TimeStep> timeLine) {
+		this.timeLine = timeLine;
+	}
+
+	public List<SquibGroup> getSquibGroups() {
+		return squibGroups;
+	}
+
+	public void setSquibGroups(List<SquibGroup> squibGroups) {
+		this.squibGroups = squibGroups;
 	}
 }
