@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Random;
 
 public class Sequence implements java.io.Serializable{
+	private static final long serialVersionUID = 1L;
+
 	public Universe universe;
 	
 	// The master timeline to be sent to the universe
@@ -90,8 +92,8 @@ public class Sequence implements java.io.Serializable{
 		int numTimesteps = 0;
 		
 		// Populate timeline with new sequence
-		for(Firebox f : universe.fireboxList) {
-			for(Lunchbox l : f.lunchboxList) {
+		for(Firebox f : universe.getFireboxList()) {
+			for(Lunchbox l : f.getLunchboxList()) {
 				for(Squib s : l.getSquibList()) {
 					TimeStep t = new TimeStep();
 					t.squibList.add(s);
@@ -141,8 +143,8 @@ public class Sequence implements java.io.Serializable{
 		
 		// Populate timeline with new sequence
 		List<Squib>tempSquibList = new ArrayList<Squib>();
-		for(Firebox f : universe.fireboxList) {
-			for(Lunchbox l : f.lunchboxList) {
+		for(Firebox f : universe.getFireboxList()) {
+			for(Lunchbox l : f.getLunchboxList()) {
 				for(Squib s : l.getSquibList()) {
 					tempSquibList.add(s);
 				}
@@ -201,11 +203,11 @@ public class Sequence implements java.io.Serializable{
 		// Populate timeline with new sequence
 		for(int i=0; i<numTimeSteps; i++){
 			TimeStep t = new TimeStep();
-			for(Firebox f : universe.fireboxList) {
+			for(Firebox f : universe.getFireboxList()) {
 				//TODO: Initialize and refactor code so a list 
 				//will not be recreated multiple times
 				List<Squib>tempSquibList = new ArrayList<Squib>();
-				for(Lunchbox l : f.lunchboxList) {
+				for(Lunchbox l : f.getLunchboxList()) {
 					for(Squib s : l.getSquibList()) {
 						tempSquibList.add(s);
 					}
@@ -259,11 +261,11 @@ public class Sequence implements java.io.Serializable{
 		boolean leftToRight = true;
 		
 		// Populate timeline with new sequence
-		for(Firebox f : universe.fireboxList)
+		for(Firebox f : universe.getFireboxList())
 		{
 			if(leftToRight == true)
 			{
-				for(Lunchbox l : f.lunchboxList)
+				for(Lunchbox l : f.getLunchboxList())
 				{
 					for(Squib s : l.getSquibList())
 					{
@@ -291,9 +293,9 @@ public class Sequence implements java.io.Serializable{
 			}
 			else
 			{
-				for(int i = f.lunchboxList.size() - 1; i >= 0; i--)//for(Lunchbox l : f.lunchboxList)
+				for(int i = f.getLunchboxList().size() - 1; i >= 0; i--)//for(Lunchbox l : f.getLunchboxList())
 				{
-					Lunchbox l = f.lunchboxList.get(i);
+					Lunchbox l = f.getLunchboxList().get(i);
 					
 					for(int j = l.getSquibList().size() - 1; j >= 0; j--)//for(Squib s : l.squibList)
 					{
@@ -347,9 +349,9 @@ public class Sequence implements java.io.Serializable{
 		{
 			TimeStep t = new TimeStep();
 			
-			for(Firebox f : universe.fireboxList)
+			for(Firebox f : universe.getFireboxList())
 			{
-				for(Lunchbox l : f.lunchboxList)
+				for(Lunchbox l : f.getLunchboxList())
 				{
 					if(l.getSquibList().size() > i)
 					{
@@ -410,14 +412,14 @@ public class Sequence implements java.io.Serializable{
 			{
 				System.out.println("even");
 				
-				for(Firebox f : universe.fireboxList)
+				for(Firebox f : universe.getFireboxList())
 				{
-					for(int j = 0; j < f.lunchboxList.size(); j++)
+					for(int j = 0; j < f.getLunchboxList().size(); j++)
 					{
 						// if it is an even lunchbox
 						if(j % 2 == 0)
 						{
-							Lunchbox l = f.lunchboxList.get(j);
+							Lunchbox l = f.getLunchboxList().get(j);
 							if(l.getSquibList().size() > 0)
 							{
 								Squib s = l.getSquibList().get(0);
@@ -450,14 +452,14 @@ public class Sequence implements java.io.Serializable{
 			{
 				System.out.println("odd");
 				
-				for(Firebox f : universe.fireboxList)
+				for(Firebox f : universe.getFireboxList())
 				{
-					for(int j = 0; j < f.lunchboxList.size(); j++)
+					for(int j = 0; j < f.getLunchboxList().size(); j++)
 					{
 						// if it is an even lunchbox
 						if(j % 2 != 0)
 						{
-							Lunchbox l = f.lunchboxList.get(j);
+							Lunchbox l = f.getLunchboxList().get(j);
 							if(l.getSquibList().size() > 0)
 							{
 								Squib s = l.getSquibList().get(0);
@@ -499,9 +501,9 @@ public class Sequence implements java.io.Serializable{
 		for (int j = 0; j < 2; j++){
 			TimeStep t = new TimeStep();
 			do {
-				for (Firebox f : universe.fireboxList){
+				for (Firebox f : universe.getFireboxList()){
 					int i = 0;
-					for (Lunchbox l : f.lunchboxList){
+					for (Lunchbox l : f.getLunchboxList()){
 						if ((i%2) == 0 && isEven){
 							t.squibList.add(l.squibList.get(0));
 							System.out.println(l.squibList.get(0).getLunchbox() + i);
@@ -546,9 +548,9 @@ public class Sequence implements java.io.Serializable{
 		error[2] = "Success";
 		
 		// Decrement the sleep number in all FBs
-		for(Firebox f : universe.fireboxList){
-			if (f.timeStepSleepNumber > 0) {
-				f.timeStepSleepNumber--;
+		for(Firebox f : universe.getFireboxList()){
+			if (f.getTimeStepSleepNumber() > 0) {
+				f.setTimeStepSleepNumber(f.getTimeStepSleepNumber() - 1);
 			}
 		}
 		
@@ -568,7 +570,7 @@ public class Sequence implements java.io.Serializable{
 			j++;
 			
 			// Check to make sure firebox chain isn't firing too fast
-			if (universe.fireboxList.get(s.getFirebox()).timeStepSleepNumber > 0){
+			if (universe.getFireboxList().get(s.getFirebox()).getTimeStepSleepNumber() > 0){
 				error[0] = 1;
 				error[1] = 2;
 				error[2] = "Attempt to fire squibs too fast on Firebox " + s.getFirebox();
@@ -578,7 +580,9 @@ public class Sequence implements java.io.Serializable{
 		
 		// Only increment sleep count after successfully looking at all squibs to be fired
 		for (Squib s : timeStep.squibList){
-			universe.fireboxList.get(s.getFirebox()).timeStepSleepNumber++;
+			int sleepNum = universe.getFireboxList().get(s.getFirebox()).getTimeStepSleepNumber();
+			sleepNum ++;
+			universe.getFireboxList().get(s.getFirebox()).setTimeStepSleepNumber(sleepNum);			
 		}
 		
 		return error;

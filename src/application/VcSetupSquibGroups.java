@@ -81,17 +81,17 @@ public class VcSetupSquibGroups extends VcMainController{
 		
 		// For each selected squib add to the squib group universe
 		for (Squib squib : visualSchematicController.selectedSquibs){
-			while (squibGroup.fireboxList.size() <= squib.getFirebox()) {
+			while (squibGroup.getFireboxList().size() <= squib.getFirebox()) {
 				Firebox firebox = new Firebox(fb);
-				squibGroup.fireboxList.add(firebox);
+				squibGroup.getFireboxList().add(firebox);
 				fb++;
 			}
-			while (squibGroup.fireboxList.get(squib.getFirebox()).lunchboxList.size() <= squib.getLunchbox()){
+			while (squibGroup.getFireboxList().get(squib.getFirebox()).getLunchboxList().size() <= squib.getLunchbox()){
 				Lunchbox lunchbox = new Lunchbox(lb, fb);
-				squibGroup.fireboxList.get(squib.getFirebox()).lunchboxList.add(lunchbox);
+				squibGroup.getFireboxList().get(squib.getFirebox()).getLunchboxList().add(lunchbox);
 				lb++;
 			}
-			squibGroup.fireboxList.get(squib.getFirebox()).lunchboxList.get(squib.getLunchbox()).getSquibList().add(squib);
+			squibGroup.getFireboxList().get(squib.getFirebox()).getLunchboxList().get(squib.getLunchbox()).getSquibList().add(squib);
 		}
 		
 		squibGroup.traverseUniverse();
@@ -114,8 +114,8 @@ public class VcSetupSquibGroups extends VcMainController{
 		visualSchematicController.selectedSquibs.clear();
 		
 		// And select the squibs from the given group
-		for (Firebox fb : u.fireboxList){
-			for (Lunchbox lb : fb.lunchboxList){
+		for (Firebox fb : u.getFireboxList()){
+			for (Lunchbox lb : fb.getLunchboxList()){
 				for (Squib s : lb.getSquibList()){
 					visualSchematicController.selectedSquibs.add(s);
 				}

@@ -95,7 +95,7 @@ public class VcPtVisualSchematicView implements Initializable {
 		//Draw some schematic layout stuff
         
         boolean firstFirebox = true;
-        for (Firebox fb : universe.fireboxList){
+        for (Firebox fb : universe.getFireboxList()){
         	// Draw Firebox shape
         	if (!firstFirebox){
         		//Draw schematic connector between FB's
@@ -127,12 +127,12 @@ public class VcPtVisualSchematicView implements Initializable {
             fireboxText.setFill(Color.BLACK);
             fireboxText.setX(x + 15);
             fireboxText.setY(y + 20);
-            fireboxText.setText("Firebox " + Integer.toString(fb.id));
+            fireboxText.setText("Firebox " + Integer.toString(fb.getId()));
             
             universeSchematic.getChildren().add(r);
             universeSchematic.getChildren().add(fireboxText);
             
-            for (Lunchbox lb : fb.lunchboxList) {
+            for (Lunchbox lb : fb.getLunchboxList()) {
             	// Draw Lunchboxes //
             	
             	// Draw lunchbox connecting wire

@@ -36,6 +36,7 @@ public class VcSequenceEditor extends VcMainController implements Observer {
 	@FXML AnchorPane SeqEditorLeftPane;
 	@FXML Label labelOutput;
 	@FXML ScrollBar scroll_sequenceRate;
+	@FXML AnchorPane paneSquibGroupContainer;
 	
 	// Included VisualSchematic View reference
 	@FXML TabPane visualSchematic;
@@ -62,7 +63,7 @@ public class VcSequenceEditor extends VcMainController implements Observer {
 	// and create radio buttons to select individual groups
 	public void loadGroups () {	
 		// y is the starting position of the radio buttons
-		int y = 280;
+		int y = 40;
 		
 		// Add a timeline for the main universe
 		timeLineController.addGroupTimeline(sequence.squibGroups.get(0));
@@ -72,12 +73,12 @@ public class VcSequenceEditor extends VcMainController implements Observer {
 			// Create a radio button for each group
 			RadioButton rb = new RadioButton();
 			rb.toggleGroupProperty().set(groupSelection);
-			rb.setLayoutX(20.0);
+			rb.setLayoutX(5.0);
 			rb.setLayoutY(y);
 			y += 30;
 			rb.setText("Group " + i);
 			rb.setUserData(i);
-			SeqEditorLeftPane.getChildren().add(rb);
+			paneSquibGroupContainer.getChildren().add(rb);
 			
 			// Add a timeline for each subgroup of squibs
 			timeLineController.addGroupTimeline(sequence.squibGroups.get(i));

@@ -91,6 +91,18 @@
 	-fx-stroke: rgba(0, 0, 0, 0.7);
 }
 
+.scroll-pane > .viewport {
+   -fx-background-color: #737373;
+}
+
+.scroll-pane {
+   -fx-background-color: transparent;
+}
+
+.scroll-container {
+	-fx-padding: 0 0 10px 0;
+}
+
 #playButton {
 	-fx-background-radius: 20px;
 	-fx-border-radius: 20px;

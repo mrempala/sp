@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SquibGroup implements java.io.Serializable {
+	private static final long serialVersionUID = 1L;
 	public Universe squibs;
 	public List<Integer> squibPlayGroups; // If value in list is negative, it is just a placeholder of timesteps
 	public String groupName;

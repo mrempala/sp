@@ -1,14 +1,10 @@
 package application;
 
-import java.beans.XMLDecoder;
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.PrintWriter;
 import java.util.*;
 
 public class Universe implements java.io.Serializable {
-	public List<Firebox> fireboxList;
+	private static final long serialVersionUID = 1L;
+	private List<Firebox> fireboxList;
 	
 	public Universe (){
 		this.fireboxList = new ArrayList<Firebox>();

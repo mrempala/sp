@@ -1,12 +1,5 @@
 package application;
 
-import java.beans.XMLDecoder;
-import java.beans.XMLEncoder;
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 
 import javafx.event.ActionEvent;
@@ -14,7 +7,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.text.Text;
-import javafx.stage.FileChooser;
  
 public class VcProgramStart extends VcMainController {
     @FXML private Text actiontarget;

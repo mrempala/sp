@@ -169,7 +169,7 @@ public class VcSetupManualLoad extends VcMainController{
 			Lunchbox lunchbox = new Lunchbox(elementNum, parentNum);
 			
 			System.out.println("Adding element: " + universeItem + "  " + elementNum + "  " + parentNum);
-			sequence.universe.fireboxList.get(parentNum).addLunchbox(lunchbox);
+			sequence.universe.getFireboxList().get(parentNum).addLunchbox(lunchbox);
 			populateLunchbox(s, 0, elementNum, parentNum);
 			elementNum++;
 		}
@@ -187,7 +187,7 @@ public class VcSetupManualLoad extends VcMainController{
 			Squib squib = new Squib(grandparentNum, parentNum, elementNum, squibChannel);
 			
 			System.out.println("Adding element: " + universeItem + "  " + elementNum + "  " + parentNum + "  " + grandparentNum);
-			sequence.universe.fireboxList.get(grandparentNum).lunchboxList.get(parentNum).addSquib(squib);
+			sequence.universe.getFireboxList().get(grandparentNum).getLunchboxList().get(parentNum).addSquib(squib);
 			elementNum++;
 		}
 	}

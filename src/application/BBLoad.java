@@ -1,12 +1,9 @@
 package application;
 
 import java.beans.XMLDecoder;
-import java.beans.XMLEncoder;
 import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -30,7 +27,6 @@ public class BBLoad implements IButtonBehavior {
 	public void click() {
 		// TODO Auto-generated method stub
 
-    	
     	try {
         	
         	FileInputStream fis;
@@ -54,6 +50,35 @@ public class BBLoad implements IButtonBehavior {
         	System.out.println(universe.toString());
                  
         	System.out.println("Read Done");
+        	/*
+        	// Resave to reverse order of saving
+    		BBSaveAS behavior = new BBSaveAS(universe, currentStage);
+            behavior.click();
+            
+            // Reload to get the universe in proper order
+        	//try {
+            	
+            	//FileInputStream fis;
+            		
+            	if (fileName.isEmpty()) {
+            		FileChooser fileChooser = new FileChooser();
+                	fileChooser.setTitle("Open Resource File");
+                	File file = fileChooser.showOpenDialog(currentStage);
+                    
+            		fis = new FileInputStream(file);
+            	} else { 
+            		fis = new FileInputStream(fileName);
+            	}
+            	
+            	bis = new BufferedInputStream(fis);
+            	xmlDecoder = new XMLDecoder(bis);
+            		  
+            	universe = (Universe) xmlDecoder.readObject();
+            	xmlDecoder.close();
+            		
+            	System.out.println(universe.toString());
+                     
+            	System.out.println("Read Done"); */
            	
         } 
         catch (Exception e) {

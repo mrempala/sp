@@ -16,23 +16,38 @@ styleClass="root" id="Container">
                <children>
                		<Label text="Select from canned sequence:" layoutX="10.0" layoutY="10.0" />
                		
-                 	<RadioButton layoutX="20.0" layoutY="40.0" mnemonicParsing="false" selected="true" text="Full Universe Sweep" userData="fullUniverseSweep">
-        				<toggleGroup>
-            				<ToggleGroup fx:id="sequenceSelection" />
-         				</toggleGroup>
-      				</RadioButton>
-      				<RadioButton layoutX="20.0" layoutY="70.0" mnemonicParsing="false" text="Simultaneous Sweep" toggleGroup="$sequenceSelection" userData="simultaneousUniverseSweep" />
-      				<RadioButton layoutX="20.0" layoutY="100.0" mnemonicParsing="false" text="Zig Zag Sequence" toggleGroup="$sequenceSelection" userData="zigZag" />
-					<!-- <RadioButton layoutX="20.0" layoutY="130.0" mnemonicParsing="false" text="Alternate Odd Even" toggleGroup="$sequenceSelection" userData="alternate" /> -->
-      				<RadioButton layoutX="20.0" layoutY="160.0" mnemonicParsing="false" text="Random One at a Time" toggleGroup="$sequenceSelection" userData="randomUniverseSequence" />
-      				<RadioButton layoutX="20.0" layoutY="130.0" mnemonicParsing="false" text="Random One per FB" toggleGroup="$sequenceSelection" userData="randomPerFireboxUniverseSequence" />
-      				
+               		<ScrollPane layoutX="10.0" layoutY="40.0" prefHeight="150.0" prefWidth="170.0">
+        				<content>
+        				<AnchorPane minHeight="0.0" minWidth="0.0" styleClass="scroll-container">
+        				<children>
+                 			<RadioButton layoutX="5.0" layoutY="10.0" mnemonicParsing="false" selected="true" text="Full Universe Sweep" userData="fullUniverseSweep">
+        					<toggleGroup>
+            					<ToggleGroup fx:id="sequenceSelection" />
+         						</toggleGroup>
+      						</RadioButton>
+		      				<RadioButton layoutX="5.0" layoutY="40.0" mnemonicParsing="false" text="Simultaneous Sweep" toggleGroup="$sequenceSelection" userData="simultaneousUniverseSweep" />
+		      				<RadioButton layoutX="5.0" layoutY="70.0" mnemonicParsing="false" text="Zig Zag Sequence" toggleGroup="$sequenceSelection" userData="zigZag" />
+							<RadioButton layoutX="5.0" layoutY="100.0" mnemonicParsing="false" text="Random One per FB" toggleGroup="$sequenceSelection" userData="randomPerFireboxUniverseSequence" />
+							<!-- <RadioButton layoutX="20.0" layoutY="130.0" mnemonicParsing="false" text="Alternate Odd Even" toggleGroup="$sequenceSelection" userData="alternate" /> -->
+		      				<RadioButton layoutX="5.0" layoutY="130.0" mnemonicParsing="false" text="Random One at a Time" toggleGroup="$sequenceSelection" userData="randomUniverseSequence" />
+      				    </children>
+      				    </AnchorPane>
+      				    </content>
+      				</ScrollPane>
       				<Label text="Select group to apply sequence to:" layoutX="10.0" layoutY="220" />
-      				<RadioButton layoutX="20.0" layoutY="250.0" mnemonicParsing="false" selected="true" text="Universe" userData="0">
-        				<toggleGroup>
-            				<ToggleGroup fx:id="groupSelection" />
-         				</toggleGroup>
-      				</RadioButton>
+      				<ScrollPane layoutX="10.0" layoutY="250.0" prefHeight="150.0" prefWidth="170.0">
+        				<content>
+        				<AnchorPane minHeight="0.0" minWidth="0.0" styleClass="scroll-container" fx:id="paneSquibGroupContainer">
+        				<children>
+		      				<RadioButton layoutX="5.0" layoutY="10.0" mnemonicParsing="false" selected="true" text="Universe" userData="0">
+		        				<toggleGroup>
+		            				<ToggleGroup fx:id="groupSelection" />
+		         				</toggleGroup>
+		      				</RadioButton>
+		      			</children>
+		      			</AnchorPane>
+		      			</content>
+		      		</ScrollPane>
       				
       				<ScrollBar fx:id="scroll_sequenceRate" layoutX="10.0" layoutY="440.0" min="1.0" max="10.0" value="10.0" prefHeight="14.0" prefWidth="170.0" />
       				<Label layoutX="10.0" layoutY="420.0" text="Rate:" />

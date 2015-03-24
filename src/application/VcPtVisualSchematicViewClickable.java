@@ -30,7 +30,7 @@ public class VcPtVisualSchematicViewClickable extends VcPtVisualSchematicView {
 		//Draw some schematic layout stuff
         
         boolean firstFirebox = true;
-        for (Firebox fb : universe.fireboxList){
+        for (Firebox fb : universe.getFireboxList()){
         	// Draw Firebox shape
         	if (!firstFirebox){
         		//Draw schematic connector between FB's
@@ -69,7 +69,7 @@ public class VcPtVisualSchematicViewClickable extends VcPtVisualSchematicView {
                         	}
                             r.setFill(Color.BLUE);
                             // Select each squib in the universe
-                            for (Lunchbox lb : fb.lunchboxList){
+                            for (Lunchbox lb : fb.getLunchboxList()){
                             	for (Squib s : lb.getSquibList()){
                             		selectedSquibs.add(s);
                             	}
@@ -83,12 +83,12 @@ public class VcPtVisualSchematicViewClickable extends VcPtVisualSchematicView {
             fireboxText.setFill(Color.BLACK);
             fireboxText.setX(x + 15);
             fireboxText.setY(y + 20);
-            fireboxText.setText("Firebox " + Integer.toString(fb.id));
+            fireboxText.setText("Firebox " + Integer.toString(fb.getId()));
             
             universeSchematic.getChildren().add(r);
             universeSchematic.getChildren().add(fireboxText);
             
-            for (Lunchbox lb : fb.lunchboxList) {
+            for (Lunchbox lb : fb.getLunchboxList()) {
             	// Draw Lunchboxes //
             	
             	// Draw lunchbox connecting wire

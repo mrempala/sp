@@ -5,13 +5,11 @@ import java.util.List;
 import java.io.Serializable;
 
 public class Firebox implements Serializable{
-	
-	
 	private static final long serialVersionUID = 1L;
-	public List<Lunchbox> lunchboxList;
+	private List<Lunchbox> lunchboxList;
 	// TODO: Do we want to store the firebox universe ID number here?
-	public int id;
-	public int timeStepSleepNumber;
+	private int id;
+	private int timeStepSleepNumber;
 	
 	//Java Bean requires no arg constructor, gave invalid values to avoid crash
 	public Firebox() {
