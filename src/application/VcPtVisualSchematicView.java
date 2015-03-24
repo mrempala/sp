@@ -223,7 +223,7 @@ public class VcPtVisualSchematicView implements Initializable {
 		firingSquibs.getChildren().clear();
 		
 		//Draw squibs to be fired
-		for (Squib squib : timestep.squibList) {
+		for (Squib squib : timestep.getSquibList()) {
 			int x=50, y=50;
 			
 			Rectangle squibRectangle = new Rectangle();
@@ -247,7 +247,7 @@ public class VcPtVisualSchematicView implements Initializable {
 		
 		//Redraw previously drawn squibs to their old state
 		if (previousTimestep != null){
-			for (Squib squib : previousTimestep.squibList){
+			for (Squib squib : previousTimestep.getSquibList()){
 				int x=50, y=50;
 				
 				Rectangle squibRectangle = new Rectangle();

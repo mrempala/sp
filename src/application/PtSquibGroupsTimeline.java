@@ -8,6 +8,9 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
 public class PtSquibGroupsTimeline {
+	// Class used by VcPtTimeline, contains all the elements necessary to draw a timeline for
+	// an individual group of squibs.
+	
 	public Pane timelinePane; // Pane to contain the timeline
 	public Group timelineGroup; // Group to hold the timeline drawing
 	public Group timelinePlayOverlay; // Group to hold the overlay when the given group is actually playing	
@@ -26,7 +29,7 @@ public class PtSquibGroupsTimeline {
 	}
 	
 	public void updateTimelinePlayOverlay(int totalNumTimesteps, int insertedTimesteps){
-		squibGroup.squibPlayGroups.add(insertedTimesteps);
+		squibGroup.getSquibPlayGroups().add(insertedTimesteps);
 		timelinePlayOverlay.getChildren().clear();
 
 		// Calculate the step size based on the pixel width of the timeline
@@ -35,7 +38,7 @@ public class PtSquibGroupsTimeline {
 		// Set the start position to draw at (the timeline starts at 10, we'll use 11 to get spacing between groups)
 		int x = 11;
 		// Draw a rectangle for each period during which the group is playing an animation
-		for (Integer i : squibGroup.squibPlayGroups){
+		for (Integer i : squibGroup.getSquibPlayGroups()){
 			if (i > 0){
 				Rectangle squibGroup = new Rectangle();
 				squibGroup.setX(x);
@@ -110,8 +113,8 @@ public class PtSquibGroupsTimeline {
     public void clear() {
     	timelineGroup.getChildren().clear();
     	timelinePlayOverlay.getChildren().clear();
-    	squibGroup.squibPlayGroups.clear();
-    	squibGroup.timeLine.clear();
+    	squibGroup.getSquibPlayGroups().clear();
+    	squibGroup.getTimeLine().clear();
     	timelinePane.getChildren().clear();
     }
 }

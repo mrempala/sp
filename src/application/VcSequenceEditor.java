@@ -66,10 +66,10 @@ public class VcSequenceEditor extends VcMainController implements Observer {
 		int y = 40;
 		
 		// Add a timeline for the main universe
-		timeLineController.addGroupTimeline(sequence.squibGroups.get(0));
+		timeLineController.addGroupTimeline(sequence.getSquibGroups().get(0));
 		
 		// Populate the radio button group
-		for (int i = 1; i < sequence.squibGroups.size(); i++) {
+		for (int i = 1; i < sequence.getSquibGroups().size(); i++) {
 			// Create a radio button for each group
 			RadioButton rb = new RadioButton();
 			rb.toggleGroupProperty().set(groupSelection);
@@ -81,12 +81,12 @@ public class VcSequenceEditor extends VcMainController implements Observer {
 			paneSquibGroupContainer.getChildren().add(rb);
 			
 			// Add a timeline for each subgroup of squibs
-			timeLineController.addGroupTimeline(sequence.squibGroups.get(i));
+			timeLineController.addGroupTimeline(sequence.getSquibGroups().get(i));
 		}
 		
 		// Draw the timelines initially so they aren't blank on window load
 		//buildTimelineAnimation();
-		timeLineController.buildTimeline(sequence.timeLine.size());
+		timeLineController.buildTimeline(sequence.getTimeLine().size());
 	}
 	
 	// Add an animation to the timeline based on the selected animation and selected group
@@ -99,7 +99,7 @@ public class VcSequenceEditor extends VcMainController implements Observer {
 		int numTimesteps;
 		int selectedGroup;
 		
-		u = sequence.squibGroups.get(Integer.parseInt(group)).squibs;
+		u = sequence.getSquibGroups().get(Integer.parseInt(group)).getSquibs();
 		selectedGroup = Integer.parseInt(group);
 		
 		// Stop the currently playing animation (if there is one)
@@ -108,19 +108,19 @@ public class VcSequenceEditor extends VcMainController implements Observer {
 		numTimesteps = setAnimation(animation, u, rate, Integer.parseInt(group));
 		buildTimelineAnimation();
 		// Update the physical time line in the view
-		timeLineController.buildTimeline(sequence.timeLine.size());
+		timeLineController.buildTimeline(sequence.getTimeLine().size());
 		// Update the groups playing overlays
-		timeLineController.updatePlayOverlays(sequence.timeLine.size(), numTimesteps, selectedGroup);
+		timeLineController.updatePlayOverlays(sequence.getTimeLine().size(), numTimesteps, selectedGroup);
 	}
 	
 	// Clear all animation data and rebuild the timeline
 	@FXML
 	public void clearAnimation(){
 		stopAnimation();
-		sequence.timeLine.clear();
+		sequence.getTimeLine().clear();
 		timeLineController.clearGroupTimeline();
 		buildTimelineAnimation();
-		timeLineController.buildTimeline(sequence.timeLine.size());
+		timeLineController.buildTimeline(sequence.getTimeLine().size());
 	}
 	
 	// Load the currently selected animation
@@ -148,7 +148,7 @@ public class VcSequenceEditor extends VcMainController implements Observer {
 		}
 		else {
 			// Clear the timeline
-			sequence.timeLine.clear();
+			sequence.getTimeLine().clear();
 		}
 		return numTimesteps;
 	}
@@ -160,11 +160,11 @@ public class VcSequenceEditor extends VcMainController implements Observer {
 		
 		// Build new animation timeline
 		int i = 0;
-		for (TimeStep t : sequence.timeLine){
+		for (TimeStep t : sequence.getTimeLine()){
 			// Use previous timestep to redraw previously fired squibs to green
 			TimeStep previousTimestep;
 			if (i != 0) {
-				previousTimestep = sequence.timeLine.get(i-1);
+				previousTimestep = sequence.getTimeLine().get(i-1);
 			}
 			else {
 				previousTimestep = null;

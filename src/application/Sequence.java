@@ -7,27 +7,27 @@ import java.util.Random;
 public class Sequence implements java.io.Serializable{
 	private static final long serialVersionUID = 1L;
 
-	public Universe universe;
+	private Universe universe;
 	
 	// The master timeline to be sent to the universe
-	public List<TimeStep> timeLine = new ArrayList<TimeStep>();
+	private List<TimeStep> timeLine = new ArrayList<TimeStep>();
 	
 	// A list to contain the user defined groups of squibs
 	// Stored as universe objects so we can apply various animations
 	// to sub groups without changing the way we create the animations	
 	// Note that the first element at squibGroups.get(0) should always
 	// be the group for the main universe
-	public List<SquibGroup> squibGroups = new ArrayList<SquibGroup>();
+	private List<SquibGroup> squibGroups = new ArrayList<SquibGroup>();
 	
 	// TODO: As pointed out by Vance, these fields only make sense at a
 	// concert, we may need to generalize more or have a new layer
 	// of setup where the user can choose the type of show, such as
 	// concert, play, orchestra, etc... But for hacking something together
 	// by Wednesday, lets just stick with these values
-	public String projectName = "Temp Name";
-	public String venue = "Temp Venue";
-	public String show = "Temp Show";
-	public String dj = "Temp dj"; 
+	private String projectName = "Temp Name";
+	private String venue = "Temp Venue";
+	private String show = "Temp Show";
+	private String dj = "Temp dj"; 
 
 	public Sequence () {
 		
@@ -41,13 +41,13 @@ public class Sequence implements java.io.Serializable{
 		// Clear the old timeline
 		timeLine.clear();
 		
-		for (int i=0; i < squibGroups.get(0).timeLine.size(); i++){
+		for (int i=0; i < squibGroups.get(0).getTimeLine().size(); i++){
 			// Create a new timestep to hold all firing squibs from the various groups
 			TimeStep t = new TimeStep();
 			for (SquibGroup squibGroup : squibGroups){
 				// Add all the squibs in the given group timestep to the master timestep
-				for (Squib s : squibGroup.timeLine.get(i)){
-					t.squibList.add(s);
+				for (Squib s : squibGroup.getTimeLine().get(i)){
+					t.getSquibList().add(s);
 				}
 			}
 			// TODO: Add some validation here to check for merge conflicts
@@ -62,7 +62,7 @@ public class Sequence implements java.io.Serializable{
 		for (SquibGroup squibGroup : squibGroups){
 			if (i != squibGroupNum){
 				for (int j = 0; j < numTimesteps; j++){
-					squibGroup.timeLine.add(new TimeStep());
+					squibGroup.getTimeLine().add(new TimeStep());
 				}
 			}
 			i++;
@@ -96,12 +96,12 @@ public class Sequence implements java.io.Serializable{
 			for(Lunchbox l : f.getLunchboxList()) {
 				for(Squib s : l.getSquibList()) {
 					TimeStep t = new TimeStep();
-					t.squibList.add(s);
+					t.getSquibList().add(s);
 					Object[] result = validate(t);
 					Integer newResult = (Integer)result[0];
 					String error = (String)result[2];
 					if (newResult.intValue() == 0){
-						squibGroups.get(squibGroup).timeLine.add(t);
+						squibGroups.get(squibGroup).getTimeLine().add(t);
 						numTimesteps++;
 						
 						// Add blank timesteps to adjust rate
@@ -119,7 +119,7 @@ public class Sequence implements java.io.Serializable{
 		
 		// Insert a trailing blank time step to clear universe
 		TimeStep t = new TimeStep();
-		squibGroups.get(squibGroup).timeLine.add(t);
+		squibGroups.get(squibGroup).getTimeLine().add(t);
 		numTimesteps++;
 		
 		// Add blanks to other squib groups
@@ -158,12 +158,12 @@ public class Sequence implements java.io.Serializable{
 			for(int i=0; i<numTimeSteps; i++){
 				int randSquib = randomGenerator.nextInt(numSquibs);
 				TimeStep t = new TimeStep();
-				t.squibList.add(tempSquibList.get(randSquib));
+				t.getSquibList().add(tempSquibList.get(randSquib));
 				Object[] result = validate(t);
 				Integer newResult = (Integer)result[0];
 				String error = (String)result[2];
 				if (newResult.intValue() == 0){
-					squibGroups.get(squibGroup).timeLine.add(t);
+					squibGroups.get(squibGroup).getTimeLine().add(t);
 					numTimesteps++;
 					
 					// Add blank timesteps to adjust rate
@@ -182,7 +182,7 @@ public class Sequence implements java.io.Serializable{
 		
 		// Insert a trailing blank time step to clear universe
 		TimeStep t = new TimeStep();
-		squibGroups.get(squibGroup).timeLine.add(t);
+		squibGroups.get(squibGroup).getTimeLine().add(t);
 		numTimesteps++;
 		
 		// Add blanks to other squib groups
@@ -217,14 +217,14 @@ public class Sequence implements java.io.Serializable{
 				if(numSquibs > 0){
 					Random randomGenerator = new Random();
 					int randSquib = randomGenerator.nextInt(numSquibs);
-					t.squibList.add(tempSquibList.get(randSquib));
+					t.getSquibList().add(tempSquibList.get(randSquib));
 				}
 			}
 			Object[] result = validate(t);
 			Integer newResult = (Integer)result[0];
 			String error = (String)result[2];
 			if (newResult.intValue() == 0){
-				squibGroups.get(squibGroup).timeLine.add(t);
+				squibGroups.get(squibGroup).getTimeLine().add(t);
 				numTimesteps++;
 				
 				numTimesteps += insertRatePadding(rate, -1);
@@ -239,7 +239,7 @@ public class Sequence implements java.io.Serializable{
 		
 		// Insert a trailing blank time step to clear universe
 		TimeStep t = new TimeStep();
-		squibGroups.get(squibGroup).timeLine.add(t);
+		squibGroups.get(squibGroup).getTimeLine().add(t);
 		numTimesteps++;
 		
 		// Add blanks to other squib groups
@@ -270,13 +270,13 @@ public class Sequence implements java.io.Serializable{
 					for(Squib s : l.getSquibList())
 					{
 						TimeStep t = new TimeStep();
-						t.squibList.add(s);
+						t.getSquibList().add(s);
 						Object[] result = validate(t);
 						Integer newResult = (Integer)result[0];
 						String error = (String)result[2];
 						if (newResult.intValue() == 0)
 						{
-							squibGroups.get(squibGroup).timeLine.add(t);
+							squibGroups.get(squibGroup).getTimeLine().add(t);
 							numTimesteps++;
 							
 							numTimesteps += insertRatePadding(rate, -1);
@@ -301,13 +301,13 @@ public class Sequence implements java.io.Serializable{
 					{
 						Squib s = l.getSquibList().get(j);
 						TimeStep t = new TimeStep();
-						t.squibList.add(s);
+						t.getSquibList().add(s);
 						Object[] result = validate(t);
 						Integer newResult = (Integer)result[0];
 						String error = (String)result[2];
 						if (newResult.intValue() == 0)
 						{
-							squibGroups.get(squibGroup).timeLine.add(t);
+							squibGroups.get(squibGroup).getTimeLine().add(t);
 							numTimesteps++;
 							numTimesteps += insertRatePadding(rate, -1);
 							System.out.println("Inserted timestep");
@@ -327,7 +327,7 @@ public class Sequence implements java.io.Serializable{
 		
 		// Insert a trailing blank time step to clear universe
 		TimeStep t = new TimeStep();
-		squibGroups.get(squibGroup).timeLine.add(t);
+		squibGroups.get(squibGroup).getTimeLine().add(t);
 		numTimesteps++;
 		
 		// Add blanks to other squib groups
@@ -356,7 +356,7 @@ public class Sequence implements java.io.Serializable{
 					if(l.getSquibList().size() > i)
 					{
 						Squib s = l.getSquibList().get(i);
-						t.squibList.add(s);
+						t.getSquibList().add(s);
 						Object[] result = validate(t);
 						Integer newResult = (Integer)result[0];
 						String error = (String)result[2];
@@ -368,7 +368,7 @@ public class Sequence implements java.io.Serializable{
 						}
 
 						if (newResult.intValue() == 0){
-							squibGroups.get(squibGroup).timeLine.add(t);
+							squibGroups.get(squibGroup).getTimeLine().add(t);
 							numTimesteps++;
 							
 							numTimesteps += insertRatePadding(rate, -1);
@@ -386,7 +386,7 @@ public class Sequence implements java.io.Serializable{
 		System.out.println(timeLine);
 		// Insert a trailing blank time step to clear universe
 		TimeStep t = new TimeStep();
-		squibGroups.get(squibGroup).timeLine.add(t);
+		squibGroups.get(squibGroup).getTimeLine().add(t);
 		numTimesteps++;
 		
 		// Add blanks to other squib groups
@@ -423,7 +423,7 @@ public class Sequence implements java.io.Serializable{
 							if(l.getSquibList().size() > 0)
 							{
 								Squib s = l.getSquibList().get(0);
-								t.squibList.add(s);
+								t.getSquibList().add(s);
 								Object[] result = validate(t);
 								Integer newResult = (Integer)result[0];
 								String error = (String)result[2];
@@ -463,7 +463,7 @@ public class Sequence implements java.io.Serializable{
 							if(l.getSquibList().size() > 0)
 							{
 								Squib s = l.getSquibList().get(0);
-								t.squibList.add(s);
+								t.getSquibList().add(s);
 								Object[] result = validate(t);
 								Integer newResult = (Integer)result[0];
 								String error = (String)result[2];
@@ -556,10 +556,10 @@ public class Sequence implements java.io.Serializable{
 		
 		// Scan current time step
 		int j = 0;
-		for (Squib s : timeStep.squibList){
+		for (Squib s : timeStep.getSquibList()){
 			// Check current squib against each previous squib in timestep to prevent duplicate fire
 			for (int i = 0; i < j; i++){
-				Squib t = timeStep.squibList.get(i);
+				Squib t = timeStep.getSquibList().get(i);
 				if (s.getFirebox() == t.getFirebox() && s.getLunchbox() == t.getLunchbox()) {
 					error[0] = 1;
 					error[1] = 1;
@@ -579,7 +579,7 @@ public class Sequence implements java.io.Serializable{
 		}
 		
 		// Only increment sleep count after successfully looking at all squibs to be fired
-		for (Squib s : timeStep.squibList){
+		for (Squib s : timeStep.getSquibList()){
 			int sleepNum = universe.getFireboxList().get(s.getFirebox()).getTimeStepSleepNumber();
 			sleepNum ++;
 			universe.getFireboxList().get(s.getFirebox()).setTimeStepSleepNumber(sleepNum);			

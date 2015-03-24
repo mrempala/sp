@@ -151,13 +151,13 @@ public class VcSetupManualLoad extends VcMainController{
 	}
 	
 	private void populateUniverse(TreeItem<String> tree, int elementNum) {	
-		sequence.universe = new Universe();
+		sequence.setUniverse(new Universe());
 		for(TreeItem<String> s : tree.getChildren()){
 			Firebox firebox = new Firebox(elementNum);
 			String universeItem = s.getValue();
 			
 			System.out.println("Adding element: " + universeItem + "  " + elementNum);
-			sequence.universe.addFirebox(firebox);
+			sequence.getUniverse().addFirebox(firebox);
 			populateFirebox(s, 0, elementNum);
 			elementNum++;
 		}
@@ -169,7 +169,7 @@ public class VcSetupManualLoad extends VcMainController{
 			Lunchbox lunchbox = new Lunchbox(elementNum, parentNum);
 			
 			System.out.println("Adding element: " + universeItem + "  " + elementNum + "  " + parentNum);
-			sequence.universe.getFireboxList().get(parentNum).addLunchbox(lunchbox);
+			sequence.getUniverse().getFireboxList().get(parentNum).addLunchbox(lunchbox);
 			populateLunchbox(s, 0, elementNum, parentNum);
 			elementNum++;
 		}
@@ -187,7 +187,7 @@ public class VcSetupManualLoad extends VcMainController{
 			Squib squib = new Squib(grandparentNum, parentNum, elementNum, squibChannel);
 			
 			System.out.println("Adding element: " + universeItem + "  " + elementNum + "  " + parentNum + "  " + grandparentNum);
-			sequence.universe.getFireboxList().get(grandparentNum).getLunchboxList().get(parentNum).addSquib(squib);
+			sequence.getUniverse().getFireboxList().get(grandparentNum).getLunchboxList().get(parentNum).addSquib(squib);
 			elementNum++;
 		}
 	}

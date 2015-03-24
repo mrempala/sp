@@ -49,7 +49,7 @@ public class VcSetupSquibGroups extends VcMainController{
 		// Create the new squibgroup in the Sequence object
 		SquibGroup squibGroup1 = new SquibGroup();
 		squibGroup1.setGroupName("Group " + groupCount);
-		sequence.squibGroups.add(squibGroup1);
+		sequence.getSquibGroups().add(squibGroup1);
 		
 		// Create a new list item for group and select it
 		items.add("Group " + groupCount);
@@ -97,18 +97,18 @@ public class VcSetupSquibGroups extends VcMainController{
 		squibGroup.traverseUniverse();
 		
 		// Set the new universe squib group to the appropriate squib group object
-		sequence.squibGroups.get(groupToEdit).setUniverse(squibGroup);
+		sequence.getSquibGroups().get(groupToEdit).setUniverse(squibGroup);
 		
 		// Check all the universes in the list
-		for (SquibGroup squibList : sequence.squibGroups){
-			squibList.squibs.traverseUniverse();
+		for (SquibGroup squibList : sequence.getSquibGroups()){
+			squibList.getSquibs().traverseUniverse();
 		}
 		
 		label_message.setText("  Group " + groupToEdit + " updated.  ");
 	}
 	
 	public void selectSquibGroup(int index){
-		Universe u = sequence.squibGroups.get(index).getSquibs();
+		Universe u = sequence.getSquibGroups().get(index).getSquibs();
 		
 		// Clear any previously selected squibs
 		visualSchematicController.selectedSquibs.clear();

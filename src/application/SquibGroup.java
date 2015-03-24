@@ -5,10 +5,10 @@ import java.util.List;
 
 public class SquibGroup implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
-	public Universe squibs;
-	public List<Integer> squibPlayGroups; // If value in list is negative, it is just a placeholder of timesteps
-	public String groupName;
-	public List<TimeStep> timeLine = new ArrayList<TimeStep>();
+	private Universe squibs;
+	private List<Integer> squibPlayGroups; // If value in list is negative, it is just a placeholder of timesteps
+	private String groupName;
+	private List<TimeStep> timeLine = new ArrayList<TimeStep>();
 	
 	public SquibGroup(){
 		squibs = new Universe();

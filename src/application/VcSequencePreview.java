@@ -45,11 +45,11 @@ public class VcSequencePreview extends VcMainController implements Observer {
 		
 		// Build new animation timeline
 		int i = 0;
-		for (TimeStep t : sequence.timeLine){
+		for (TimeStep t : sequence.getTimeLine()){
 			// Use previous timestep to redraw previously fired squibs to green
 			TimeStep previousTimestep;
 			if (i != 0) {
-				previousTimestep = sequence.timeLine.get(i-1);
+				previousTimestep = sequence.getTimeLine().get(i-1);
 			}
 			else {
 				previousTimestep = null;
@@ -71,8 +71,8 @@ public class VcSequencePreview extends VcMainController implements Observer {
 		}
 		
 		// Update the physical time line in the view
-		timeLineController.addGroupTimeline(sequence.squibGroups.get(0));
-		timeLineController.buildTimeline(sequence.timeLine.size());
+		timeLineController.addGroupTimeline(sequence.getSquibGroups().get(0));
+		timeLineController.buildTimeline(sequence.getTimeLine().size());
 	}
 	
 	public void playTimelineAnimation(){

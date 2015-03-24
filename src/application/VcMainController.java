@@ -31,11 +31,11 @@ public class VcMainController implements Initializable{
 	}
 	
 	public Universe getUniverse(){
-		return sequence.universe;
+		return sequence.getUniverse();
 	}
 	
 	public void setUniverse(Universe universe){
-		sequence.universe = universe;
+		sequence.setUniverse(universe);
 	}
 	
 	public void setCurrentStage(Stage currentStage){
@@ -102,9 +102,9 @@ public class VcMainController implements Initializable{
     	// TODO: Move this initial squibGroup setup elsewhere
 		// Add the newly created universe to the sequence's SquibGroup list
 		SquibGroup squibGroup = new SquibGroup();
-		squibGroup.setUniverse(sequence.universe);
+		squibGroup.setUniverse(sequence.getUniverse());
 		squibGroup.setGroupName("Universe");
-		sequence.squibGroups.add(squibGroup);
+		sequence.getSquibGroups().add(squibGroup);
 		
     	// Open new window
         Parent root;
@@ -139,7 +139,7 @@ public class VcMainController implements Initializable{
         // Get a reference to the VisualSchematic controller so we can pass a reference of the universe to it.
         VcSetupSquibGroups seqVisualLayoutController = loader.<VcSetupSquibGroups>getController();
         seqVisualLayoutController.setSequence(sequence);
-        seqVisualLayoutController.visualSchematicController.setUniverse(sequence.universe);
+        seqVisualLayoutController.visualSchematicController.setUniverse(sequence.getUniverse());
         seqVisualLayoutController.visualSchematicController.drawUniverseSchematic();
 
         Scene scene = new Scene(root, 1000, 450);
@@ -170,8 +170,8 @@ public class VcMainController implements Initializable{
         seqEditorController.PTMenuController.setSequence(sequence);
         
          
-        seqEditorController.visualSchematicController.setUniverse(sequence.universe);
-        seqEditorController.PTMenuController.setUniverse(sequence.universe);
+        seqEditorController.visualSchematicController.setUniverse(sequence.getUniverse());
+        seqEditorController.PTMenuController.setUniverse(sequence.getUniverse());
         
         seqEditorController.visualSchematicController.drawUniverseSchematic();
         
@@ -203,7 +203,7 @@ public class VcMainController implements Initializable{
         // And hackily push the necessary variables into it
         seqPreviewController.setSequence(sequence);
         seqPreviewController.loadProjectInfo();
-        seqPreviewController.visualSchematicController.setUniverse(sequence.universe);
+        seqPreviewController.visualSchematicController.setUniverse(sequence.getUniverse());
         seqPreviewController.visualSchematicController.drawUniverseSchematic();
         
         // Hack to get sequence into the sequence previewer
