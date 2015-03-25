@@ -2,6 +2,8 @@ package application;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
@@ -13,6 +15,11 @@ import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
+import java.awt.MouseInfo;
+import java.awt.Point;
+import java.awt.PointerInfo;
+
+import javafx.scene.input.MouseEvent;
 
 public class VcPtVisualSchematicView implements Initializable {
 
@@ -22,6 +29,9 @@ public class VcPtVisualSchematicView implements Initializable {
 	public Universe universe;
 	public Group universeSchematic;
 	public Group firingSquibs;
+	public Boolean clickable = true;
+	
+	MousePosition mouseInfo = new MousePosition();
 	
 	// TODO: Add integer values x & y for location to start drawing universe, hard coded at the moment
 
@@ -89,9 +99,58 @@ public class VcPtVisualSchematicView implements Initializable {
 		int x, y, xt;
 		
 		// Positions to start drawing
-        x = 50;
-        y = 50;
+        x = 50 + mouseInfo.offX();
+        y = 50 + mouseInfo.offY();
         xt = x;
+        
+        // Setup an event listener to detect when mouse is being dragged in box
+        schematicContainer.setOnMousePressed(new EventHandler<MouseEvent>()
+		{
+            @Override
+            public void handle(MouseEvent t)
+            {
+            	if (!clickable)
+            	{
+            		System.out.println("not clickable");
+            		return;
+            	}
+            	
+            	Point mPoint = MouseInfo.getPointerInfo().getLocation();
+
+            	mouseInfo.setStartX(mPoint.getX());
+            	mouseInfo.setStartY(mPoint.getY());
+            	
+            	System.out.println("Mouse has been pressed! ");
+            	System.out.println(mouseInfo.getStartX() + " " + mouseInfo.getStartY());
+            	
+            }
+            
+        });
+        		
+		// Setup an event listener to detect when mouse has been released
+        schematicContainer.setOnMouseReleased(new EventHandler<MouseEvent>()
+		{
+            @Override
+            public void handle(MouseEvent t)
+            {
+            	if (!clickable)
+            	{
+            		return;
+            	}
+
+            	Point mPoint = MouseInfo.getPointerInfo().getLocation();
+
+            	mouseInfo.setEndX(mPoint.getX());
+            	mouseInfo.setEndY(mPoint.getY());
+            	mouseInfo.calcOff();
+            	
+            	System.out.println("Mouse has been released! ");
+            	System.out.println(mouseInfo.getEndX() + " " + mouseInfo.getEndY());
+            	
+            	drawUniverseSchematic();
+            }
+        });
+        
 		//Draw some schematic layout stuff
         
         boolean firstFirebox = true;
@@ -224,7 +283,7 @@ public class VcPtVisualSchematicView implements Initializable {
 		
 		//Draw squibs to be fired
 		for (Squib squib : timestep.getSquibList()) {
-			int x=50, y=50;
+			int x = 50 + mouseInfo.offX(), y = 50 + mouseInfo.offY();
 			
 			Rectangle squibRectangle = new Rectangle();
 	        squibRectangle.setX(x + 93 + (squib.getLunchbox() * 93) + ((squib.getChannel() - 1) * 10));
@@ -248,7 +307,7 @@ public class VcPtVisualSchematicView implements Initializable {
 		//Redraw previously drawn squibs to their old state
 		if (previousTimestep != null){
 			for (Squib squib : previousTimestep.getSquibList()){
-				int x=50, y=50;
+				int x = 50 + mouseInfo.offX(), y = 50 + mouseInfo.offY();
 				
 				Rectangle squibRectangle = new Rectangle();
 		        squibRectangle.setX(x + 93 + (squib.getLunchbox() * 93) + ((squib.getChannel() - 1) * 10));

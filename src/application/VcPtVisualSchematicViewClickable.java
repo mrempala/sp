@@ -16,6 +16,8 @@ public class VcPtVisualSchematicViewClickable extends VcPtVisualSchematicView {
 	public ArrayList<Squib> selectedSquibs = new ArrayList<Squib>();
 	public Boolean clickable = false;
 	
+	MousePosition mouseInfo = new MousePosition();
+	
 	public void drawUniverseSchematic(){
 		// Clear any previously loaded universe schematic data
 		schematicContainer.getChildren().clear();
@@ -27,8 +29,8 @@ public class VcPtVisualSchematicViewClickable extends VcPtVisualSchematicView {
         x = 50;
         y = 50;
         xt = x;
+                
 		//Draw some schematic layout stuff
-        
         boolean firstFirebox = true;
         for (Firebox fb : universe.getFireboxList()){
         	// Draw Firebox shape
