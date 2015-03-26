@@ -77,7 +77,7 @@ public class Sequence implements java.io.Serializable{
 			// Validate the timestep to properly decrement firbox's time to sleep
 			// but no need to check what validate returns as it is simply a blank timestep
 			validate(blankTimestep);
-			timeLine.add(blankTimestep);
+			squibGroups.get(squibGroup).getTimeLine().add(blankTimestep);
 			insertedTimesteps++;
 		}
 		return insertedTimesteps;

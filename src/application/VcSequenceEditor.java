@@ -98,14 +98,14 @@ public class VcSequenceEditor extends VcMainController implements Observer {
 		Universe u;
 		int numTimesteps;
 		int selectedGroup;
-		
-		u = sequence.getSquibGroups().get(Integer.parseInt(group)).getSquibs();
 		selectedGroup = Integer.parseInt(group);
 		
+		u = sequence.getSquibGroups().get(selectedGroup).getSquibs();
+
 		// Stop the currently playing animation (if there is one)
 		stopAnimation();
 		
-		numTimesteps = setAnimation(animation, u, rate, Integer.parseInt(group));
+		numTimesteps = setAnimation(animation, u, rate, selectedGroup);
 		buildTimelineAnimation();
 		// Update the physical time line in the view
 		timeLineController.buildTimeline(sequence.getTimeLine().size());
