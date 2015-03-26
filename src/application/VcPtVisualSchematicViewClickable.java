@@ -1,6 +1,7 @@
 package application;
 
 import java.util.ArrayList;
+
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
@@ -9,12 +10,14 @@ import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
+import java.awt.MouseInfo;
+import java.awt.Point;
 
 public class VcPtVisualSchematicViewClickable extends VcPtVisualSchematicView {
 	
 	// TODO: Figure out where this list of squibs should go, probably shouldn't stay here
 	public ArrayList<Squib> selectedSquibs = new ArrayList<Squib>();
-	public Boolean clickable = false;
+	public Boolean clickable = true;
 	
 	MousePosition mouseInfo = new MousePosition();
 	
@@ -26,11 +29,54 @@ public class VcPtVisualSchematicViewClickable extends VcPtVisualSchematicView {
 		int x, y, xt;
 		
 		// Positions to start drawing
-        x = 50;
-        y = 50;
+        x = 50 + mouseInfo.offX();
+        y = 50 + mouseInfo.offY();
         xt = x;
-                
+        		
+		// Setup an event listener to detect when mouse has been dragged
+        schematicContainer.setOnMouseDragged(new EventHandler<MouseEvent>()
+		{
+            @Override
+            public void handle(MouseEvent t)
+            {
+            	if (!clickable)
+            	{
+            		return;
+            	}
+
+            	Point mPoint = MouseInfo.getPointerInfo().getLocation();
+            	
+            	if(mouseInfo.start == true)
+            	{
+	            	mouseInfo.setStartX(mPoint.getX());
+	            	mouseInfo.setStartY(mPoint.getY());
+	            	
+	            	mouseInfo.start = false;
+            	}
+            	else
+            	{
+	            	mouseInfo.setEndX(mPoint.getX());
+	            	mouseInfo.setEndY(mPoint.getY());
+	            	mouseInfo.calcOff();
+	            	
+	            	mouseInfo.start = true;
+            	}
+            	
+            	//System.out.println("Mouse has been moved! ");
+            	//System.out.println(mouseInfo.getEndX() + " " + mouseInfo.getEndY());
+            	
+            	universeSchematic.getChildren().clear();
+            	schematicContainer.getChildren().clear();
+            	
+            	drawUniverseSchematic();
+            }
+        });
+        
 		//Draw some schematic layout stuff
+        
+        // covers up previous drawings
+        // used for mouse panning
+        
         boolean firstFirebox = true;
         for (Firebox fb : universe.getFireboxList()){
         	// Draw Firebox shape

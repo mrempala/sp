@@ -17,7 +17,6 @@ import javafx.scene.text.Text;
 
 import java.awt.MouseInfo;
 import java.awt.Point;
-import java.awt.PointerInfo;
 
 import javafx.scene.input.MouseEvent;
 
@@ -53,7 +52,7 @@ public class VcPtVisualSchematicView implements Initializable {
 		// Draw some visual layout stuff
         Group g = new Group();
         g.setBlendMode(BlendMode.SRC_OVER);
-
+        
         int x = 20, y = 20, xt = x+2, yt = y+12;
         for (int j = 0; j < 5; j++){
 	        for (int i = 0; i < 8; i++){
@@ -102,33 +101,9 @@ public class VcPtVisualSchematicView implements Initializable {
         x = 50 + mouseInfo.offX();
         y = 50 + mouseInfo.offY();
         xt = x;
-        
-        // Setup an event listener to detect when mouse is being dragged in box
-        schematicContainer.setOnMousePressed(new EventHandler<MouseEvent>()
-		{
-            @Override
-            public void handle(MouseEvent t)
-            {
-            	if (!clickable)
-            	{
-            		System.out.println("not clickable");
-            		return;
-            	}
-            	
-            	Point mPoint = MouseInfo.getPointerInfo().getLocation();
-
-            	mouseInfo.setStartX(mPoint.getX());
-            	mouseInfo.setStartY(mPoint.getY());
-            	
-            	System.out.println("Mouse has been pressed! ");
-            	System.out.println(mouseInfo.getStartX() + " " + mouseInfo.getStartY());
-            	
-            }
-            
-        });
-        		
-		// Setup an event listener to detect when mouse has been released
-        schematicContainer.setOnMouseReleased(new EventHandler<MouseEvent>()
+	
+		// Setup an event listener to detect when mouse has been dragged
+        schematicContainer.setOnMouseDragged(new EventHandler<MouseEvent>()
 		{
             @Override
             public void handle(MouseEvent t)
@@ -139,20 +114,36 @@ public class VcPtVisualSchematicView implements Initializable {
             	}
 
             	Point mPoint = MouseInfo.getPointerInfo().getLocation();
-
-            	mouseInfo.setEndX(mPoint.getX());
-            	mouseInfo.setEndY(mPoint.getY());
-            	mouseInfo.calcOff();
             	
-            	System.out.println("Mouse has been released! ");
-            	System.out.println(mouseInfo.getEndX() + " " + mouseInfo.getEndY());
+            	if(mouseInfo.start == true)
+            	{
+	            	mouseInfo.setStartX(mPoint.getX());
+	            	mouseInfo.setStartY(mPoint.getY());
+	            	
+	            	mouseInfo.start = false;
+            	}
+            	else
+            	{
+	            	mouseInfo.setEndX(mPoint.getX());
+	            	mouseInfo.setEndY(mPoint.getY());
+	            	mouseInfo.calcOff();
+	            	
+	            	mouseInfo.start = true;
+            	}
+            	
+            	//System.out.println("Mouse has been moved! ");
+            	//System.out.println(mouseInfo.getEndX() + " " + mouseInfo.getEndY());
+            	
+            	universeSchematic.getChildren().clear();
+            	schematicContainer.getChildren().clear();
             	
             	drawUniverseSchematic();
             }
         });
         
-		//Draw some schematic layout stuff
         
+		//Draw some schematic layout stuff
+
         boolean firstFirebox = true;
         for (Firebox fb : universe.getFireboxList()){
         	// Draw Firebox shape
