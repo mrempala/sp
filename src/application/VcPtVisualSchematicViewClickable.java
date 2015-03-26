@@ -33,6 +33,21 @@ public class VcPtVisualSchematicViewClickable extends VcPtVisualSchematicView {
         y = 50 + mouseInfo.offY();
         xt = x;
         		
+        // sets the start of a mouse drag
+        schematicContainer.setOnMouseClicked(new EventHandler<MouseEvent>()
+    	{
+            @Override
+            public void handle(MouseEvent t)
+            {
+            	if (!clickable)
+            	{
+            		return;
+            	}
+
+            	mouseInfo.start = true;      
+            }
+        });
+        
 		// Setup an event listener to detect when mouse has been dragged
         schematicContainer.setOnMouseDragged(new EventHandler<MouseEvent>()
 		{

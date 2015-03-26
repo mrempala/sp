@@ -10,6 +10,9 @@ public class Squib implements Serializable {
 	private int channel;  // Can be a value of 1-8
 	private int firecount;
 	private int audiolevel; // Set to 1 for soft, 2 for loud
+	private int xPos;
+	private int yPos;
+	
 	/*private bool health;
 	*/
 	public Squib () {
@@ -20,6 +23,9 @@ public class Squib implements Serializable {
 		this.channel = -1;
 		this.audiolevel = -1;
 		this.firecount = -1;
+		
+		this.xPos = 0;
+		this.yPos = 0;
 	}
 	
 	Squib(int firebox, int lunchbox, int squib, int channel) {
