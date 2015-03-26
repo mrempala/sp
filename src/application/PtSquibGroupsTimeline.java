@@ -1,6 +1,7 @@
 package application;
 
 import javafx.scene.Group;
+import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
@@ -12,6 +13,7 @@ public class PtSquibGroupsTimeline {
 	// an individual group of squibs.
 	
 	public Pane timelinePane; // Pane to contain the timeline
+	public Label timelineLabel;
 	public Group timelineGroup; // Group to hold the timeline drawing
 	public Group timelinePlayOverlay; // Group to hold the overlay when the given group is actually playing	
 	public SquibGroup squibGroup;
@@ -20,6 +22,11 @@ public class PtSquibGroupsTimeline {
 		timelinePane = new Pane();
 		timelineGroup = new Group();
 		timelinePlayOverlay = new Group();
+		timelineLabel = new Label();
+		
+		timelineLabel.setText(squibGroup.getGroupName());
+		timelineLabel.setLayoutX(5);
+		timelineLabel.setLayoutY(10);
 		
 		timelinePane.setPrefHeight(35);
 		timelinePane.setPrefWidth(675);
@@ -28,6 +35,7 @@ public class PtSquibGroupsTimeline {
 		this.squibGroup = squibGroup;
 	}
 	
+	// TimelinePlayOverlay is the semi-transparent group play time overlay to show when a given group is firing
 	public void updateTimelinePlayOverlay(int totalNumTimesteps, int insertedTimesteps){
 		squibGroup.getSquibPlayGroups().add(insertedTimesteps);
 		timelinePlayOverlay.getChildren().clear();
@@ -35,8 +43,8 @@ public class PtSquibGroupsTimeline {
 		// Calculate the step size based on the pixel width of the timeline
 		// and the total number of timesteps
 		float stepSize = 665 / (float)totalNumTimesteps;
-		// Set the start position to draw at (the timeline starts at 10, we'll use 11 to get spacing between groups)
-		int x = 11;
+		// Set the start position to draw at (the timeline starts at 70, we'll use 71 to get spacing between groups)
+		int x = 71;
 		// Draw a rectangle for each period during which the group is playing an animation
 		for (Integer i : squibGroup.getSquibPlayGroups()){
 			if (i > 0){
@@ -61,7 +69,7 @@ public class PtSquibGroupsTimeline {
 	}
 	
     public void drawTimeline(int length, float timelineLength, float stepSize, int mark){
-    	float step = 10;
+    	float step = 70;
     	
     	// Timeline width: 600 height: 35
         timelinePane.getChildren().clear();
@@ -69,8 +77,11 @@ public class PtSquibGroupsTimeline {
         
     	System.out.println("Length: " + length);
     	
+    	// Add the label to the timeline
+		timelinePane.getChildren().add(timelineLabel);
+    	
     	Rectangle background = new Rectangle();
-    	background.setX(10);
+    	background.setX(70);
     	background.setY(0);
     	background.setWidth(665);
         background.setHeight(35);

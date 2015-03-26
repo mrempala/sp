@@ -25,7 +25,7 @@ styleClass="root" id="Container">
                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" id="SeqEditorRtPaneAnchor">
                         <children>
                            <fx:include fx:id="visualSchematic" source="UI-Part-VisualSchematicViewClickable.fxml" />
-                           <Button layoutX="715" layoutY = "375" mnemonicParsing="false" text="Next ->" fx:id="button_loadSequencePreview" onAction="#openSequenceEditor"/>
+                           <Button layoutX="715" layoutY = "335" mnemonicParsing="false" text="Next ->" fx:id="button_loadSequencePreview" onAction="#openSequenceEditor"/>
                         </children>
                      </AnchorPane>
                </center>

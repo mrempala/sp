@@ -40,9 +40,9 @@ public class VcPtTimeline extends Observable {
     	notifyObservers("Play");
     	
     	// Reset cursor
-    	timelineCursor.setStartX(10);
+    	timelineCursor.setStartX(70);
         timelineCursor.setStartY(0);
-        timelineCursor.setEndX(10);
+        timelineCursor.setEndX(70);
         timelineCursor.setEndY(-timelineCursorHeight);
     	
     	cursorAnimation.play();
@@ -109,9 +109,9 @@ public class VcPtTimeline extends Observable {
     	
         timelineCursor = new Line();
         timelineCursor.setStrokeWidth(4);
-        timelineCursor.setStartX(10);
+        timelineCursor.setStartX(70);
         timelineCursor.setStartY(0);
-        timelineCursor.setEndX(10);
+        timelineCursor.setEndX(70);
         timelineCursor.setEndY(-timelineCursorHeight);
         timelineCursor.setStroke(Color.RED);
         
@@ -127,8 +127,8 @@ public class VcPtTimeline extends Observable {
     	
     	timelinePane.toFront();
 
-        KeyValue kv1 = new KeyValue(timelineCursor.startXProperty(), timelineLength + 10 );
-        KeyValue kv2 = new KeyValue(timelineCursor.endXProperty(), timelineLength + 10 );
+        KeyValue kv1 = new KeyValue(timelineCursor.startXProperty(), timelineLength + 70 );
+        KeyValue kv2 = new KeyValue(timelineCursor.endXProperty(), timelineLength + 70 );
         
         KeyFrame kf = new KeyFrame(Duration.millis(35 * length), kv1, kv2);
         cursorAnimation.getKeyFrames().clear();
