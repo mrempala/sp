@@ -98,10 +98,18 @@ public class VcSequenceEditor extends VcMainController implements Observer {
 		Universe u;
 		int numTimesteps;
 		int selectedGroup;
+
 		selectedGroup = Integer.parseInt(group);
 		
 		u = sequence.getSquibGroups().get(selectedGroup).getSquibs();
 
+		// If we are pauseFiring, technically no group is selected to se change to -1
+		// This ensures that each squib group timeline gets updated with the inserted blank
+		// timesteps
+		if (animation.equals("pauseFiring")){
+			selectedGroup = -1;
+		}
+		
 		// Stop the currently playing animation (if there is one)
 		stopAnimation();
 		
@@ -142,6 +150,9 @@ public class VcSequenceEditor extends VcMainController implements Observer {
 		}
 		else if (s.equals("zigZag")){
 			numTimesteps = sequence.loadUniverseZigZag(u, rate, squibGroup);
+		}
+		else if (s.equals("pauseFiring")) {
+			numTimesteps = sequence.loadUniversePause(rate);
 		}
 		else if (s.equals("alternate")){
 			numTimesteps = sequence.loadUniverseAlternate(u);

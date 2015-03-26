@@ -489,55 +489,17 @@ public class Sequence implements java.io.Serializable{
 		return numTimesteps;
 	}
 	
-	// 
-	/*
-	// Fire even lunchboxes, then odd lunchboxes
-	// I'm (eric) is not thinking straight at the moment and it's not working
-	public void loadUniverseEvenOddStep(){
-		boolean isEven = false;
-		int success;
-		for (int j = 0; j < 2; j++){
-			TimeStep t = new TimeStep();
-			do {
-				for (Firebox f : universe.getFireboxList()){
-					int i = 0;
-					for (Lunchbox l : f.getLunchboxList()){
-						if ((i%2) == 0 && isEven){
-							t.squibList.add(l.squibList.get(0));
-							System.out.println(l.squibList.get(0).getLunchbox() + i);
-						}
-						else if (!isEven) {
-							t.squibList.add(l.squibList.get(0));
-							System.out.println(l.squibList.get(0).getLunchbox() + i);
-						}
-						i++;
-					}
-				}
-				Object[] result = validate(t);
-				Integer newResult = (Integer)result[0];
-				success = newResult.intValue();
-				String error = (String)result[2];
-				if (success == 0){
-					timeLine.add(t);
-					System.out.println("Inserted timestep");
-				}
-				else {
-					t = new TimeStep();
-					validate(t);
-					timeLine.add(t);
-					System.out.println("Failed to insert, inserting blank. " + error);
-				}
-				if (isEven){
-					isEven = false;
-				}
-				else {
-					isEven = true;
-				}
-			} while(success != 0);
-		}
-		System.out.println(timeLine);
+	// Insert a period with no firing squibs into the sequence, based on the rate selector bar
+	public int loadUniversePause(int rate){
+		// Some crazy casting, need to cast rate to float to not truncate, then multiply decimal value by 100
+		// and cast back to int to set the number of blank timesteps.
+		int numTimesteps = (int) ((1 / (float)rate) * 100);
+		// Call insertBlanks with invalid group number -1 to insert blank timesteps into all squib groups
+		insertBlanks(-1, numTimesteps);
+		mergeTimelines();
+		
+		return numTimesteps;
 	}
-	 */
 	
 	public Object[] validate(TimeStep timeStep){
 		Object[] error  = new Object[3];
