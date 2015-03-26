@@ -19,7 +19,7 @@ xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:contro
       		http://stackoverflow.com/questions/16658856/java-fx-2-treeview-model-reference
        -->
        
-      <Button fx:id="button_openVisualOrganizer" disable="true" onAction="#openSetupVisualLayout" layoutX="250" layoutY="290" mnemonicParsing="false" text="Next"/>
+      <Button fx:id="button_openVisualOrganizer" disable="true" onAction="#openSetupSquibGroups" layoutX="250" layoutY="290" mnemonicParsing="false" text="Next"/>
       
       <VBox layoutX="20.0" layoutY="75.0">
       	<children>

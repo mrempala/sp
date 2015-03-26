@@ -26,17 +26,13 @@ public class VcSequencePreview extends VcMainController implements Observer {
 	
 	// Sequence info labels
 	@FXML Label lbProjectName;
-	@FXML Label lbVenue;
-	@FXML Label lbShow;
-	@FXML Label lbDj;
+	@FXML Label lbProjectDetails;
 
 	SequentialTransition animationTimeline = new SequentialTransition();
 	
 	public void loadProjectInfo(){
 		lbProjectName.setText(this.sequence.getProjectName());
-		lbVenue.setText(this.sequence.getVenue());
-		lbShow.setText(this.sequence.getShow());
-		lbDj.setText(this.sequence.getDj());
+		lbProjectDetails.setText(this.sequence.getProjectDetails());
 	}
 	
 	public void buildTimelineAnimation(){

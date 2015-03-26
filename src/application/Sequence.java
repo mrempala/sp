@@ -25,9 +25,7 @@ public class Sequence implements java.io.Serializable{
 	// concert, play, orchestra, etc... But for hacking something together
 	// by Wednesday, lets just stick with these values
 	private String projectName = "Temp Name";
-	private String venue = "Temp Venue";
-	private String show = "Temp Show";
-	private String dj = "Temp dj"; 
+	private String projectDetails = "Temp Details";
 
 	public Sequence () {
 		
@@ -595,29 +593,13 @@ public class Sequence implements java.io.Serializable{
 	public void setProjectName(String projectName) {
 		this.projectName = projectName;
 	}
-
-	public String getVenue() {
-		return venue;
+	
+	public String getProjectDetails(){
+		return projectDetails;
 	}
 
-	public void setVenue(String venue) {
-		this.venue = venue;
-	}
-
-	public String getShow() {
-		return show;
-	}
-
-	public void setShow(String show) {
-		this.show = show;
-	}
-
-	public String getDj() {
-		return dj;
-	}
-
-	public void setDj(String dj) {
-		this.dj = dj;
+	public void setProjectDetails (String projectDetails) {
+		this.projectDetails = projectDetails;
 	}
 
 	public Universe getUniverse() {

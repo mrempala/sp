@@ -57,7 +57,7 @@ public class VcMainController implements Initializable{
             VcSetup newProjectController = loader.<VcSetup>getController();
     	    newProjectController.setSequence(sequence);
     	    
-            Scene scene = new Scene(root, 500, 300);
+            Scene scene = new Scene(root, 390, 230);
             Stage stage = new Stage();
             stage.setTitle("Setup: Project Details");
             stage.setScene(scene);
@@ -101,11 +101,14 @@ public class VcMainController implements Initializable{
     protected void openSetupVisualLayout(ActionEvent event) throws IOException {
     	// TODO: Move this initial squibGroup setup elsewhere
 		// Add the newly created universe to the sequence's SquibGroup list
+		/* 
+		 * NOTE: If using this call to openSetupVisualLayout, need to uncomment below
+		 * and comment these calls out in openSetupSquibGroups
 		SquibGroup squibGroup = new SquibGroup();
 		squibGroup.setUniverse(sequence.getUniverse());
 		squibGroup.setGroupName("Universe");
 		sequence.getSquibGroups().add(squibGroup);
-		
+		*/
     	// Open new window
         Parent root;
 
@@ -131,6 +134,13 @@ public class VcMainController implements Initializable{
 	// Load the squib groups organizer
 	@FXML 
 	protected void openSetupSquibGroups(ActionEvent event) throws IOException{
+    	// TODO: Move this initial squibGroup setup elsewhere
+		// Add the newly created universe to the sequence's SquibGroup list
+		SquibGroup squibGroup = new SquibGroup();
+		squibGroup.setUniverse(sequence.getUniverse());
+		squibGroup.setGroupName("Universe");
+		sequence.getSquibGroups().add(squibGroup);
+		
 		Parent root;
     	// Load the next window
         FXMLLoader loader = new FXMLLoader(getClass().getResource("Views/UI-Setup-SquibGroups.fxml"));
