@@ -3,6 +3,7 @@ package application;
 public class MousePosition
 {
 	private double mStartX , mStartY, mEndX, mEndY;
+	public boolean start;
 	
 	private int oX, oY;
 	
@@ -11,6 +12,7 @@ public class MousePosition
 	{
 		mStartX = mStartY = mEndX = mEndY = 0.0;
 		oX = oY = 0;
+		start = true;
 	}
 	
 	public void setStartX(double value)
