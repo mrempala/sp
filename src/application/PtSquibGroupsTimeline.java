@@ -70,6 +70,16 @@ public class PtSquibGroupsTimeline {
 	
     public void drawTimeline(int length, float timelineLength, float stepSize, int mark){
     	float step = 70;
+    	float timeReducer = 1; // Used to convert from millies to secs if length > 1000
+    	String timeUnit = "ms";
+    	
+    	if ((length * 35) < 1000) {
+    		timeUnit = "ms";
+    	}
+    	else {
+    		timeUnit = "s";
+    		timeReducer = 1000;
+    	}
     	
     	// Timeline width: 600 height: 35
         timelinePane.getChildren().clear();
@@ -105,7 +115,7 @@ public class PtSquibGroupsTimeline {
 	            t.setFill(Color.BLACK);
 	            t.setX(step - 2);
 	            t.setY(15);
-	            t.setText(Integer.toString(i));
+	            t.setText(Float.toString( ((float)i * 35)/timeReducer ) + timeUnit );
 	            timelineGroup.getChildren().add(t);
         	}
         	else {  // Draw a short mark, no text
