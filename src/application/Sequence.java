@@ -131,12 +131,12 @@ public class Sequence implements java.io.Serializable{
 	
 	//Default for loadRandomOneAtATimeSequence
 	public int loadRandomOneAtATimeSequence(Universe universe, int rate, int squibGroup){
-		return loadRandomOneAtATimeSequence(universe, 100, rate);
+		return loadRandomOneAtATimeSequence1(universe, 100, rate, squibGroup);
 	}
 	
 	//A sequence that fires one random squib at a time from
 	//anywhere in the universe per time step.
-	public int loadRandomOneAtATimeSequence(Universe universe, int numTimeSteps, int rate, int squibGroup){
+	public int loadRandomOneAtATimeSequence1(Universe universe, int numTimeSteps, int rate, int squibGroup){
 		int numTimesteps = 0;
 		
 		// Populate timeline with new sequence
