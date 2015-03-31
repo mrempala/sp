@@ -212,8 +212,12 @@ public class VcMainController implements Initializable{
         VcSequencePreview seqPreviewController = loader.<VcSequencePreview>getController();
         // And hackily push the necessary variables into it
         seqPreviewController.setSequence(sequence);
+        seqPreviewController.PTMenuController.setSequence(sequence);
+        
         seqPreviewController.loadProjectInfo();
         seqPreviewController.visualSchematicController.setUniverse(sequence.getUniverse());
+        seqPreviewController.PTMenuController.setUniverse(sequence.getUniverse());
+        
         seqPreviewController.visualSchematicController.drawUniverseSchematic();
         
         // Hack to get sequence into the sequence previewer
