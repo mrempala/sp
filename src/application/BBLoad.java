@@ -30,15 +30,19 @@ public class BBLoad implements IButtonBehavior {
     	try {
         	
         	FileInputStream fis;
-        		
+        	RecentUpdater recentList = new RecentUpdater();
+        	recentList.load();
+        	
         	if (fileName.isEmpty()) {
         		FileChooser fileChooser = new FileChooser();
             	fileChooser.setTitle("Open Resource File");
             	File file = fileChooser.showOpenDialog(currentStage);
-                
+                    
         		fis = new FileInputStream(file);
+        		recentList.update(file.getName());
         	} else { 
         		fis = new FileInputStream(fileName);
+        		recentList.update(fileName);
         	}
         	
         	BufferedInputStream bis = new BufferedInputStream(fis);
@@ -49,37 +53,10 @@ public class BBLoad implements IButtonBehavior {
         		
         	System.out.println(universe.toString());
                  
-        	System.out.println("Read Done");
-        	/*
-        	// Resave to reverse order of saving
-    		BBSaveAS behavior = new BBSaveAS(universe, currentStage);
-            behavior.click();
-            
-            // Reload to get the universe in proper order
-        	//try {
-            	
-            	//FileInputStream fis;
-            		
-            	if (fileName.isEmpty()) {
-            		FileChooser fileChooser = new FileChooser();
-                	fileChooser.setTitle("Open Resource File");
-                	File file = fileChooser.showOpenDialog(currentStage);
-                    
-            		fis = new FileInputStream(file);
-            	} else { 
-            		fis = new FileInputStream(fileName);
-            	}
-            	
-            	bis = new BufferedInputStream(fis);
-            	xmlDecoder = new XMLDecoder(bis);
-            		  
-            	universe = (Universe) xmlDecoder.readObject();
-            	xmlDecoder.close();
-            		
-            	System.out.println(universe.toString());
-                     
-            	System.out.println("Read Done"); */
-           	
+        	System.out.println("Button Behaviour: Read Done");
+        	
+        	recentList.save();
+        	
         } 
         catch (Exception e) {
         	System.out.println(e.getMessage());

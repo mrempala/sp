@@ -26,7 +26,9 @@ public class BBSaveAS implements IButtonBehavior {
     	fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter( "XML files (*.xml)", "*.xml"));
     	
     	File file = fileChooser.showSaveDialog(currentStage);
-        
+    	RecentUpdater recentList = new RecentUpdater();
+    	recentList.load();
+    	
     	try {
         	if (file != null) {
         		FileOutputStream fos = new FileOutputStream(file);
@@ -35,8 +37,13 @@ public class BBSaveAS implements IButtonBehavior {
 
         		xmlEncoder.writeObject(universe);
         		xmlEncoder.close();
+        		
+        		recentList.update(file.getName());
+        		
                 System.out.println(universe.toString());
-        		System.out.println("Write Done");
+        		System.out.println("Button Behaviour: Write Done");
+        		
+        		recentList.save();
            	
         	}
         	else{

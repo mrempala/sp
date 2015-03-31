@@ -1,30 +1,407 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <java version="1.8.0_25" class="java.beans.XMLDecoder">
- <object class="application.Universe" id="Universe0"/>
-<void class="application.Firebox" id="Field0" method="getField">
- <string>lunchboxList</string>
- <void id="ArrayList0" method="get">
-  <object class="application.Firebox" id="Firebox0"/>
-  <void method="add">
-   <object class="application.Lunchbox" id="Lunchbox0">
-    <void property="squibList">
-     <void method="add">
-      <object class="application.Squib"/>
+ <object class="application.Universe" id="Universe0">
+  <void property="fireboxList">
+   <void method="add">
+    <object class="application.Firebox" id="Firebox0">
+     <void property="id">
+      <int>0</int>
      </void>
-    </void>
-   </object>
+     <void property="lunchboxList">
+      <void method="add">
+       <object class="application.Lunchbox" id="Lunchbox0">
+        <void property="grandParent">
+         <int>0</int>
+        </void>
+        <void property="id">
+         <int>0</int>
+        </void>
+        <void property="squibList">
+         <void method="add">
+          <object class="application.Squib">
+           <void property="audiolevel">
+            <int>1</int>
+           </void>
+           <void property="channel">
+            <int>1</int>
+           </void>
+           <void property="firebox">
+            <int>0</int>
+           </void>
+           <void property="firecount">
+            <int>0</int>
+           </void>
+           <void property="lunchbox">
+            <int>0</int>
+           </void>
+           <void property="squib">
+            <int>0</int>
+           </void>
+          </object>
+         </void>
+         <void method="add">
+          <object class="application.Squib">
+           <void property="audiolevel">
+            <int>1</int>
+           </void>
+           <void property="channel">
+            <int>2</int>
+           </void>
+           <void property="firebox">
+            <int>0</int>
+           </void>
+           <void property="firecount">
+            <int>0</int>
+           </void>
+           <void property="lunchbox">
+            <int>0</int>
+           </void>
+           <void property="squib">
+            <int>1</int>
+           </void>
+          </object>
+         </void>
+         <void method="add">
+          <object class="application.Squib">
+           <void property="audiolevel">
+            <int>1</int>
+           </void>
+           <void property="channel">
+            <int>3</int>
+           </void>
+           <void property="firebox">
+            <int>0</int>
+           </void>
+           <void property="firecount">
+            <int>0</int>
+           </void>
+           <void property="lunchbox">
+            <int>0</int>
+           </void>
+           <void property="squib">
+            <int>2</int>
+           </void>
+          </object>
+         </void>
+         <void method="add">
+          <object class="application.Squib">
+           <void property="audiolevel">
+            <int>1</int>
+           </void>
+           <void property="channel">
+            <int>4</int>
+           </void>
+           <void property="firebox">
+            <int>0</int>
+           </void>
+           <void property="firecount">
+            <int>0</int>
+           </void>
+           <void property="lunchbox">
+            <int>0</int>
+           </void>
+           <void property="squib">
+            <int>3</int>
+           </void>
+          </object>
+         </void>
+         <void method="add">
+          <object class="application.Squib">
+           <void property="audiolevel">
+            <int>1</int>
+           </void>
+           <void property="channel">
+            <int>5</int>
+           </void>
+           <void property="firebox">
+            <int>0</int>
+           </void>
+           <void property="firecount">
+            <int>0</int>
+           </void>
+           <void property="lunchbox">
+            <int>0</int>
+           </void>
+           <void property="squib">
+            <int>4</int>
+           </void>
+          </object>
+         </void>
+         <void method="add">
+          <object class="application.Squib">
+           <void property="audiolevel">
+            <int>1</int>
+           </void>
+           <void property="channel">
+            <int>6</int>
+           </void>
+           <void property="firebox">
+            <int>0</int>
+           </void>
+           <void property="firecount">
+            <int>0</int>
+           </void>
+           <void property="lunchbox">
+            <int>0</int>
+           </void>
+           <void property="squib">
+            <int>5</int>
+           </void>
+          </object>
+         </void>
+         <void method="add">
+          <object class="application.Squib">
+           <void property="audiolevel">
+            <int>1</int>
+           </void>
+           <void property="channel">
+            <int>7</int>
+           </void>
+           <void property="firebox">
+            <int>0</int>
+           </void>
+           <void property="firecount">
+            <int>0</int>
+           </void>
+           <void property="lunchbox">
+            <int>0</int>
+           </void>
+           <void property="squib">
+            <int>6</int>
+           </void>
+          </object>
+         </void>
+         <void method="add">
+          <object class="application.Squib">
+           <void property="audiolevel">
+            <int>1</int>
+           </void>
+           <void property="channel">
+            <int>8</int>
+           </void>
+           <void property="firebox">
+            <int>0</int>
+           </void>
+           <void property="firecount">
+            <int>0</int>
+           </void>
+           <void property="lunchbox">
+            <int>0</int>
+           </void>
+           <void property="squib">
+            <int>7</int>
+           </void>
+          </object>
+         </void>
+        </void>
+       </object>
+      </void>
+     </void>
+     <void property="timeStepSleepNumber">
+      <int>0</int>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="application.Firebox" id="Firebox1">
+     <void property="id">
+      <int>1</int>
+     </void>
+     <void property="lunchboxList">
+      <void method="add">
+       <object class="application.Lunchbox" id="Lunchbox1">
+        <void property="grandParent">
+         <int>1</int>
+        </void>
+        <void property="id">
+         <int>0</int>
+        </void>
+        <void property="squibList">
+         <void method="add">
+          <object class="application.Squib">
+           <void property="audiolevel">
+            <int>1</int>
+           </void>
+           <void property="channel">
+            <int>1</int>
+           </void>
+           <void property="firebox">
+            <int>1</int>
+           </void>
+           <void property="firecount">
+            <int>0</int>
+           </void>
+           <void property="lunchbox">
+            <int>0</int>
+           </void>
+           <void property="squib">
+            <int>0</int>
+           </void>
+          </object>
+         </void>
+         <void method="add">
+          <object class="application.Squib">
+           <void property="audiolevel">
+            <int>1</int>
+           </void>
+           <void property="channel">
+            <int>2</int>
+           </void>
+           <void property="firebox">
+            <int>1</int>
+           </void>
+           <void property="firecount">
+            <int>0</int>
+           </void>
+           <void property="lunchbox">
+            <int>0</int>
+           </void>
+           <void property="squib">
+            <int>1</int>
+           </void>
+          </object>
+         </void>
+         <void method="add">
+          <object class="application.Squib">
+           <void property="audiolevel">
+            <int>1</int>
+           </void>
+           <void property="channel">
+            <int>3</int>
+           </void>
+           <void property="firebox">
+            <int>1</int>
+           </void>
+           <void property="firecount">
+            <int>0</int>
+           </void>
+           <void property="lunchbox">
+            <int>0</int>
+           </void>
+           <void property="squib">
+            <int>2</int>
+           </void>
+          </object>
+         </void>
+         <void method="add">
+          <object class="application.Squib">
+           <void property="audiolevel">
+            <int>1</int>
+           </void>
+           <void property="channel">
+            <int>4</int>
+           </void>
+           <void property="firebox">
+            <int>1</int>
+           </void>
+           <void property="firecount">
+            <int>0</int>
+           </void>
+           <void property="lunchbox">
+            <int>0</int>
+           </void>
+           <void property="squib">
+            <int>3</int>
+           </void>
+          </object>
+         </void>
+         <void method="add">
+          <object class="application.Squib">
+           <void property="audiolevel">
+            <int>1</int>
+           </void>
+           <void property="channel">
+            <int>5</int>
+           </void>
+           <void property="firebox">
+            <int>1</int>
+           </void>
+           <void property="firecount">
+            <int>0</int>
+           </void>
+           <void property="lunchbox">
+            <int>0</int>
+           </void>
+           <void property="squib">
+            <int>4</int>
+           </void>
+          </object>
+         </void>
+         <void method="add">
+          <object class="application.Squib">
+           <void property="audiolevel">
+            <int>1</int>
+           </void>
+           <void property="channel">
+            <int>6</int>
+           </void>
+           <void property="firebox">
+            <int>1</int>
+           </void>
+           <void property="firecount">
+            <int>0</int>
+           </void>
+           <void property="lunchbox">
+            <int>0</int>
+           </void>
+           <void property="squib">
+            <int>5</int>
+           </void>
+          </object>
+         </void>
+         <void method="add">
+          <object class="application.Squib">
+           <void property="audiolevel">
+            <int>1</int>
+           </void>
+           <void property="channel">
+            <int>7</int>
+           </void>
+           <void property="firebox">
+            <int>1</int>
+           </void>
+           <void property="firecount">
+            <int>0</int>
+           </void>
+           <void property="lunchbox">
+            <int>0</int>
+           </void>
+           <void property="squib">
+            <int>6</int>
+           </void>
+          </object>
+         </void>
+         <void method="add">
+          <object class="application.Squib">
+           <void property="audiolevel">
+            <int>1</int>
+           </void>
+           <void property="channel">
+            <int>8</int>
+           </void>
+           <void property="firebox">
+            <int>1</int>
+           </void>
+           <void property="firecount">
+            <int>0</int>
+           </void>
+           <void property="lunchbox">
+            <int>0</int>
+           </void>
+           <void property="squib">
+            <int>7</int>
+           </void>
+          </object>
+         </void>
+        </void>
+       </object>
+      </void>
+     </void>
+     <void property="timeStepSleepNumber">
+      <int>0</int>
+     </void>
+    </object>
+   </void>
   </void>
- </void>
-</void>
-<void idref="ArrayList0"/>
-<void class="application.Universe" id="Field1" method="getField">
- <string>fireboxList</string>
- <void id="ArrayList1" method="get">
-  <object idref="Universe0"/>
-  <void method="add">
-   <object idref="Firebox0"/>
-  </void>
- </void>
-</void>
-<void idref="ArrayList1"/>
+ </object>
 </java>

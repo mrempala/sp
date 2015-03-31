@@ -1,6 +1,11 @@
 package application;
 
+import java.beans.XMLDecoder;
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -22,26 +27,21 @@ public class VcProgramStart extends VcMainController {
     
 	@FXML 
 	void loadExistingUniverse(ActionEvent event) throws IOException{
+		
+		
 		Hyperlink clickedLink = (Hyperlink) event.getSource();
 		String selectedSelection = clickedLink.getText();
 		String fileToOpen = "uninitalized";
 		Universe universe = new Universe();
 		
-		if(selectedSelection.equals("Scene 1")){
-			fileToOpen = "XMLTest.xml";
-		}
-		else if(selectedSelection.equals("Scene 2")){
-			fileToOpen = "universe_4x4x8.txt";
-		}
-		else if(selectedSelection.equals("Scene 3")){
-			fileToOpen = "universe_1x4x8.txt";
-		}
-		else if(selectedSelection.equals("Scene 4")){
-			fileToOpen = "universe_pyramid.txt";
-		}
-		else if(selectedSelection.equals("Scene 5")){
-			fileToOpen = "universe_unusual.txt";
-		}
+		RecentUpdater recentProjList = new RecentUpdater();
+		recentProjList.load();
+		
+		//Always have a number at the end of displayed text or else this will fail
+		int textLength = selectedSelection.length();
+		int index = Character.getNumericValue(selectedSelection.charAt(textLength - 1)) - 1;
+	    
+		fileToOpen = recentProjList.get(index);
 
 		BBLoad behavior = new BBLoad(fileToOpen, currentStage);
         behavior.click();
@@ -53,7 +53,10 @@ public class VcProgramStart extends VcMainController {
 
         sequence = new Sequence(universe);
         sequence.getSquibGroups().add(sg);
-
+        
+        recentProjList.update(fileToOpen);;
+        recentProjList.save();   
+        
         openSequenceEditor(event);
 	}
     
@@ -72,55 +75,7 @@ public class VcProgramStart extends VcMainController {
         sequence.getSquibGroups().add(sg);
 
 		openSequenceEditor(event);
-    	/*System.out.println("browse button hit");
-    	FileChooser fileChooser = new FileChooser();
-    	fileChooser.setTitle("Open Resource File");
-    	File file = fileChooser.showOpenDialog(currentStage);
-        
-    	if (file != null) {
-        	//System.out.println("File does exist");
-        	System.out.println(file);
-        	
-        	Squib sb = new Squib();
-            Lunchbox lb = new Lunchbox();
-   		    Firebox fb = new Firebox();
-   		    
-            lb.addSquib(sb);
-            fb.addLunchbox(lb);
-            
-            Universe universe = new Universe();
-        	universe.addFirebox(fb);
-        	
-            SquibGroup sg = new SquibGroup();
-            sg.setUniverse(universe);
 
-            sequence = new Sequence(universe);
-            sequence.getSquibGroups().add(sg);
-            
-   		    FileOutputStream fos = new FileOutputStream("XMLTest.xml");
-            BufferedOutputStream bos = new BufferedOutputStream(fos);
-            XMLEncoder xmlEncoder = new XMLEncoder(bos);
-
-            xmlEncoder.writeObject(universe);
-            xmlEncoder.close();
-            
-            System.out.println("Write Done");
-           
-            FileInputStream fis = new FileInputStream("XMLTest.xml");
-    		BufferedInputStream bis = new BufferedInputStream(fis);
-    	 	XMLDecoder xmlDecoder = new XMLDecoder(bis);
-    		  
-    		universe = (Universe) xmlDecoder.readObject();
-    		xmlDecoder.close();
-    		
-    		System.out.println("Read Done");
-    		System.out.println("Default Test:" + fb.toString());
-        	
-        	openSequenceEditor(event);
-        }
-        else{
-        	System.out.println("Error, file could not be opened");
-        }*/
     }
 }
 
