@@ -20,14 +20,15 @@ public class VcSequencePreview extends VcMainController implements Observer {
 	// Included VisualSchematic View reference
 	@FXML TabPane visualSchematic;
 	@FXML VcPtVisualSchematicView visualSchematicController;
-	
 	@FXML HBox timeLine;
 	@FXML VcPtTimeline timeLineController;
+	@FXML VcPtMenu PTMenuController;
 	
 	// Sequence info labels
 	@FXML Label lbProjectName;
 	@FXML Label lbProjectDetails;
-
+   
+	 
 	SequentialTransition animationTimeline = new SequentialTransition();
 	
 	public void loadProjectInfo(){

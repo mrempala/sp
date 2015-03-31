@@ -51,7 +51,7 @@ styleClass="root" id="Container">
       </SplitPane>
    </center>
    <top>
-		<fx:include source="UI-Part-Menu.fxml" />
+		<fx:include fx:id="PTMenu" source="UI-Part-Menu.fxml" />
    </top>
    
    	<stylesheets>
