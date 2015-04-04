@@ -11,7 +11,7 @@ layoutX="20.0" layoutY="12.0" prefHeight="306.0" prefWidth="838.0" id="VisSchem"
         <AnchorPane fx:id="schematicContainer" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" id="VisSchemSchematic" />
       </content>
     </Tab>
-    <Tab text="Visual" disable="true">
+    <Tab text="Visual">
       <content>
         <AnchorPane fx:id="visualContainer" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" id="VisSchemVisual" />
       </content>

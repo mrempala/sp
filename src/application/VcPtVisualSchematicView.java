@@ -27,6 +27,7 @@ public class VcPtVisualSchematicView implements Initializable {
 	
 	public Universe universe;
 	public Group universeSchematic;
+	public Group universeVisual;
 	public Group firingSquibs;
 	public Boolean clickable = true;
 	
@@ -37,6 +38,7 @@ public class VcPtVisualSchematicView implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		universeSchematic = new Group();
+		universeVisual = new Group();
 		firingSquibs = new Group();
 		drawUniverseVisual();
 	}
@@ -46,6 +48,79 @@ public class VcPtVisualSchematicView implements Initializable {
 	}
 	
 	public void drawUniverseVisual(){
+		
+		visualContainer.getChildren().clear();
+		
+		int originX = 20 + mouseInfo.offX();
+		int originY = 20 + mouseInfo.offY();
+		
+		Rectangle r = new Rectangle();
+		r.setX(originX);
+		r.setY(originY);
+        r.setWidth(10);
+        r.setHeight(15);
+        r.setStroke(Color.BLACK);
+        r.setFill(null);
+        
+        universeVisual.getChildren().add(r);
+        
+        visualContainer.getChildren().add(universeVisual);
+        
+     // sets the start of a mouse drag
+        visualContainer.setOnMouseClicked(new EventHandler<MouseEvent>()
+    	{
+            @Override
+            public void handle(MouseEvent t)
+            {
+            	if (!clickable)
+            	{
+            		return;
+            	}
+
+            	mouseInfo.start = true;      
+            }
+        });
+        
+		// Setup an event listener to detect when mouse has been dragged
+        visualContainer.setOnMouseDragged(new EventHandler<MouseEvent>()
+		{
+            @Override
+            public void handle(MouseEvent t)
+            {
+            	if (!clickable)
+            	{
+            		return;
+            	}
+
+            	Point mPoint = MouseInfo.getPointerInfo().getLocation();
+            	
+            	if(mouseInfo.start == true)
+            	{
+	            	mouseInfo.setStartX(mPoint.getX());
+	            	mouseInfo.setStartY(mPoint.getY());
+	            	
+	            	mouseInfo.start = false;
+            	}
+            	else
+            	{
+	            	mouseInfo.setEndX(mPoint.getX());
+	            	mouseInfo.setEndY(mPoint.getY());
+	            	mouseInfo.calcOff();
+	            	
+	            	mouseInfo.start = true;
+            	}
+            	
+            	//System.out.println("Mouse has been moved! ");
+            	//System.out.println(mouseInfo.getEndX() + " " + mouseInfo.getEndY());
+            	
+            	universeVisual.getChildren().clear();
+            	visualContainer.getChildren().clear();
+            	
+            	drawUniverseVisual();
+            }
+        });
+        
+		/*
 		//TODO: Hard coded drawing of a rough visual view, this needs
 		//		to be updated once we figure out how to store the visual
 		//		configuration of the world.
@@ -88,6 +163,7 @@ public class VcPtVisualSchematicView implements Initializable {
         }
         
         visualContainer.getChildren().add(g);
+        */
 	}
 	
 	public void drawUniverseSchematic(){
@@ -101,61 +177,6 @@ public class VcPtVisualSchematicView implements Initializable {
         x = 50 + mouseInfo.offX();
         y = 50 + mouseInfo.offY();
         xt = x;
-	
-        // sets the start of a mouse drag
-        schematicContainer.setOnMouseClicked(new EventHandler<MouseEvent>()
-    	{
-            @Override
-            public void handle(MouseEvent t)
-            {
-            	if (!clickable)
-            	{
-            		return;
-            	}
-
-            	mouseInfo.start = true;      
-            }
-        });
-        
-		// Setup an event listener to detect when mouse has been dragged
-        schematicContainer.setOnMouseDragged(new EventHandler<MouseEvent>()
-		{
-            @Override
-            public void handle(MouseEvent t)
-            {
-            	if (!clickable)
-            	{
-            		return;
-            	}
-
-            	Point mPoint = MouseInfo.getPointerInfo().getLocation();
-            	
-            	if(mouseInfo.start == true)
-            	{
-	            	mouseInfo.setStartX(mPoint.getX());
-	            	mouseInfo.setStartY(mPoint.getY());
-	            	
-	            	mouseInfo.start = false;
-            	}
-            	else
-            	{
-	            	mouseInfo.setEndX(mPoint.getX());
-	            	mouseInfo.setEndY(mPoint.getY());
-	            	mouseInfo.calcOff();
-	            	
-	            	mouseInfo.start = true;
-            	}
-            	
-            	//System.out.println("Mouse has been moved! ");
-            	//System.out.println(mouseInfo.getEndX() + " " + mouseInfo.getEndY());
-            	
-            	universeSchematic.getChildren().clear();
-            	schematicContainer.getChildren().clear();
-            	
-            	drawUniverseSchematic();
-            }
-        });
-        
         
 		//Draw some schematic layout stuff
 
@@ -281,6 +302,59 @@ public class VcPtVisualSchematicView implements Initializable {
         }
         
         schematicContainer.getChildren().add(universeSchematic);
+        
+     // sets the start of a mouse drag
+        schematicContainer.setOnMouseClicked(new EventHandler<MouseEvent>()
+    	{
+            @Override
+            public void handle(MouseEvent t)
+            {
+            	if (!clickable)
+            	{
+            		return;
+            	}
+            	mouseInfo.start = true;      
+            }
+        });
+        
+		// Setup an event listener to detect when mouse has been dragged
+        schematicContainer.setOnMouseDragged(new EventHandler<MouseEvent>()
+		{
+            @Override
+            public void handle(MouseEvent t)
+            {
+            	if (!clickable)
+            	{
+            		return;
+            	}
+
+            	Point mPoint = MouseInfo.getPointerInfo().getLocation();
+            	
+            	if(mouseInfo.start == true)
+            	{
+	            	mouseInfo.setStartX(mPoint.getX());
+	            	mouseInfo.setStartY(mPoint.getY());
+	            	
+	            	mouseInfo.start = false;
+            	}
+            	else
+            	{
+	            	mouseInfo.setEndX(mPoint.getX());
+	            	mouseInfo.setEndY(mPoint.getY());
+	            	mouseInfo.calcOff();
+	            	
+	            	mouseInfo.start = true;
+            	}
+            	
+            	//System.out.println("Mouse has been moved! ");
+            	//System.out.println(mouseInfo.getEndX() + " " + mouseInfo.getEndY());
+            	
+            	universeSchematic.getChildren().clear();
+            	schematicContainer.getChildren().clear();
+            	
+            	drawUniverseSchematic();
+            }
+        });
 	}
 	
 	public void drawFiringSquib(TimeStep timestep, TimeStep previousTimestep){
