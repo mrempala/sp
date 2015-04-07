@@ -151,6 +151,7 @@ public class VcMainController implements Initializable{
         seqVisualLayoutController.setSequence(sequence);
         seqVisualLayoutController.visualSchematicController.setUniverse(sequence.getUniverse());
         seqVisualLayoutController.visualSchematicController.drawUniverseSchematic();
+        seqVisualLayoutController.visualSchematicController.drawUniverseVisual();
 
         Scene scene = new Scene(root, 1000, 410);
         Stage stage = new Stage();

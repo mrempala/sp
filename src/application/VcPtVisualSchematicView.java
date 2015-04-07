@@ -30,8 +30,10 @@ public class VcPtVisualSchematicView implements Initializable {
 	public Group universeVisual;
 	public Group firingSquibs;
 	public Boolean clickable = true;
+	public int moveLocked = 0; // 0 - not locked. 1 - everything moves together. 2 - only selected squibs can move
 	
 	MousePosition mouseInfo = new MousePosition();
+	MousePosition squibMouseInfo = new MousePosition();
 	
 	// TODO: Add integer values x & y for location to start drawing universe, hard coded at the moment
 
@@ -40,7 +42,6 @@ public class VcPtVisualSchematicView implements Initializable {
 		universeSchematic = new Group();
 		universeVisual = new Group();
 		firingSquibs = new Group();
-		drawUniverseVisual();
 	}
 	
 	public void setUniverse (Universe universe){
@@ -55,18 +56,128 @@ public class VcPtVisualSchematicView implements Initializable {
 		int originY = 20 + mouseInfo.offY();
 		
 		Rectangle r = new Rectangle();
-		r.setX(originX);
-		r.setY(originY);
+		r.setX(originX - 15);
+		r.setY(originY - 15);
         r.setWidth(10);
         r.setHeight(15);
         r.setStroke(Color.BLACK);
-        r.setFill(null);
+        r.setFill(Color.RED);
         
+        // draw each squib in its correct location
+        for (Firebox fb : universe.getFireboxList())
+        {
+            for (Lunchbox lb : fb.getLunchboxList())
+            {
+	            for (Squib s : lb.getSquibList())
+	            {
+	            	Rectangle r1 = new Rectangle();
+	        		r1.setX(s.getXPos() + originX);
+	        		r1.setY(s.getYPos() + originY);
+	                r1.setWidth(10);
+	                r1.setHeight(10);
+	                r1.setStroke(Color.BLUE);
+	                r1.setFill(Color.GREEN);
+	                
+	                universeVisual.getChildren().add(r1);
+	                
+	        		r1.setOnMouseClicked(new EventHandler<MouseEvent>()
+    				{
+    				    @Override
+    				    public void handle(MouseEvent t)
+    				    {
+    				    	if (!clickable)
+    				    	{
+    				    		return;
+    				    	}
+    				    	
+    				    	if (moveLocked == 0)
+    				    	{
+    				    		moveLocked = 2;
+    				    		squibMouseInfo.start = true; 
+    				    		
+    				    		System.out.println("Only squibs can move now");
+    				    		System.out.println("Squib info: f" + fb.getId() + " l" + lb.getId() + " s" + s.getSquib());
+    				    	}
+
+    				    }
+    				}); 
+	        		
+	        		r1.setOnMouseDragged(new EventHandler<MouseEvent>()
+    				{
+    				    @Override
+    				    public void handle(MouseEvent t)
+    				    {
+    				    	if (!clickable)
+    				    	{
+    				    		return;
+    				    	}
+    				    	
+    				    	if (moveLocked == 2)
+    				    	{
+    				    		Point mPoint = MouseInfo.getPointerInfo().getLocation();
+    			            	
+    			            	if(squibMouseInfo.start == true)
+    			            	{
+    			            		squibMouseInfo.setStartX(mPoint.getX());
+    			            		squibMouseInfo.setStartY(mPoint.getY());
+    				            	
+    			            		squibMouseInfo.start = false;
+    			            	}
+    			            	else
+    			            	{
+    			            		squibMouseInfo.setEndX(mPoint.getX());
+    			            		squibMouseInfo.setEndY(mPoint.getY());
+    			            		squibMouseInfo.calcOff();
+    				            	
+    			            		squibMouseInfo.start = true;
+    			            	}
+    			            	
+    			            	universeVisual.getChildren().clear();
+    			            	visualContainer.getChildren().clear();
+    			            	
+    			            	drawUniverseVisual();
+    				    	}
+
+    				    }
+    				});
+	        		
+    				r1.setOnMouseReleased(new EventHandler<MouseEvent>()
+            		{
+                        @Override
+                        public void handle(MouseEvent t)
+                        {
+                        	if (!clickable)
+                        	{
+                        		return;
+                        	}
+
+                    		moveLocked = 0;
+                    		System.out.println("Lock released!");
+                        }
+                    });
+	            }
+            } 
+        }
+
         universeVisual.getChildren().add(r);
         
-        visualContainer.getChildren().add(universeVisual);
-        
-     // sets the start of a mouse drag
+		visualContainer.getChildren().add(universeVisual);
+		
+		r.setOnMouseClicked(new EventHandler<MouseEvent>()
+		{
+		    @Override
+		    public void handle(MouseEvent t)
+		    {
+		    	if (!clickable)
+		    	{
+		    		return;
+		    	}
+		
+		    	System.out.println("Fake Squib!");
+		    }
+		}); 
+              
+		// sets the start of a mouse drag
         visualContainer.setOnMouseClicked(new EventHandler<MouseEvent>()
     	{
             @Override
@@ -77,7 +188,12 @@ public class VcPtVisualSchematicView implements Initializable {
             		return;
             	}
 
-            	mouseInfo.start = true;      
+            	if(moveLocked == 0)
+            	{
+            		moveLocked = 1;
+            		mouseInfo.start = true; 
+            		System.out.println("Everything will now move together");
+            	}
             }
         });
         
@@ -92,31 +208,49 @@ public class VcPtVisualSchematicView implements Initializable {
             		return;
             	}
 
-            	Point mPoint = MouseInfo.getPointerInfo().getLocation();
-            	
-            	if(mouseInfo.start == true)
+            	if(moveLocked == 1)
             	{
-	            	mouseInfo.setStartX(mPoint.getX());
-	            	mouseInfo.setStartY(mPoint.getY());
+	            	Point mPoint = MouseInfo.getPointerInfo().getLocation();
 	            	
-	            	mouseInfo.start = false;
+	            	if(mouseInfo.start == true)
+	            	{
+		            	mouseInfo.setStartX(mPoint.getX());
+		            	mouseInfo.setStartY(mPoint.getY());
+		            	
+		            	mouseInfo.start = false;
+	            	}
+	            	else
+	            	{
+		            	mouseInfo.setEndX(mPoint.getX());
+		            	mouseInfo.setEndY(mPoint.getY());
+		            	mouseInfo.calcOff();
+		            	
+		            	mouseInfo.start = true;
+	            	}
+	            	
+	            	//System.out.println("Mouse has been moved! ");
+	            	//System.out.println(mouseInfo.getEndX() + " " + mouseInfo.getEndY());
+	            	
+	            	universeVisual.getChildren().clear();
+	            	visualContainer.getChildren().clear();
+	            	
+	            	drawUniverseVisual();
             	}
-            	else
+            }
+        });
+        
+        visualContainer.setOnMouseReleased(new EventHandler<MouseEvent>()
+		{
+            @Override
+            public void handle(MouseEvent t)
+            {
+            	if (!clickable)
             	{
-	            	mouseInfo.setEndX(mPoint.getX());
-	            	mouseInfo.setEndY(mPoint.getY());
-	            	mouseInfo.calcOff();
-	            	
-	            	mouseInfo.start = true;
+            		return;
             	}
-            	
-            	//System.out.println("Mouse has been moved! ");
-            	//System.out.println(mouseInfo.getEndX() + " " + mouseInfo.getEndY());
-            	
-            	universeVisual.getChildren().clear();
-            	visualContainer.getChildren().clear();
-            	
-            	drawUniverseVisual();
+
+            		moveLocked = 0;
+            		System.out.println("Lock released!");
             }
         });
         
@@ -258,7 +392,7 @@ public class VcPtVisualSchematicView implements Initializable {
 		            t.setFill(Color.BLACK);
 		            t.setX(cX + 2);
 		            t.setY(y + 19);
-		            t.setText(Integer.toString(s.getSquib()));/////////////////////////////////////////////////////////////////////////////////
+		            t.setText(Integer.toString(s.getSquib()));
 		            
 		            universeSchematic.getChildren().add(squibRectangle);
 		            universeSchematic.getChildren().add(t);

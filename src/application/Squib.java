@@ -34,6 +34,9 @@ public class Squib implements Serializable {
 		this.squib = squib;
 		this.channel = channel;
 		
+		this.xPos = (lunchbox * 100) + (12 * squib);
+		this.yPos = firebox * 50;
+		
 		audiolevel = 1;
 		firecount = 0;
 	}
@@ -102,4 +105,33 @@ public class Squib implements Serializable {
 		this.lunchbox = lunchbox;
 	}
 	
+	public void setXPos(int x)
+	{
+		xPos = x;
+	}
+	
+	public void setYPos(int y)
+	{
+		yPos = y;
+	}
+	
+	public void incXPos(int x)
+	{
+		xPos += x;
+	}
+	
+	public void incYPos(int y)
+	{
+		yPos += y;
+	}
+	
+	public int getXPos()
+	{
+		return xPos;
+	}
+	
+	public int getYPos()
+	{
+		return yPos;
+	}
 }
