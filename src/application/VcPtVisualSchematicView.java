@@ -1,7 +1,9 @@
 package application;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.ArrayList;
 
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -29,6 +31,8 @@ public class VcPtVisualSchematicView implements Initializable {
 	public Group universeSchematic;
 	public Group universeVisual;
 	public Group firingSquibs;
+	public List<Squib> selectedSquibs = new ArrayList<Squib>();
+
 	public Boolean clickable = true;
 	public int moveLocked = 0; // 0 - not locked. 1 - everything moves together. 2 - only selected squibs can move
 	
@@ -90,13 +94,27 @@ public class VcPtVisualSchematicView implements Initializable {
     				    		return;
     				    	}
     				    	
-    				    	if (moveLocked == 0)
+    				    	if (moveLocked != -1)
     				    	{
     				    		moveLocked = 2;
     				    		squibMouseInfo.start = true; 
     				    		
     				    		System.out.println("Only squibs can move now");
+    				    		
+    				    		if(!selectedSquibs.contains(s))
+    				    		{
+    				    			selectedSquibs.add(s);
+    				    			System.out.println("Added!");
+    				    		}
+    				    		else
+    				    		{
+    				    			System.out.println("Already selected");
+    				    		}
     				    		System.out.println("Squib info: f" + fb.getId() + " l" + lb.getId() + " s" + s.getSquib());
+    				    	}
+    				    	else
+    				    	{
+    				    		System.out.println("Cant click on squib yet");
     				    	}
 
     				    }
@@ -112,7 +130,7 @@ public class VcPtVisualSchematicView implements Initializable {
     				    		return;
     				    	}
     				    	
-    				    	if (moveLocked == 2)
+    				    	if (moveLocked != -1)
     				    	{
     				    		Point mPoint = MouseInfo.getPointerInfo().getLocation();
     			            	
@@ -129,17 +147,31 @@ public class VcPtVisualSchematicView implements Initializable {
     			            		squibMouseInfo.setEndY(mPoint.getY());
     			            		squibMouseInfo.calcOff();
     				            	
+    			            		for (Squib sS : selectedSquibs)
+    			            		{
+    			            			sS.setXPos(squibMouseInfo.offX());
+    			            			sS.setYPos(squibMouseInfo.offY());
+    			            		}
+    			            		
+    			            		System.out.println(squibMouseInfo.offX() + " " + squibMouseInfo.offY());
+    			            		
     			            		squibMouseInfo.start = true;
     			            	}
+    			            	
+    			            	System.out.println("Dragging Squibs");
     			            	
     			            	universeVisual.getChildren().clear();
     			            	visualContainer.getChildren().clear();
     			            	
     			            	drawUniverseVisual();
     				    	}
+    				    	else
+    				    	{
+    				    		System.out.println("Cant drag squibs yet");
+    				    	}
 
     				    }
-    				});
+    				}); 
 	        		
     				r1.setOnMouseReleased(new EventHandler<MouseEvent>()
             		{
@@ -152,6 +184,25 @@ public class VcPtVisualSchematicView implements Initializable {
                         	}
 
                     		moveLocked = 0;
+                    		
+                            for (Firebox fb : universe.getFireboxList())
+                            {
+                                for (Lunchbox lb : fb.getLunchboxList())
+                                {
+                    	            for (Squib s : lb.getSquibList())
+                    	            {
+                    	            	for (Squib ss : selectedSquibs)
+                    	            	{
+                    	            		if (s.getFirebox() == ss.getFirebox() && s.getFirebox() == ss.getFirebox() && s.getLunchbox() == ss.getLunchbox()  && s.getSquib() == ss.getSquib())
+                    	            		{
+                    	            			s.setXPos(ss.getXPos());
+                    	            			s.setYPos(ss.getYPos());
+                    	            		}
+                    	            	}
+                    	            }
+                                }
+                            }
+                    		
                     		System.out.println("Lock released!");
                         }
                     });
@@ -192,7 +243,11 @@ public class VcPtVisualSchematicView implements Initializable {
             	{
             		moveLocked = 1;
             		mouseInfo.start = true; 
-            		System.out.println("Everything will now move together");
+            		
+            		// unselects any selected squibs
+            		selectedSquibs.clear();
+            		
+            		System.out.println("Everything will now move together. Selected cleared.");
             	}
             }
         });
