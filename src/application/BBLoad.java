@@ -11,6 +11,7 @@ import javafx.stage.Stage;
 public class BBLoad implements IButtonBehavior {
 
 	private Universe universe;
+	private Sequence sequence;
 	private Stage currentStage;
 	private String fileName;
 	
@@ -39,16 +40,16 @@ public class BBLoad implements IButtonBehavior {
             	File file = fileChooser.showOpenDialog(currentStage);
                     
         		fis = new FileInputStream(file);
-        		recentList.update(file.getName());
+        		recentList.update(file.getName(), file.getAbsolutePath());
         	} else { 
         		fis = new FileInputStream(fileName);
-        		recentList.update(fileName);
+        		recentList.update(fileName, "Error");
         	}
         	
         	BufferedInputStream bis = new BufferedInputStream(fis);
         	XMLDecoder xmlDecoder = new XMLDecoder(bis);
-        		  
-        	universe = (Universe) xmlDecoder.readObject();
+        	System.out.println(fileName);
+        	sequence = (Sequence) xmlDecoder.readObject();
         	xmlDecoder.close();
         		
         	System.out.println(universe.toString());
@@ -68,6 +69,9 @@ public class BBLoad implements IButtonBehavior {
 	}
 	public Stage getCurrentStage() {
 		return currentStage;
+	}
+	public Sequence getSequence() {
+		return sequence;
 	}
     
 	

@@ -1,20 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <java version="1.8.0_25" class="java.beans.XMLDecoder">
- <object class="java.util.ArrayList">
-  <void method="add">
-   <string>1x4x8a.xml</string>
+ <object class="application.RecentProjects" id="RecentProjects0">
+  <void property="recentProjectNames">
+   <void method="add">
+    <string>4test.xml</string>
+   </void>
+   <void method="add">
+    <string>4test.xml</string>
+   </void>
+   <void method="add">
+    <string>3test.xml</string>
+   </void>
+   <void method="add">
+    <string>1test.xml</string>
+   </void>
+   <void method="add">
+    <string>2test.xml</string>
+   </void>
   </void>
-  <void method="add">
-   <string>1x4x8.xml</string>
-  </void>
-  <void method="add">
-   <string>XMLTest.xml</string>
-  </void>
-  <void method="add">
-   <string>XMLTest - Copy.xml</string>
-  </void>
-  <void method="add">
-   <string>XMLTest1.xml</string>
+  <void property="recentProjectPaths">
+   <void method="add">
+    <string>C:\Users\Eric\Desktop\4test.xml</string>
+   </void>
+   <void method="add">
+    <string>C:\Users\Eric\Desktop\4test.xml</string>
+   </void>
+   <void method="add">
+    <string>C:\Users\Eric\Desktop\3test.xml</string>
+   </void>
+   <void method="add">
+    <string>C:\Users\Eric\Desktop\1test.xml</string>
+   </void>
+   <void method="add">
+    <string>C:\Users\Eric\Desktop\2test.xml</string>
+   </void>
   </void>
  </object>
 </java>

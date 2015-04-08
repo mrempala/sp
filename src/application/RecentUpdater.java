@@ -12,11 +12,15 @@ import java.util.ArrayList;
 import javafx.stage.FileChooser;
 
 public class RecentUpdater {
-	private ArrayList<String> recentProj;
-	private static final int CAP = 5;
+	//private ArrayList<String> recentProj; 	// List to store the recent project name
+	//private ArrayList<String> recentProjPath; // List to store the absoulte path to the recent project
+	//private static final int CAP = 5;
+	private RecentProjects recentProjects;
 	
 	public RecentUpdater() {
-		recentProj = new ArrayList<String>();
+		//recentProj = new ArrayList<String>();
+		//recentProjPath = new ArrayList<String>();
+		recentProjects = new RecentProjects();
 	}
 	
 	public void load() {
@@ -29,10 +33,10 @@ public class RecentUpdater {
         	BufferedInputStream bis = new BufferedInputStream(fis);
         	XMLDecoder xmlDecoder = new XMLDecoder(bis);
         		  
-        	recentProj = (ArrayList<String>) xmlDecoder.readObject();
+        	recentProjects = (RecentProjects) xmlDecoder.readObject();
         	xmlDecoder.close();
         		
-        	System.out.println(recentProj.toString());
+        	//System.out.println(recentProjects.toString());
                  
         	System.out.println("RecentRead Done");
         	
@@ -52,10 +56,10 @@ public class RecentUpdater {
         	BufferedOutputStream bos = new BufferedOutputStream(fos);
         	XMLEncoder xmlEncoder = new XMLEncoder(bos);
             
-        	xmlEncoder.writeObject(recentProj);
+        	xmlEncoder.writeObject(recentProjects);
         	xmlEncoder.close();
             
-        	System.out.println(recentProj.toString());
+        	System.out.println(recentProjects.toString());
         	System.out.println("RecentWrite Done");
         	
         } 
@@ -64,20 +68,27 @@ public class RecentUpdater {
         }
 	}
  
-	public void update(String latest) {
-		recentProj.remove(latest);
+	public void update(String projectName, String projectPath) {
+		recentProjects.addRecentProject(projectName, projectPath);
+		/*recentProj.remove(latest);
 		recentProj.add(0, latest);
 		
 		if (recentProj.size() > CAP) {
 			recentProj.remove(CAP);
-		}
+		}*/
 			
 	}
 	
+	public RecentProjects getRecentProjects(){
+		return recentProjects;
+	}
+	
+	/*
 	public String get(int idx) {
 		return recentProj.get(idx);
 		
 	}
+	*/
 	
 /*
 	//Test Case to write your own save file

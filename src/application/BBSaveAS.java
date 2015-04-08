@@ -10,11 +10,11 @@ import javafx.stage.Stage;
 
 public class BBSaveAS implements IButtonBehavior {
 
-	private Universe universe;
+	private Sequence sequence;
 	private Stage currentStage;
-	
-	public BBSaveAS(Universe u, Stage s) {
-		universe = u;
+
+	public BBSaveAS(Sequence sequence, Stage s){
+		this.sequence = sequence;
 		currentStage = s;
 	}
 	@Override
@@ -35,12 +35,12 @@ public class BBSaveAS implements IButtonBehavior {
         		BufferedOutputStream bos = new BufferedOutputStream(fos);
         		XMLEncoder xmlEncoder = new XMLEncoder(bos);
 
-        		xmlEncoder.writeObject(universe);
+        		xmlEncoder.writeObject(sequence);
         		xmlEncoder.close();
         		
-        		recentList.update(file.getName());
+        		recentList.update(file.getName(), file.getAbsolutePath());
         		
-                System.out.println(universe.toString());
+                //System.out.println(universe.toString());
         		System.out.println("Button Behaviour: Write Done");
         		
         		recentList.save();
@@ -51,6 +51,7 @@ public class BBSaveAS implements IButtonBehavior {
         	}
         } 
         catch (Exception e) {
+        	System.out.println("Error1");
         	System.out.println(e.getMessage());
         }
 	}

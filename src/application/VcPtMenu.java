@@ -20,7 +20,7 @@ public class VcPtMenu extends VcMainController implements Initializable {
 	}
 
 	@FXML public void SaveAs(ActionEvent event) {
-		(new BBSaveAS(sequence.getUniverse(), currentStage)).click();
+		(new BBSaveAS(sequence, currentStage)).click();
 	}
 
 	@FXML public void Exit(ActionEvent event) {
