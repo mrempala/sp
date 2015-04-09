@@ -2,16 +2,13 @@ package application;
 
 public class MousePosition
 {
-	private double mStartX , mStartY, mEndX, mEndY;
+	private double mStartX , mStartY, mEndX, mEndY, oX, oY;
 	public boolean start;
-	
-	private int oX, oY;
 	
 	// Constructor
 	MousePosition()
 	{
-		mStartX = mStartY = mEndX = mEndY = 0.0;
-		oX = oY = 0;
+		mStartX = mStartY = mEndX = mEndY = oX = oY = 0.0;
 		start = true;
 	}
 	
@@ -73,22 +70,27 @@ public class MousePosition
 	
 	public void calcOffX()
 	{
-		oX += (int) getDifX();
+		oX += getDifX();
 	}
 	
 	public void calcOffY()
 	{
-		oY += (int) getDifY();
+		oY += getDifY();
 	}
 	
-	public int offX()
+	public double offX()
 	{
 		return oX;
 	}
 	
-	public int offY()
+	public double offY()
 	{
 		return oY;
 	}
 	
+	public void clear()
+	{
+		setStartX(0);
+		setStartY(0);
+	}
 }

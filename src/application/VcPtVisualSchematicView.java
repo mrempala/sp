@@ -33,11 +33,11 @@ public class VcPtVisualSchematicView implements Initializable {
 	public Group firingSquibs;
 	public List<Squib> selectedSquibs = new ArrayList<Squib>();
 
+	public int numSelected = 0;
 	public Boolean clickable = true;
-	public int moveLocked = 0; // 0 - not locked. 1 - everything moves together. 2 - only selected squibs can move
+	//public int moveLocked = 0; // 0 - not locked. 1 - everything moves together. 2 - only selected squibs can move
 	
 	MousePosition mouseInfo = new MousePosition();
-	MousePosition squibMouseInfo = new MousePosition();
 	
 	// TODO: Add integer values x & y for location to start drawing universe, hard coded at the moment
 
@@ -56,17 +56,18 @@ public class VcPtVisualSchematicView implements Initializable {
 		
 		visualContainer.getChildren().clear();
 		
-		int originX = 20 + mouseInfo.offX();
-		int originY = 20 + mouseInfo.offY();
+		double originX = 20 + mouseInfo.offX();
+		double originY = 20 + mouseInfo.offY();
 		
+		// r is just a temporary shape until actual buttons replace it
 		Rectangle r = new Rectangle();
-		r.setX(originX - 15);
-		r.setY(originY - 15);
+		r.setX(10);
+		r.setY(10);
         r.setWidth(10);
         r.setHeight(15);
         r.setStroke(Color.BLACK);
-        r.setFill(Color.RED);
-        
+        r.setFill(Color.RED);   
+    	
         // draw each squib in its correct location
         for (Firebox fb : universe.getFireboxList())
         {
@@ -74,9 +75,10 @@ public class VcPtVisualSchematicView implements Initializable {
             {
 	            for (Squib s : lb.getSquibList())
 	            {
+	            	
 	            	Rectangle r1 = new Rectangle();
-	        		r1.setX(s.getXPos() + originX);
-	        		r1.setY(s.getYPos() + originY);
+	        		r1.setX(s.getXPos());
+	        		r1.setY(s.getYPos());
 	                r1.setWidth(10);
 	                r1.setHeight(10);
 	                r1.setStroke(Color.BLUE);
@@ -84,6 +86,7 @@ public class VcPtVisualSchematicView implements Initializable {
 	                
 	                universeVisual.getChildren().add(r1);
 	                
+	                // squib becomes selected when clicked on so it can be moved
 	        		r1.setOnMouseClicked(new EventHandler<MouseEvent>()
     				{
     				    @Override
@@ -94,126 +97,26 @@ public class VcPtVisualSchematicView implements Initializable {
     				    		return;
     				    	}
     				    	
-    				    	if (moveLocked != -1)
-    				    	{
-    				    		moveLocked = 2;
-    				    		squibMouseInfo.start = true; 
-    				    		
-    				    		System.out.println("Only squibs can move now");
-    				    		
-    				    		if(!selectedSquibs.contains(s))
-    				    		{
-    				    			selectedSquibs.add(s);
-    				    			System.out.println("Added!");
-    				    		}
-    				    		else
-    				    		{
-    				    			System.out.println("Already selected");
-    				    		}
-    				    		System.out.println("Squib info: f" + fb.getId() + " l" + lb.getId() + " s" + s.getSquib());
-    				    	}
-    				    	else
-    				    	{
-    				    		System.out.println("Cant click on squib yet");
-    				    	}
+				    		mouseInfo.start = true; 
+
+				    		s.setSelected(1);
+				    		numSelected++;
+				    		
+				    		System.out.println("Selected squib info: f" + fb.getId() + " l" + lb.getId() + " s" + s.getSquib());
 
     				    }
     				}); 
 	        		
-	        		r1.setOnMouseDragged(new EventHandler<MouseEvent>()
-    				{
-    				    @Override
-    				    public void handle(MouseEvent t)
-    				    {
-    				    	if (!clickable)
-    				    	{
-    				    		return;
-    				    	}
-    				    	
-    				    	if (moveLocked != -1)
-    				    	{
-    				    		Point mPoint = MouseInfo.getPointerInfo().getLocation();
-    			            	
-    			            	if(squibMouseInfo.start == true)
-    			            	{
-    			            		squibMouseInfo.setStartX(mPoint.getX());
-    			            		squibMouseInfo.setStartY(mPoint.getY());
-    				            	
-    			            		squibMouseInfo.start = false;
-    			            	}
-    			            	else
-    			            	{
-    			            		squibMouseInfo.setEndX(mPoint.getX());
-    			            		squibMouseInfo.setEndY(mPoint.getY());
-    			            		squibMouseInfo.calcOff();
-    				            	
-    			            		for (Squib sS : selectedSquibs)
-    			            		{
-    			            			sS.setXPos(squibMouseInfo.offX());
-    			            			sS.setYPos(squibMouseInfo.offY());
-    			            		}
-    			            		
-    			            		System.out.println(squibMouseInfo.offX() + " " + squibMouseInfo.offY());
-    			            		
-    			            		squibMouseInfo.start = true;
-    			            	}
-    			            	
-    			            	System.out.println("Dragging Squibs");
-    			            	
-    			            	universeVisual.getChildren().clear();
-    			            	visualContainer.getChildren().clear();
-    			            	
-    			            	drawUniverseVisual();
-    				    	}
-    				    	else
-    				    	{
-    				    		System.out.println("Cant drag squibs yet");
-    				    	}
-
-    				    }
-    				}); 
-	        		
-    				r1.setOnMouseReleased(new EventHandler<MouseEvent>()
-            		{
-                        @Override
-                        public void handle(MouseEvent t)
-                        {
-                        	if (!clickable)
-                        	{
-                        		return;
-                        	}
-
-                    		moveLocked = 0;
-                    		
-                            for (Firebox fb : universe.getFireboxList())
-                            {
-                                for (Lunchbox lb : fb.getLunchboxList())
-                                {
-                    	            for (Squib s : lb.getSquibList())
-                    	            {
-                    	            	for (Squib ss : selectedSquibs)
-                    	            	{
-                    	            		if (s.getFirebox() == ss.getFirebox() && s.getFirebox() == ss.getFirebox() && s.getLunchbox() == ss.getLunchbox()  && s.getSquib() == ss.getSquib())
-                    	            		{
-                    	            			s.setXPos(ss.getXPos());
-                    	            			s.setYPos(ss.getYPos());
-                    	            		}
-                    	            	}
-                    	            }
-                                }
-                            }
-                    		
-                    		System.out.println("Lock released!");
-                        }
-                    });
 	            }
             } 
         }
 
+        // temporary
         universeVisual.getChildren().add(r);
         
 		visualContainer.getChildren().add(universeVisual);
 		
+		// for now, when r is clicked, it deselects the squibs
 		r.setOnMouseClicked(new EventHandler<MouseEvent>()
 		{
 		    @Override
@@ -223,11 +126,23 @@ public class VcPtVisualSchematicView implements Initializable {
 		    	{
 		    		return;
 		    	}
-		
-		    	System.out.println("Fake Squib!");
+		    	
+				for (Firebox fb : universe.getFireboxList())
+				{
+					for (Lunchbox lb : fb.getLunchboxList())
+				    {
+						for (Squib s : lb.getSquibList())
+				        {
+							s.setSelected(0);
+				        }
+				    }
+				}
+		    	 
+		    	numSelected = 0;
+		    	System.out.println("All Squibs Deselected!");
 		    }
 		}); 
-              
+
 		// sets the start of a mouse drag
         visualContainer.setOnMouseClicked(new EventHandler<MouseEvent>()
     	{
@@ -239,19 +154,11 @@ public class VcPtVisualSchematicView implements Initializable {
             		return;
             	}
 
-            	if(moveLocked == 0)
-            	{
-            		moveLocked = 1;
-            		mouseInfo.start = true; 
-            		
-            		// unselects any selected squibs
-            		selectedSquibs.clear();
-            		
-            		System.out.println("Everything will now move together. Selected cleared.");
-            	}
+        		mouseInfo.start = true; 
+        		
             }
         });
-        
+
 		// Setup an event listener to detect when mouse has been dragged
         visualContainer.setOnMouseDragged(new EventHandler<MouseEvent>()
 		{
@@ -263,34 +170,47 @@ public class VcPtVisualSchematicView implements Initializable {
             		return;
             	}
 
-            	if(moveLocked == 1)
+            	Point mPoint = MouseInfo.getPointerInfo().getLocation();
+            	
+            	
+            	if(mouseInfo.start == true)
             	{
-	            	Point mPoint = MouseInfo.getPointerInfo().getLocation();
+	            	mouseInfo.setStartX(mPoint.getX());
+	            	mouseInfo.setStartY(mPoint.getY());
 	            	
-	            	if(mouseInfo.start == true)
-	            	{
-		            	mouseInfo.setStartX(mPoint.getX());
-		            	mouseInfo.setStartY(mPoint.getY());
-		            	
-		            	mouseInfo.start = false;
-	            	}
-	            	else
-	            	{
-		            	mouseInfo.setEndX(mPoint.getX());
-		            	mouseInfo.setEndY(mPoint.getY());
-		            	mouseInfo.calcOff();
-		            	
-		            	mouseInfo.start = true;
-	            	}
-	            	
-	            	//System.out.println("Mouse has been moved! ");
-	            	//System.out.println(mouseInfo.getEndX() + " " + mouseInfo.getEndY());
-	            	
-	            	universeVisual.getChildren().clear();
-	            	visualContainer.getChildren().clear();
-	            	
-	            	drawUniverseVisual();
+	            	mouseInfo.start = false;
             	}
+            	else
+            	{
+	            	mouseInfo.setEndX(mPoint.getX());
+	            	mouseInfo.setEndY(mPoint.getY());
+	            	//mouseInfo.calcOffX();
+	            	//mouseInfo.calcOffY();
+	            	
+	            	mouseInfo.start = true;
+	            	
+	                for (Firebox fb : universe.getFireboxList())
+	                {
+	                    for (Lunchbox lb : fb.getLunchboxList())
+	                    {
+	        	            for (Squib s : lb.getSquibList())
+	        	            {
+	        	            	if(numSelected == 0 || s.getSelected() == 1)
+	        	            	{	        	            		
+				        			s.setXPos(s.getXPos() + mouseInfo.getDifX());
+				        			s.setYPos(s.getYPos() + mouseInfo.getDifY());
+	        	            	}
+	        	            }
+	                    }
+	                }
+        			
+        			//mouseInfo.clear();
+            	}                  
+            	
+            	universeVisual.getChildren().clear();
+            	visualContainer.getChildren().clear();
+            	
+            	drawUniverseVisual();
             }
         });
         
@@ -304,55 +224,10 @@ public class VcPtVisualSchematicView implements Initializable {
             		return;
             	}
 
-            		moveLocked = 0;
-            		System.out.println("Lock released!");
+            	mouseInfo.clear();
             }
         });
-        
-		/*
-		//TODO: Hard coded drawing of a rough visual view, this needs
-		//		to be updated once we figure out how to store the visual
-		//		configuration of the world.
-		// Draw some visual layout stuff
-        Group g = new Group();
-        g.setBlendMode(BlendMode.SRC_OVER);
-        
-        int x = 20, y = 20, xt = x+2, yt = y+12;
-        for (int j = 0; j < 5; j++){
-	        for (int i = 0; i < 8; i++){
-	        	Rectangle r = new Rectangle();
-	            r.setX(x);
-	            r.setY(y);
-	            r.setWidth(10);
-	            r.setHeight(15);
-	            r.setStroke(Color.BLACK);
-	            r.setFill(null);
-	            
-	            Text t = new Text();
-	            t.setFill(Color.BLACK);
-	            t.setX(xt);
-	            t.setY(yt);
-	            t.setText(String.valueOf(i));
-	            g.getChildren().add(r);
-	            g.getChildren().add(t);
-	            
-	            x += 10;
-	            xt = x+2;
-	        }
-	        Text id = new Text();
-	        id.setFill(Color.BLACK);
-	        id.setX(x-50);
-	        id.setY(y+25);
-	        id.setText("1-" + String.valueOf(j));
-	        g.getChildren().add(id);
-	        x += 20;
-	        y += 20;
-	        xt = x + 2;
-            yt = y + 12;
-        }
-        
-        visualContainer.getChildren().add(g);
-        */
+
 	}
 	
 	public void drawUniverseSchematic(){
@@ -363,8 +238,8 @@ public class VcPtVisualSchematicView implements Initializable {
 		int x, y, xt;
 		
 		// Positions to start drawing
-        x = 50 + mouseInfo.offX();
-        y = 50 + mouseInfo.offY();
+        x = 50 + (int)mouseInfo.offX();
+        y = 50 + (int)mouseInfo.offY();
         xt = x;
         
 		//Draw some schematic layout stuff
@@ -552,7 +427,7 @@ public class VcPtVisualSchematicView implements Initializable {
 		
 		//Draw squibs to be fired
 		for (Squib squib : timestep.getSquibList()) {
-			int x = 50 + mouseInfo.offX(), y = 50 + mouseInfo.offY();
+			int x = 50 + (int)mouseInfo.offX(), y = 50 + (int)mouseInfo.offY();
 			
 			Rectangle squibRectangle = new Rectangle();
 	        squibRectangle.setX(x + 93 + (squib.getLunchbox() * 93) + ((squib.getChannel() - 1) * 10));
@@ -576,7 +451,7 @@ public class VcPtVisualSchematicView implements Initializable {
 		//Redraw previously drawn squibs to their old state
 		if (previousTimestep != null){
 			for (Squib squib : previousTimestep.getSquibList()){
-				int x = 50 + mouseInfo.offX(), y = 50 + mouseInfo.offY();
+				int x = 50 + (int)mouseInfo.offX(), y = 50 + (int)mouseInfo.offY();
 				
 				Rectangle squibRectangle = new Rectangle();
 		        squibRectangle.setX(x + 93 + (squib.getLunchbox() * 93) + ((squib.getChannel() - 1) * 10));

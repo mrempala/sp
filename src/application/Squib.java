@@ -10,8 +10,9 @@ public class Squib implements Serializable {
 	private int channel;  // Can be a value of 1-8
 	private int firecount;
 	private int audiolevel; // Set to 1 for soft, 2 for loud
-	private int xPos;
-	private int yPos;
+	private double xPos;
+	private double yPos;
+	private int selected;
 	
 	/*private bool health;
 	*/
@@ -26,6 +27,7 @@ public class Squib implements Serializable {
 		
 		this.xPos = 0;
 		this.yPos = 0;
+		this.selected = 0;
 	}
 	
 	Squib(int firebox, int lunchbox, int squib, int channel) {
@@ -34,8 +36,8 @@ public class Squib implements Serializable {
 		this.squib = squib;
 		this.channel = channel;
 		
-		this.xPos = (lunchbox * 100) + (12 * squib);
-		this.yPos = firebox * 50;
+		this.xPos = 50 + (lunchbox * 100) + (12 * squib);
+		this.yPos = 50 + (firebox * 50);
 		
 		audiolevel = 1;
 		firecount = 0;
@@ -105,33 +107,43 @@ public class Squib implements Serializable {
 		this.lunchbox = lunchbox;
 	}
 	
-	public void setXPos(int x)
+	public void setXPos(double x)
 	{
-		xPos = x;
+		this.xPos = x;
 	}
 	
-	public void setYPos(int y)
+	public void setYPos(double y)
 	{
-		yPos = y;
+		this.yPos = y;
 	}
 	
 	public void incXPos(int x)
 	{
-		xPos += x;
+		this.xPos += x;
 	}
 	
 	public void incYPos(int y)
 	{
-		yPos += y;
+		this.yPos += y;
 	}
 	
-	public int getXPos()
+	public double getXPos()
 	{
 		return xPos;
 	}
 	
-	public int getYPos()
+	public double getYPos()
 	{
 		return yPos;
+	}
+	
+	public void setSelected(int value)
+	{
+		this.selected = value;
+	}
+	
+	public int getSelected()
+	{
+		return selected;
 	}
 }

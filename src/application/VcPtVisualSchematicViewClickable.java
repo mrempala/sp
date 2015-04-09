@@ -29,8 +29,8 @@ public class VcPtVisualSchematicViewClickable extends VcPtVisualSchematicView {
 		int x, y, xt;
 		
 		// Positions to start drawing
-        x = 50 + mouseInfo.offX();
-        y = 50 + mouseInfo.offY();
+        x = 50 + (int)mouseInfo.offX();
+        y = 50 + (int)mouseInfo.offY();
         xt = x;
         		
         // sets the start of a mouse drag
