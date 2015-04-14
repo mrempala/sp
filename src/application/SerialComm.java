@@ -18,15 +18,6 @@ public class SerialComm implements SerialPortEventListener {
 	int numEvents = 0;
 	boolean armed = false;
 	
-	/** The port we're normally going to use. */
-	private static final String PORT_NAMES[] = { "/dev/tty.usbserial-A9007UX1", // Mac
-																				// OS
-																				// X
-			"/dev/ttyACM0", // Raspberry Pi
-			"/dev/ttyUSB0", // Linux
-			"COM6", // Windows
-	};
-	
 	/**
 	 * A BufferedReader which will be fed by a InputStreamReader converting the
 	 * bytes into characters making the displayed results codepage independent
@@ -41,7 +32,7 @@ public class SerialComm implements SerialPortEventListener {
 	private static final int DATA_RATE = 250000;
 
 	public void initialize() {
-		System.setProperty("gnu.io.rxtx.SerialPorts", "COM6");
+		System.setProperty("gnu.io.rxtx.SerialPorts", "COM5");
 
 		CommPortIdentifier portId = null;
 		Enumeration portEnum = CommPortIdentifier.getPortIdentifiers();
@@ -51,12 +42,12 @@ public class SerialComm implements SerialPortEventListener {
 			CommPortIdentifier currPortId = (CommPortIdentifier) portEnum
 					.nextElement();
 
-			for (String portName : PORT_NAMES) {
-				if (currPortId.getName().equals(portName)) {
-					portId = currPortId;
-					break;
-				}
+			
+			if (currPortId.getName().equals("COM5")) {
+				portId = currPortId;
+				break;
 			}
+			
 		}
 		if (portId == null) {
 			System.out.println("Could not find COM port.");
@@ -80,6 +71,7 @@ public class SerialComm implements SerialPortEventListener {
 			// add event listeners
 			serialPort.addEventListener(this);
 			serialPort.notifyOnDataAvailable(true);
+			
 		} catch (Exception e) {
 			System.err.println(e.toString());
 			System.out.println("Here");
@@ -88,7 +80,6 @@ public class SerialComm implements SerialPortEventListener {
 		try {
 			Thread.sleep(2000);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	    
@@ -118,11 +109,9 @@ public class SerialComm implements SerialPortEventListener {
 					inputLine = input.readLine();
 					data+=inputLine + "|";
 					buffer[i++] = inputLine; 
-					//System.out.println("Here");
 					numEvents++;
 				}
 				
-				//Hack to get last byte of transmission
 				while (numEvents < 9) {
 					inputLine = input.readLine();
 					data+=inputLine+ "|";
@@ -130,8 +119,6 @@ public class SerialComm implements SerialPortEventListener {
 			
 					numEvents++;
 				}
-				
-				//System.out.println(buffer[5]);
 				
 				if (buffer[6].equals("2"))
 					armed = true;
@@ -145,8 +132,6 @@ public class SerialComm implements SerialPortEventListener {
 				System.err.println(e.toString());
 			}
 		}
-		// Ignore all the other eventTypes, but you should consider the other
-		// ones.
 	}
 
 	public void sendData(byte[] data) {
@@ -183,7 +168,6 @@ public class SerialComm implements SerialPortEventListener {
 	  outBuffer[i++] = 0x00;
 	  outBuffer[i++] = (byte) (~byteSum(outBuffer,i-1)+1);
 	  outBuffer[i++] = 0x0A;
-	  //UniBus.write(payload,i);
 	  return outBuffer;
 	}
     
