@@ -3,6 +3,9 @@
  <object class="application.RecentProjects" id="RecentProjects0">
   <void property="recentProjectNames">
    <void method="add">
+    <string>1-1-8.xml</string>
+   </void>
+   <void method="add">
     <string>4test.xml</string>
    </void>
    <void method="add">
@@ -14,11 +17,11 @@
    <void method="add">
     <string>1test.xml</string>
    </void>
-   <void method="add">
-    <string>2test.xml</string>
-   </void>
   </void>
   <void property="recentProjectPaths">
+   <void method="add">
+    <string>C:\Users\Eric\Desktop\1-1-8.xml</string>
+   </void>
    <void method="add">
     <string>C:\Users\Eric\Desktop\4test.xml</string>
    </void>
@@ -30,9 +33,6 @@
    </void>
    <void method="add">
     <string>C:\Users\Eric\Desktop\1test.xml</string>
-   </void>
-   <void method="add">
-    <string>C:\Users\Eric\Desktop\2test.xml</string>
    </void>
   </void>
  </object>

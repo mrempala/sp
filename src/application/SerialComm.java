@@ -40,7 +40,7 @@ public class SerialComm implements SerialPortEventListener {
 
 	private static final int DATA_RATE = 250000;
 
-	public void initialize() {
+	private void initialize() {
 		System.setProperty("gnu.io.rxtx.SerialPorts", "COM6");
 
 		CommPortIdentifier portId = null;
@@ -98,7 +98,7 @@ public class SerialComm implements SerialPortEventListener {
 	 * This should be called when you stop using the port. This will prevent
 	 * port locking on platforms like Linux.
 	 */
-	public synchronized void close() {
+	private synchronized void close() {
 		if (serialPort != null) {
 			serialPort.removeEventListener();
 			serialPort.close();
@@ -149,7 +149,7 @@ public class SerialComm implements SerialPortEventListener {
 		// ones.
 	}
 
-	public void sendData(byte[] data) {
+	private void sendData(byte[] data) {
         try {
             output = serialPort.getOutputStream();
             output.write( data );
@@ -170,7 +170,7 @@ public class SerialComm implements SerialPortEventListener {
 	  return sum;
 	}
 	
-	public byte[] ping(byte box)
+	private byte[] ping(byte box)
 	{
 	  int i = 0;
 	  byte[] outBuffer = new byte[9];
@@ -187,7 +187,7 @@ public class SerialComm implements SerialPortEventListener {
 	  return outBuffer;
 	}
     
-	public byte[] setBoxes(byte firebox,byte numBoxes, byte squib)//set n number of boxes.
+	private byte[] setBoxes(byte firebox,byte numBoxes, byte squib)//set n number of boxes.
 	{  
 	  //clearMemory(outBuffer,
 	  int i = 0;
@@ -212,7 +212,7 @@ public class SerialComm implements SerialPortEventListener {
 	}
 
 
-	void sendCommand(byte address, byte command, byte parameter)
+	private void sendCommand(byte address, byte command, byte parameter)
 	{  
 		byte[] twoBytebuffer = {(byte)0xAA, (byte)0x00, (byte)0x07, (byte)0x80, (byte) 0x80, (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x0A};
 		twoBytebuffer[1] = address;
@@ -222,42 +222,42 @@ public class SerialComm implements SerialPortEventListener {
 	    sendData(twoBytebuffer);
 	}
 
-	void fire()
+	private void fire()
 	{
 	  sendCommand((byte)0xFF,(byte)0xFA,(byte)0x00); //every address, fire all
 	}
 
-	public static void main(String[] args) throws Exception {
-		SerialComm main = new SerialComm();
+	public void run(int portNum) throws Exception {
+		//SerialComm main = new SerialComm();
 		    //Setup serial communication of host
-			main.initialize();  
+			initialize();  
             
 			//send null command, no responds expected
-			main.sendCommand((byte)0x00, (byte)0x00, (byte)0x00);
+			sendCommand((byte)0x00, (byte)0x00, (byte)0x00);
 			
 			//Clear/Set all lunchbox address, expect pong packet 
-			main.sendCommand((byte)0x00, (byte)0x77, (byte)0x00);
+			sendCommand((byte)0x00, (byte)0x77, (byte)0x00);
 			
 			Thread.sleep(12);
 			for (byte i = 1; i < 9; i++) {
 				
 				//Arms firebox and charge all attached lunchbox
-				main.sendCommand((byte)0x00, (byte)0xA2, (byte)0x01);
+				sendCommand((byte)0x00, (byte)0xA2, (byte)0x01);
 				Thread.sleep(60);
 			
-				while (!main.armed){
-					main.sendCommand((byte)0x00, (byte)0x22, (byte)0x00);
+				while (!armed){
+					sendCommand((byte)0x00, (byte)0x22, (byte)0x00);
 					Thread.sleep(50);
 				}
 		
-				main.sendData(main.setBoxes((byte) 0, (byte) 1, i));
+				sendData(setBoxes((byte) 0, (byte) 1, i));
 				Thread.sleep(50);
-				main.fire();
+				fire();
 				Thread.sleep(5);
 			}
 			
             try { Thread.sleep(2000); } catch (InterruptedException ie) {}
 
-            main.close();        
+            close();        
     }
 }

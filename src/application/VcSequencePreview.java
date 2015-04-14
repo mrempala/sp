@@ -11,6 +11,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.util.Duration;
 
@@ -27,6 +28,8 @@ public class VcSequencePreview extends VcMainController implements Observer {
 	// Sequence info labels
 	@FXML Label lbProjectName;
 	@FXML Label lbProjectDetails;
+	
+	@FXML TextField tfPortNum;
    
 	 
 	SequentialTransition animationTimeline = new SequentialTransition();
@@ -78,6 +81,11 @@ public class VcSequencePreview extends VcMainController implements Observer {
 	
 	public void pauseTimelineAnimation(){
 		animationTimeline.pause();
+	}
+	
+	@FXML public void sendToUniverse(ActionEvent event) {
+		String port = tfPortNum.getText();
+		(new BBSendTimelineToUniverse(port) ).click();
 	}
 
 	@Override
