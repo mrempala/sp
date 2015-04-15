@@ -12,7 +12,7 @@ import gnu.io.SerialPortEventListener;
 import java.util.Enumeration;
 
 public class SerialComm implements SerialPortEventListener {
-	private static final int RECV_PACKET_SIZE = 9;
+	private static final int PACKET_SIZE = 9;
 	private String comPort;
 	private SerialPort serialPort;
 	private String data;
@@ -34,7 +34,7 @@ public class SerialComm implements SerialPortEventListener {
 
 	public SerialComm(String comPort) {
 		data  = new String();
-		buffer = new String[RECV_PACKET_SIZE];
+		buffer = new String[PACKET_SIZE];
 		this.comPort = comPort;
 		
 		initialize();
@@ -57,6 +57,7 @@ public class SerialComm implements SerialPortEventListener {
 			}
 
 		}
+
 		if (portId == null) {
 			System.out.println("Could not find COM port.");
 			return;
@@ -120,7 +121,7 @@ public class SerialComm implements SerialPortEventListener {
 					numEvents++;
 				}
 
-				while (numEvents < 9) {
+				while (numEvents < PACKET_SIZE) {
 					inputLine = input.readLine();
 					data += inputLine + "|";
 					buffer[i++] = inputLine;
@@ -166,7 +167,7 @@ public class SerialComm implements SerialPortEventListener {
 
 	private byte[] ping(byte box) {
 		int i = 0;
-		byte[] outBuffer = new byte[9];
+		byte[] outBuffer = new byte[PACKET_SIZE];
 		outBuffer[i++] = (byte) 0xAA;
 		outBuffer[i++] = box;
 		outBuffer[i++] = 0x07;
@@ -179,31 +180,24 @@ public class SerialComm implements SerialPortEventListener {
 		return outBuffer;
 	}
 
-	private byte[] setBoxes(byte firebox, byte numBoxes, byte squib)// set n
-																	// number of
-																	// boxes.
+	private byte[] setBoxes(byte firebox, byte numBoxes, byte squib)
 	{
-		// clearMemory(outBuffer,
 		int i = 0;
-		byte[] outBuffer = new byte[9 + numBoxes];
-		outBuffer[i++] = (byte) 0xAA;// header //0
-		outBuffer[i++] = (byte) firebox;// address//1
+		byte[] outBuffer = new byte[PACKET_SIZE + numBoxes];
+		outBuffer[i++] = (byte) 0xAA;
+		outBuffer[i++] = (byte) firebox;
 		i++;// 2
-		outBuffer[i++] = (byte) 0x80;// r //3
-		outBuffer[i++] = (byte) 0x80;// r //4
-		outBuffer[i++] = (byte) 0xCF;// SAC command //5
-		outBuffer[i++] = 0x00;// prmtr //6
+		outBuffer[i++] = (byte) 0x80;
+		outBuffer[i++] = (byte) 0x80;
+		outBuffer[i++] = (byte) 0xCF;
+		outBuffer[i++] = 0x00;
 
 		for (int k = 0; k < numBoxes; k++) {
 			outBuffer[i++] = squib;
 		}
 
 		outBuffer[2] = (byte) i;// pos of chksum
-		outBuffer[i++] = (byte) ((~byteSum(outBuffer, i - 1)) + 1); // the sum
-																	// from 0 to
-																	// the last
-																	// payload
-																	// byte
+		outBuffer[i++] = (byte) ((~byteSum(outBuffer, i - 1)) + 1); 
 		outBuffer[i++] = 0x0A;
 		return outBuffer;
 	}
@@ -230,11 +224,12 @@ public class SerialComm implements SerialPortEventListener {
 
 		// Clear/Set all lunchbox address, expect pong packet
 		sendCommand((byte) 0x00, (byte) 0x77, (byte) 0x00);
+		
 		Thread.sleep(12);
 	}
 	public void runTimeStep(TimeStep step) throws Exception {
 		
-			// Arms firebox and charge all attached lunchbox
+			// Arms fireboxes and charge all attached lunchboxes
 			sendCommand((byte) 0x00, (byte) 0xA2, (byte) 0x01);
 			Thread.sleep(60);
 

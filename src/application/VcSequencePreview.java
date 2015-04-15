@@ -83,9 +83,11 @@ public class VcSequencePreview extends VcMainController implements Observer {
 		animationTimeline.pause();
 	}
 	
+	
+	BBSendTimelineToUniverse button = new BBSendTimelineToUniverse("COM5");
 	@FXML public void sendToUniverse(ActionEvent event) {
 		String port = tfPortNum.getText();
-		(new BBSendTimelineToUniverse(port) ).click();
+		button.click();
 	}
 
 	@Override
