@@ -12,7 +12,7 @@ import gnu.io.SerialPortEventListener;
 import java.util.Enumeration;
 
 public class SerialComm implements SerialPortEventListener {
-	private static final int RECV_PACKET_SIZE = 9;
+	private static final int PACKET_SIZE = 9;
 	private String comPort;
 	private SerialPort serialPort;
 	private String data;
@@ -34,7 +34,7 @@ public class SerialComm implements SerialPortEventListener {
 
 	public SerialComm(String comPort) {
 		data  = new String();
-		buffer = new String[RECV_PACKET_SIZE];
+		buffer = new String[PACKET_SIZE];
 		this.comPort = comPort;
 		
 		initialize();
