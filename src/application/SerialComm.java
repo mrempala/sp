@@ -233,18 +233,26 @@ public class SerialComm implements SerialPortEventListener {
 		Thread.sleep(12);
 	}
 	public void runTimeStep(TimeStep step) throws Exception {
-		
+			if (step.getSquibList().size() == 0) {
+				// If there's no squibs to be fired, get out of here and don't arm anything
+				return;
+			}
 			// Arms firebox and charge all attached lunchbox
+			// We will need to send a charge command for each connected firebox, not just 0x00, maybe we can arm all by sending 0xFF?
 			sendCommand((byte) 0x00, (byte) 0xA2, (byte) 0x01);
 			Thread.sleep(60);
 
 			while (!armed) {
+				// I think we will need to ping each firebox with squibs to be fired to make sure all are ready
+				// Ping Firebox to see if charged & ready to fire
 				sendCommand((byte) 0x00, (byte) 0x22, (byte) 0x00);
 				Thread.sleep(50);
 			}
 
 			//add squibs to be fired from time step here
-			sendData(setBoxes((byte) 0, (byte) 1, (byte)1));
+			// Currently I think this will only work for 1 firebox hooked up with a string of lunchboxes attached to it,
+			// and it is only capable of firing a single squib at a time (because it gets index 0 from squiblist)
+			sendData(setBoxes((byte) step.getSquibList().get(0).getLunchbox(), (byte) 1, (byte)step.getSquibList().get(0).getSquib()));
 			Thread.sleep(50);
 			fire();
 			Thread.sleep(5);

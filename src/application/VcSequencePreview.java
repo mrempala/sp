@@ -85,7 +85,7 @@ public class VcSequencePreview extends VcMainController implements Observer {
 	
 	@FXML public void sendToUniverse(ActionEvent event) {
 		String port = tfPortNum.getText();
-		(new BBSendTimelineToUniverse(port) ).click();
+		(new BBSendTimelineToUniverse(port, sequence.getTimeLine()) ).click();
 	}
 
 	@Override
