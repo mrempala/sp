@@ -36,7 +36,7 @@ public class Squib implements Serializable {
 		this.squib = squib;
 		this.channel = channel;
 		
-		this.xPos = 50 + (lunchbox * 100) + (12 * squib);
+		this.xPos = 100 + (lunchbox * 100) + (12 * squib);
 		this.yPos = 50 + (firebox * 50);
 		
 		audiolevel = 1;
