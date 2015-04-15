@@ -10,10 +10,10 @@ public class BBSendTimelineToUniverse implements IButtonBehavior {
 	@Override
 	public void click() {
 		// TODO Auto-generated method stub
-		SerialComm serialComm = new SerialComm();
+		SerialComm serialComm = new SerialComm("COM" + portNum);
 		
 		try {
-			serialComm.run(portNum);
+			serialComm.runTimeStep(null);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
