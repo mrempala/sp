@@ -41,7 +41,7 @@ public class SerialComm implements SerialPortEventListener {
 		initialize();
 	}
 
-	private void initialize() throws NoSuchPortException{
+	public void initialize() throws NoSuchPortException{
 		System.setProperty("gnu.io.rxtx.SerialPorts", comPort);
 
 		CommPortIdentifier portId = null;
@@ -99,7 +99,7 @@ public class SerialComm implements SerialPortEventListener {
 	 * This should be called when you stop using the port. This will prevent
 	 * port locking on platforms like Linux.
 	 */
-	private synchronized void close() {
+	public synchronized void close() {
 		if (serialPort != null) {
 			serialPort.removeEventListener();
 			serialPort.close();
@@ -262,16 +262,16 @@ public class SerialComm implements SerialPortEventListener {
 		// and it is only capable of firing a single squib at a time (because it
 		// gets index 0 from squiblist)
 		sendData(setBoxes((byte) step.getSquibList().get(0).getLunchbox(),
-				(byte) 1, (byte) step.getSquibList().get(0).getSquib()));
+				(byte) 1, (byte) (step.getSquibList().get(0).getSquib() + 1)));
 		Thread.sleep(50);
 		fire();
 		Thread.sleep(5);
 
-		try {
+	/*	try {
 			Thread.sleep(2000);
 		} catch (InterruptedException ie) {
 		}
-
-		close();
+*/
+		//close();
 	}
 }

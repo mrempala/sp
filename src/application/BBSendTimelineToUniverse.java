@@ -4,7 +4,7 @@ import gnu.io.NoSuchPortException;
 
 import java.util.List;
 
-public class BBSendTimelineToUniverse extends Thread implements IButtonBehavior {
+public class BBSendTimelineToUniverse implements IButtonBehavior {
 	private String portNum;
 	private SerialComm serialComm;
 
@@ -14,13 +14,13 @@ public class BBSendTimelineToUniverse extends Thread implements IButtonBehavior 
 
 	private STATES state;
 	private List<TimeStep> timeLine;
-	private Thread loopy;
+	//private Thread loopy;
 	private boolean connected;
 
 	public BBSendTimelineToUniverse(String portNum) {
 		this.portNum = portNum;
 		this.state = STATES.OFF;
-		this.loopy = new Thread(this);
+		//this.loopy = new Thread(this);
 		
 		try {
 			this.serialComm = new SerialComm("COM" + portNum);
@@ -33,7 +33,7 @@ public class BBSendTimelineToUniverse extends Thread implements IButtonBehavior 
 	public BBSendTimelineToUniverse(String portNum, List<TimeStep> timeLine) {
 		this.portNum = portNum;
 		this.state = STATES.OFF;
-		this.loopy = new Thread(this);
+		//this.loopy = new Thread(this);
 		this.timeLine = timeLine;
 		
 		try {
@@ -50,17 +50,24 @@ public class BBSendTimelineToUniverse extends Thread implements IButtonBehavior 
 		 * (Thread.interrupted()) { System.out.println("Done"); return; } }
 		 */
 		try {
+			serialComm.prepUniverse();
+			
 			for (TimeStep t : timeLine) {
-				if (Thread.interrupted()) {
+				/*if (Thread.interrupted()) {
 					System.out.println("Interrupted");
 					return;
-				}
+				}*/
 				System.out.println(t);
 				serialComm.runTimeStep(t);
+				//System.out.println("loop");
+				
 			}
+			System.out.println("Done");
+			//return;
 		} catch (Exception e) {
 
 		}
+		serialComm.close();
 
 	}
 
@@ -74,19 +81,28 @@ public class BBSendTimelineToUniverse extends Thread implements IButtonBehavior 
 	}
 
 	public void click(List<TimeStep> timeLine) {
-
+        
 		try {
 			switch (state) {
 
 			case OFF:
 				state = STATES.ON;
-				loopy.start();
-
+				//this.timeLine = timeLine;
+				//serialComm = new SerialComm("COM" + portNum);
+				//serialComm.initialize();
+				//loopy.start();
+				run();
+                //serialComm.close();
+				System.out.println("done");
 				break;
 
 			case ON:
 				state = STATES.OFF;
-				loopy.interrupt();
+				//serialComm.close();
+				//loopy.interrupt();
+				//loopy.join();
+				//this.timeLine = timeLine;
+					
 				// throw new InterruptedException();
 				break;
 			}
