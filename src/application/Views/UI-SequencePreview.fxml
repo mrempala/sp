@@ -38,7 +38,7 @@
                       <AnchorPane id="SeqPreviewRtBottom" maxHeight="100" minHeight="0.0" minWidth="0.0" prefHeight="83.0" prefWidth="793.0">
                            <children>
                               <!-- <Label layoutX="14.0" layoutY="14.0" text="Sequence Error Info" /> -->
-                              <Button layoutX="14" layoutY="30" mnemonicParsing="false" onAction="#sendToUniverse" text="Send to Universe" />
+                              <Button layoutX="14" layoutY="30" mnemonicParsing="false" onAction="#sendToUniverse" text="Send to Universe" fx:id="buttonSendToUniverse"/>
                               
                               <Label layoutX="150" layoutY="14.0" text="Enter Port Number:" />
                               <TextField fx:id="tfPortNum" layoutX="150" layoutY="30" prefHeight="25.0" prefWidth="35.0" />

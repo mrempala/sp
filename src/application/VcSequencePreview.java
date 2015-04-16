@@ -9,6 +9,7 @@ import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
@@ -28,6 +29,7 @@ public class VcSequencePreview extends VcMainController implements Observer {
 	// Sequence info labels
 	@FXML Label lbProjectName;
 	@FXML Label lbProjectDetails;
+	@FXML Button buttonSendToUniverse;
 	
 	@FXML TextField tfPortNum;
    
@@ -89,8 +91,12 @@ public class VcSequencePreview extends VcMainController implements Observer {
 	@FXML public void sendToUniverse(ActionEvent event) {
 		
 		if (portSet) {
+			//buttonSendToUniverse.setDisable(true);
 			//lets pass the latest squence with each click
 			button.click(sequence.getTimeLine());
+
+			//buttonSendToUniverse.setDisable(false);
+			
 		} else {
 			//Prompt users with a message that port isn't set
 			System.out.println("port not set");

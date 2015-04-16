@@ -20,7 +20,8 @@ public class SerialComm implements SerialPortEventListener {
 	private String[] buffer;
 	private int numEvents = 0;
 	private boolean armed = false;
-
+    private static boolean[] armedFB = new boolean[12];
+    private int FBcount = 0;
 	private BufferedReader input;
 
 	/** The output stream to the port */
@@ -39,6 +40,7 @@ public class SerialComm implements SerialPortEventListener {
 		this.comPort = comPort;
 
 		initialize();
+		resetArmedFB();
 	}
 
 	public void initialize() throws NoSuchPortException{
@@ -130,8 +132,9 @@ public class SerialComm implements SerialPortEventListener {
 					numEvents++;
 				}
 
-				if (buffer[6].equals("2"))
-					armed = true;
+				if (buffer[6].equals("2")) {
+					armedFB[Integer.getInteger(buffer[4])] = false;
+				}
 
 				System.out.println(data);
 
@@ -234,9 +237,24 @@ public class SerialComm implements SerialPortEventListener {
 		sendCommand((byte) 0x00, (byte) 0x77, (byte) 0x00);
 		Thread.sleep(12);
 	}
+	
+	private void armFB(byte address){
+		sendCommand(address, (byte) 0xA2, (byte) 0x01);
+		try {
+			Thread.sleep(5);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
 
+	private void resetArmedFB() {
+		for (int i = 0; i < 12 ; i++) { 
+			armedFB[i] = false;
+		}
+	}
 	public void runTimeStep(TimeStep step) throws Exception {
-
 		if (step.getSquibList().size() == 0) {
 			// If there's no squibs to be fired, get out of here and don't arm
 			// anything
@@ -245,14 +263,37 @@ public class SerialComm implements SerialPortEventListener {
 		// Arms firebox and charge all attached lunchbox
 		// We will need to send a charge command for each connected firebox, not
 		// just 0x00, maybe we can arm all by sending 0xFF?
-		sendCommand((byte) 0x00, (byte) 0xA2, (byte) 0x01);
-		Thread.sleep(60);
-
+		//Clear all marked FB 
+		resetArmedFB();
+		
+		//Mark which to arm
+		for (Squib s : step) {
+			armedFB[s.getFirebox()] = true;
+		}
+		
+		//Arm FB
+		for (int i = 0; i < 12; i++) {
+			if (armedFB[i]) {
+				armFB((byte) i);
+			}
+		}
+		
+		armed = false;
 		while (!armed) {
+			armed = true;
 			// I think we will need to ping each firebox with squibs to be fired
 			// to make sure all are ready
 			// Ping Firebox to see if charged & ready to fire
-			sendCommand((byte) 0x00, (byte) 0x22, (byte) 0x00);
+
+			for (int i = 0; i < 12; i++) {
+				if (armedFB[i]) {
+					sendCommand((byte) i, (byte) 0x22, (byte) 0x00);
+					armed = false;
+
+					Thread.sleep(5);
+				}
+			}
+			 
 			Thread.sleep(50);
 		}
 
@@ -261,17 +302,12 @@ public class SerialComm implements SerialPortEventListener {
 		// string of lunchboxes attached to it,
 		// and it is only capable of firing a single squib at a time (because it
 		// gets index 0 from squiblist)
-		sendData(setBoxes((byte) step.getSquibList().get(0).getLunchbox(),
-				(byte) 1, (byte) (step.getSquibList().get(0).getSquib() + 1)));
+		sendData(setBoxes((byte) step.getSquibList().get(0).getFirebox(),
+						  (byte) 1, 
+						  (byte) (step.getSquibList().get(0).getSquib() + 1)));
 		Thread.sleep(50);
 		fire();
 		Thread.sleep(5);
 
-	/*	try {
-			Thread.sleep(2000);
-		} catch (InterruptedException ie) {
-		}
-*/
-		//close();
 	}
 }
