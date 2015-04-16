@@ -278,7 +278,6 @@ public class SerialComm implements SerialPortEventListener {
 			}
 		}
 		
-		Thread.sleep(50);
 		armed = false;
 		while (!armed) {
 			armed = true;
@@ -294,14 +293,8 @@ public class SerialComm implements SerialPortEventListener {
 				}
 			}
 			 
-			Thread.sleep(50);
+			//Thread.sleep(10);
 		}
-
-		// add squibs to be fired from time step here
-		// Currently I think this will only work for 1 firebox hooked up with a
-		// string of lunchboxes attached to it,
-		// and it is only capable of firing a single squib at a time (because it
-		// gets index 0 from squiblist)
 		
 		// Temporary 2-d array to hold which lb's to fire on each fb
 		byte[][] lbsToFire = new byte[12][12];
