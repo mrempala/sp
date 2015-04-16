@@ -133,7 +133,7 @@ public class SerialComm implements SerialPortEventListener {
 				}
 
 				if (buffer[6].equals("2")) {
-					armedFB[Integer.getInteger(buffer[4])] = false;
+					armedFB[Integer.parseInt(buffer[3])] = false;
 				}
 
 				System.out.println(data);
@@ -184,7 +184,7 @@ public class SerialComm implements SerialPortEventListener {
 		return outBuffer;
 	}
 
-	private byte[] setBoxes(byte firebox, byte numBoxes, byte squib)// set n
+	private byte[] setBoxes(byte firebox, byte numBoxes, byte[] squibs)// set n
 																	// number of
 																	// boxes.
 	{
@@ -200,7 +200,7 @@ public class SerialComm implements SerialPortEventListener {
 		outBuffer[i++] = 0x00;// prmtr //6
 
 		for (int k = 0; k < numBoxes; k++) {
-			outBuffer[i++] = squib;
+			outBuffer[i++] = squibs[k];
 		}
 
 		outBuffer[2] = (byte) i;// pos of chksum
@@ -278,6 +278,7 @@ public class SerialComm implements SerialPortEventListener {
 			}
 		}
 		
+		Thread.sleep(50);
 		armed = false;
 		while (!armed) {
 			armed = true;
@@ -289,7 +290,6 @@ public class SerialComm implements SerialPortEventListener {
 				if (armedFB[i]) {
 					sendCommand((byte) i, (byte) 0x22, (byte) 0x00);
 					armed = false;
-
 					Thread.sleep(5);
 				}
 			}
@@ -302,12 +302,36 @@ public class SerialComm implements SerialPortEventListener {
 		// string of lunchboxes attached to it,
 		// and it is only capable of firing a single squib at a time (because it
 		// gets index 0 from squiblist)
-		sendData(setBoxes((byte) step.getSquibList().get(0).getFirebox(),
-						  (byte) 1, 
-						  (byte) (step.getSquibList().get(0).getSquib() + 1)));
+		
+		// Temporary 2-d array to hold which lb's to fire on each fb
+		byte[][] lbsToFire = new byte[12][12];
+		
+		// Hack for keeping track of the number of LBs
+		int[] numLbs = new int [12];
+		for (int i = 0; i < 12; i++) {
+			numLbs[i] = 0;
+		}
+		
+		for (Squib s : step) {
+			lbsToFire[s.getFirebox()][s.getLunchbox()] = (byte) (s.getSquib() + 1); // assign [fb][lb] to the value of the squib to be fired
+			armedFB[s.getFirebox()] = true; // Remark which fireboxes are to be fired
+			numLbs[s.getFirebox()]++;
+		}
+		
+		for (int i = 0; i < 12; i++) {
+			if (armedFB[i]){
+				sendData(setBoxes((byte) i, // FB address
+						  		  (byte) numLbs[i], // Number of lunchboxes
+						  		  lbsToFire[i])); // pass the ith FB array
+				System.out.println("Setting boxes: " + i + " " + numLbs[i] + " " + lbsToFire[i][0]);
+			}
+		}
+		//sendData(setBoxes((byte) step.getSquibList().get(0).getFirebox(),
+		//				  (byte) 1, 
+		//				  (byte) (step.getSquibList().get(0).getSquib() + 1)));
 		Thread.sleep(50);
 		fire();
 		Thread.sleep(5);
-
+	
 	}
 }
