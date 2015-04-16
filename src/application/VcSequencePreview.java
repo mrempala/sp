@@ -31,7 +31,8 @@ public class VcSequencePreview extends VcMainController implements Observer {
 	
 	@FXML TextField tfPortNum;
    
-	 
+	private BBSendTimelineToUniverse button = new BBSendTimelineToUniverse("COM1"); 
+	private boolean portSet = false;
 	SequentialTransition animationTimeline = new SequentialTransition();
 	
 	public void loadProjectInfo(){
@@ -84,10 +85,17 @@ public class VcSequencePreview extends VcMainController implements Observer {
 	}
 	
 	
-	BBSendTimelineToUniverse button = new BBSendTimelineToUniverse("COM");
+
 	@FXML public void sendToUniverse(ActionEvent event) {
-		String port = tfPortNum.getText();	
-		button.click();
+		
+		if (portSet) {
+			//lets pass the latest squence with each click
+			button.click(sequence.getTimeLine());
+		} else {
+			//Prompt users with a message that port isn't set
+			System.out.println("port not set");
+			
+		}
 	}
 
 	@Override
@@ -99,5 +107,14 @@ public class VcSequencePreview extends VcMainController implements Observer {
 		else if (arg1.equals("Pause")){
 			pauseTimelineAnimation();
 		}
+	}
+
+	//Have another menu to set com and if com issue set don't allow them to click send to universe
+		//Add FXML controller
+		
+	@FXML public void setComPort() {
+		String port = tfPortNum.getText();
+		button = new BBSendTimelineToUniverse(port, sequence.getTimeLine());
+		portSet = button.isConnected();
 	}
 }

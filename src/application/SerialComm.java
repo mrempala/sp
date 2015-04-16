@@ -5,6 +5,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 
 import gnu.io.CommPortIdentifier;
+import gnu.io.NoSuchPortException;
 import gnu.io.SerialPort;
 import gnu.io.SerialPortEvent;
 import gnu.io.SerialPortEventListener;
@@ -21,26 +22,26 @@ public class SerialComm implements SerialPortEventListener {
 	private boolean armed = false;
 
 	private BufferedReader input;
-	
+
 	/** The output stream to the port */
 	private OutputStream output;
-	
+
 	/** Milliseconds to block while waiting for port open */
 	private static final int TIME_OUT = 2000;
-	
+
 	/** Default bits per second for COM port. */
 
 	private static final int DATA_RATE = 250000;
 
-	public SerialComm(String comPort) {
-		data  = new String();
+	public SerialComm(String comPort) throws NoSuchPortException {
+		data = new String();
 		buffer = new String[PACKET_SIZE];
 		this.comPort = comPort;
-		
+
 		initialize();
 	}
-	
-	private void initialize() {
+
+	private void initialize() throws NoSuchPortException{
 		System.setProperty("gnu.io.rxtx.SerialPorts", comPort);
 
 		CommPortIdentifier portId = null;
@@ -59,7 +60,8 @@ public class SerialComm implements SerialPortEventListener {
 		}
 		if (portId == null) {
 			System.out.println("Could not find COM port.");
-			return;
+			throw new NoSuchPortException();
+			
 		}
 
 		try {
@@ -82,7 +84,7 @@ public class SerialComm implements SerialPortEventListener {
 
 		} catch (Exception e) {
 			System.err.println(e.toString());
-			
+
 		}
 
 		try {
@@ -224,7 +226,7 @@ public class SerialComm implements SerialPortEventListener {
 															// fire all
 	}
 
-	public void prepUniverse() throws Exception{
+	public void prepUniverse() throws Exception {
 		// send null command, no responds expected
 		sendCommand((byte) 0x00, (byte) 0x00, (byte) 0x00);
 
@@ -232,22 +234,38 @@ public class SerialComm implements SerialPortEventListener {
 		sendCommand((byte) 0x00, (byte) 0x77, (byte) 0x00);
 		Thread.sleep(12);
 	}
+
 	public void runTimeStep(TimeStep step) throws Exception {
-		
-			// Arms firebox and charge all attached lunchbox
-			sendCommand((byte) 0x00, (byte) 0xA2, (byte) 0x01);
-			Thread.sleep(60);
 
-			while (!armed) {
-				sendCommand((byte) 0x00, (byte) 0x22, (byte) 0x00);
-				Thread.sleep(50);
-			}
+		if (step.getSquibList().size() == 0) {
+			// If there's no squibs to be fired, get out of here and don't arm
+			// anything
+			return;
+		}
+		// Arms firebox and charge all attached lunchbox
+		// We will need to send a charge command for each connected firebox, not
+		// just 0x00, maybe we can arm all by sending 0xFF?
+		sendCommand((byte) 0x00, (byte) 0xA2, (byte) 0x01);
+		Thread.sleep(60);
 
-			//add squibs to be fired from time step here
-			sendData(setBoxes((byte) 0, (byte) 1, (byte)1));
+		while (!armed) {
+			// I think we will need to ping each firebox with squibs to be fired
+			// to make sure all are ready
+			// Ping Firebox to see if charged & ready to fire
+			sendCommand((byte) 0x00, (byte) 0x22, (byte) 0x00);
 			Thread.sleep(50);
-			fire();
-			Thread.sleep(5);
+		}
+
+		// add squibs to be fired from time step here
+		// Currently I think this will only work for 1 firebox hooked up with a
+		// string of lunchboxes attached to it,
+		// and it is only capable of firing a single squib at a time (because it
+		// gets index 0 from squiblist)
+		sendData(setBoxes((byte) step.getSquibList().get(0).getLunchbox(),
+				(byte) 1, (byte) step.getSquibList().get(0).getSquib()));
+		Thread.sleep(50);
+		fire();
+		Thread.sleep(5);
 
 		try {
 			Thread.sleep(2000);

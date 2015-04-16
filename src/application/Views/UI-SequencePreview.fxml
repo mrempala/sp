@@ -5,45 +5,44 @@
 <?import javafx.scene.layout.*?>
 <?import java.net.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" fx:controller="application.VcSequencePreview"
-prefHeight="500.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
-styleClass="root" id="Container">
+<BorderPane id="Container" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="1000.0" styleClass="root" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.VcSequencePreview">
    <center>
       <SplitPane dividerPositions="0.20641282565130262" prefHeight="160.0" prefWidth="200.0" BorderPane.alignment="CENTER">
         <items>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" maxWidth="200" id="SeqPreviewLeft" >
+          <AnchorPane id="SeqPreviewLeft" maxWidth="200" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <children>
                   <Label layoutX="14.0" layoutY="6.0" text="Sequence Info:" />
                   
-                  <Label layoutX="20.0" layoutY = "25.0" text = "Project Name:" />
-                  <Label fx:id="lbProjectName" layoutX="30.0" layoutY = "40.0" />
+                  <Label layoutX="20.0" layoutY="25.0" text="Project Name:" />
+                  <Label fx:id="lbProjectName" layoutX="30.0" layoutY="40.0" />
                   
-                  <Label layoutX="20.0" layoutY = "55.0" text = "Project Details:" />
-                  <Label fx:id="lbProjectDetails" layoutX="30.0" layoutY = "70.0" />
+                  <Label layoutX="20.0" layoutY="55.0" text="Project Details:" />
+                  <Label fx:id="lbProjectDetails" layoutX="30.0" layoutY="70.0" />
 
                </children>
           </AnchorPane>
-          <BorderPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" id="SeqPreviewRt" >
+          <BorderPane id="SeqPreviewRt" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <center>
                   <SplitPane dividerPositions="0.7341269841269841" layoutX="-3.0" layoutY="-4.0" orientation="VERTICAL" prefHeight="506.0" prefWidth="795.0">
                     <items>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" id="SeqPreviewRtTop">
+                      <AnchorPane id="SeqPreviewRtTop" minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                            <children>
                               <fx:include fx:id="visualSchematic" source="UI-Part-VisualSchematicView.fxml" />
-                              <HBox layoutX="19.0" layoutY="324.0" prefHeight="50.0" prefWidth="880.0" id="SeqEditorTimelineContainer">
+                              <HBox id="SeqEditorTimelineContainer" layoutX="19.0" layoutY="324.0" prefHeight="50.0" prefWidth="880.0">
                                  <children>
                                     <fx:include fx:id="timeLine" source="UI-Part-Timeline.fxml" />
                                  </children>
                               </HBox>
                            </children>
                         </AnchorPane>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="83.0" prefWidth="793.0" maxHeight="100" id="SeqPreviewRtBottom">
+                      <AnchorPane id="SeqPreviewRtBottom" maxHeight="100" minHeight="0.0" minWidth="0.0" prefHeight="83.0" prefWidth="793.0">
                            <children>
                               <!-- <Label layoutX="14.0" layoutY="14.0" text="Sequence Error Info" /> -->
-                              <Button mnemonicParsing="false" layoutX="14" layoutY="30" text="Send to Universe" onAction="#sendToUniverse" />
+                              <Button layoutX="14" layoutY="30" mnemonicParsing="false" onAction="#sendToUniverse" text="Send to Universe" />
                               
                               <Label layoutX="150" layoutY="14.0" text="Enter Port Number:" />
-                              <TextField fx:id="tfPortNum" prefHeight="25.0" prefWidth="35.0" layoutX="150" layoutY="30" />
+                              <TextField fx:id="tfPortNum" layoutX="150" layoutY="30" prefHeight="25.0" prefWidth="35.0" />
+                              <Button layoutX="202.0" layoutY="34.0" mnemonicParsing="false" onAction="#setComPort" text="Set Com" />
                            </children>
                         </AnchorPane>
                     </items>
