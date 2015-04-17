@@ -14,14 +14,17 @@ import java.util.Enumeration;
 
 public class SerialComm implements SerialPortEventListener {
 	private static final int PACKET_SIZE = 9;
+	private static final int NUM_FB = 16;
+	private static final int NUM_LB = 12;
+	
 	private String comPort;
 	private SerialPort serialPort;
 	private String data;
 	private String[] buffer;
 	private int numEvents = 0;
 	private boolean armed = false;
-    private static boolean[] armedFB = new boolean[12];
-    private int FBcount = 0;
+	private static boolean[] armedFB = new boolean[NUM_FB];
+	private int FBcount = 0;
 	private BufferedReader input;
 
 	/** The output stream to the port */
@@ -43,7 +46,7 @@ public class SerialComm implements SerialPortEventListener {
 		resetArmedFB();
 	}
 
-	public void initialize() throws NoSuchPortException{
+	public void initialize() throws NoSuchPortException {
 		System.setProperty("gnu.io.rxtx.SerialPorts", comPort);
 
 		CommPortIdentifier portId = null;
@@ -63,7 +66,7 @@ public class SerialComm implements SerialPortEventListener {
 		if (portId == null) {
 			System.out.println("Could not find COM port.");
 			throw new NoSuchPortException();
-			
+
 		}
 
 		try {
@@ -185,8 +188,9 @@ public class SerialComm implements SerialPortEventListener {
 	}
 
 	private byte[] setBoxes(byte firebox, byte numBoxes, byte[] squibs)// set n
-																	// number of
-																	// boxes.
+																		// number
+																		// of
+																		// boxes.
 	{
 		// clearMemory(outBuffer,
 		int i = 0;
@@ -237,8 +241,8 @@ public class SerialComm implements SerialPortEventListener {
 		sendCommand((byte) 0x00, (byte) 0x77, (byte) 0x00);
 		Thread.sleep(12);
 	}
-	
-	private void armFB(byte address){
+
+	private void armFB(byte address) {
 		sendCommand(address, (byte) 0xA2, (byte) 0x01);
 		try {
 			Thread.sleep(5);
@@ -246,38 +250,47 @@ public class SerialComm implements SerialPortEventListener {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 	}
 
 	private void resetArmedFB() {
-		for (int i = 0; i < 12 ; i++) { 
+		for (int i = 0; i < 12; i++) {
 			armedFB[i] = false;
 		}
 	}
+
 	public void runTimeStep(TimeStep step) throws Exception {
+		// Temporary 2-d array to hold which lb's to fire on each fb
+		byte[][] lbsToFire = new byte[NUM_FB][NUM_LB];
+
+		// Hack for keeping track of the number of LBs
+		int[] numLbs = new int[NUM_LB];
+
 		if (step.getSquibList().size() == 0) {
 			// If there's no squibs to be fired, get out of here and don't arm
 			// anything
+			Thread.sleep(35);
 			return;
 		}
 		// Arms firebox and charge all attached lunchbox
 		// We will need to send a charge command for each connected firebox, not
 		// just 0x00, maybe we can arm all by sending 0xFF?
-		//Clear all marked FB 
+		// Clear all marked FB
 		resetArmedFB();
-		
-		//Mark which to arm
+
+		// Mark which to arm
 		for (Squib s : step) {
 			armedFB[s.getFirebox()] = true;
 		}
-		
-		//Arm FB
-		for (int i = 0; i < 12; i++) {
+
+		// Arm FB
+		for (int i = 0; i < NUM_FB; i++) {
 			if (armedFB[i]) {
 				armFB((byte) i);
 			}
 		}
-		
+        
+		int ping = 0;
 		armed = false;
 		while (!armed) {
 			armed = true;
@@ -285,46 +298,50 @@ public class SerialComm implements SerialPortEventListener {
 			// to make sure all are ready
 			// Ping Firebox to see if charged & ready to fire
 
-			for (int i = 0; i < 12; i++) {
+			for (int i = 0; i < NUM_FB; i++) {
 				if (armedFB[i]) {
 					sendCommand((byte) i, (byte) 0x22, (byte) 0x00);
 					armed = false;
 					Thread.sleep(5);
 				}
 			}
-			 
-			//Thread.sleep(10);
+			ping++;
+			
+			if (ping > 100) {
+				return;
+			}
+            
+			Thread.sleep(10);
 		}
-		
-		// Temporary 2-d array to hold which lb's to fire on each fb
-		byte[][] lbsToFire = new byte[12][12];
-		
-		// Hack for keeping track of the number of LBs
-		int[] numLbs = new int [12];
-		for (int i = 0; i < 12; i++) {
+
+		for (int i = 0; i < NUM_LB; i++) {
 			numLbs[i] = 0;
 		}
-		
+
 		for (Squib s : step) {
-			lbsToFire[s.getFirebox()][s.getLunchbox()] = (byte) (s.getSquib() + 1); // assign [fb][lb] to the value of the squib to be fired
-			armedFB[s.getFirebox()] = true; // Remark which fireboxes are to be fired
+			lbsToFire[s.getFirebox()][s.getLunchbox()] = (byte) (s.getSquib() + 1); 
+			
+			armedFB[s.getFirebox()] = true; // Remark which fireboxes are to be
+											// fired
 			numLbs[s.getFirebox()]++;
 		}
-		
-		for (int i = 0; i < 12; i++) {
-			if (armedFB[i]){
+
+		for (int i = 0; i < NUM_FB; i++) {
+			if (armedFB[i]) {
 				sendData(setBoxes((byte) i, // FB address
-						  		  (byte) numLbs[i], // Number of lunchboxes
-						  		  lbsToFire[i])); // pass the ith FB array
-				System.out.println("Setting boxes: " + i + " " + numLbs[i] + " " + lbsToFire[i][0]);
+						(byte) numLbs[i], // Number of lunchboxes
+						lbsToFire[i])); // pass the ith FB array
+				/*System.out.println("Setting boxes: " + i + " " + numLbs[i]
+						+ " " + lbsToFire[i][0]);*/
+				Thread.sleep(5);
 			}
 		}
-		//sendData(setBoxes((byte) step.getSquibList().get(0).getFirebox(),
-		//				  (byte) 1, 
-		//				  (byte) (step.getSquibList().get(0).getSquib() + 1)));
-		Thread.sleep(50);
+		// sendData(setBoxes((byte) step.getSquibList().get(0).getFirebox(),
+		// (byte) 1,
+		// (byte) (step.getSquibList().get(0).getSquib() + 1)));
+		//Thread.sleep(50);
 		fire();
 		Thread.sleep(5);
-	
+
 	}
 }
