@@ -304,14 +304,18 @@ public class SerialComm implements SerialPortEventListener {
 					armed = false;
 					Thread.sleep(5);
 				}
-			}
+			} 
 			ping++;
 			
 			if (ping > 100) {
 				return;
 			}
             
-			Thread.sleep(10);
+			if (!armed) {
+				Thread.sleep(10);
+			} 
+				
+			
 		}
 
 		for (int i = 0; i < NUM_LB; i++) {
