@@ -23,6 +23,7 @@ public class VcSetupSquibGroups extends VcMainController{
 	
 	@FXML Button button_loadSequencePreview;
 	@FXML Button button_setGroup;
+	@FXML Button button_newGroup;
 	@FXML Pane sceneContainer;
 	@FXML AnchorPane squibsToPlace;
 	@FXML Label label_message;
@@ -41,6 +42,10 @@ public class VcSetupSquibGroups extends VcMainController{
                 String elements[] = newValue.split(" ");
                 groupToEdit = Integer.parseInt(elements[1]);
                 selectSquibGroup(groupToEdit);
+                
+                // Disable buttons to ensure user saves group before continuing
+        		button_newGroup.setDisable(true);
+        		button_loadSequencePreview.setDisable(true);
 		    }
 		});
 	}
@@ -70,6 +75,10 @@ public class VcSetupSquibGroups extends VcMainController{
 		
 		label_message.setText("  Created Group " + groupToEdit + ".  ");
 		button_setGroup.setDisable(false);
+		
+		// Disable buttons to ensure user saves group before continuing
+		button_newGroup.setDisable(true);
+		button_loadSequencePreview.setDisable(true);
 	}
 	
 	@FXML
@@ -105,6 +114,10 @@ public class VcSetupSquibGroups extends VcMainController{
 		}
 		
 		label_message.setText("  Group " + groupToEdit + " updated.  ");
+		
+		// Reenable buttons to let the user continue with setup
+		button_newGroup.setDisable(false);
+		button_loadSequencePreview.setDisable(false);
 	}
 	
 	public void selectSquibGroup(int index){

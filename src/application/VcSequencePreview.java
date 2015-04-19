@@ -12,6 +12,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.util.Duration;
@@ -32,9 +33,12 @@ public class VcSequencePreview extends VcMainController implements Observer {
 	@FXML Button buttonSendToUniverse;
 	
 	@FXML TextField tfPortNum;
+	@FXML TextArea taUniverseFeedback;
    
 	private BBSendTimelineToUniverse button = new BBSendTimelineToUniverse("COM1"); 
 	private boolean portSet = false;
+	private String universeFeedback = "";
+	
 	SequentialTransition animationTimeline = new SequentialTransition();
 	
 	public void loadProjectInfo(){
@@ -99,8 +103,9 @@ public class VcSequencePreview extends VcMainController implements Observer {
 			
 		} else {
 			//Prompt users with a message that port isn't set
+			universeFeedback += "Error: Port not set!" + System.getProperty("line.separator");
+			taUniverseFeedback.setText(universeFeedback);
 			System.out.println("port not set");
-			
 		}
 	}
 

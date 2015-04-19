@@ -37,12 +37,15 @@
                         </AnchorPane>
                       <AnchorPane id="SeqPreviewRtBottom" maxHeight="100" minHeight="0.0" minWidth="0.0" prefHeight="83.0" prefWidth="793.0">
                            <children>
-                              <!-- <Label layoutX="14.0" layoutY="14.0" text="Sequence Error Info" /> -->
-                              <Button layoutX="14" layoutY="30" mnemonicParsing="false" onAction="#sendToUniverse" text="Send to Universe" fx:id="buttonSendToUniverse"/>
+                              <Label layoutX="15" layoutY="7.0" text="Enter Port Number:" />
+                              <TextField fx:id="tfPortNum" layoutX="15" layoutY="25" prefHeight="25.0" prefWidth="35.0" />
+                              <Button layoutX="65.0" layoutY="25.0" mnemonicParsing="false" onAction="#setComPort" text="Set Com Port" />
                               
-                              <Label layoutX="150" layoutY="14.0" text="Enter Port Number:" />
-                              <TextField fx:id="tfPortNum" layoutX="150" layoutY="30" prefHeight="25.0" prefWidth="35.0" />
-                              <Button layoutX="202.0" layoutY="30.0" mnemonicParsing="false" onAction="#setComPort" text="Set Com Port" />
+                              <Button layoutX="15" layoutY="60" mnemonicParsing="false" onAction="#sendToUniverse" text="Send to Universe" fx:id="buttonSendToUniverse"/>
+                              
+                              <Label layoutX="215" layoutY="30" text="Universe" />
+                              <Label layoutX="215" layoutY="45" text="feedback:" />
+                              <TextArea fx:id="taUniverseFeedback" layoutX="280" layoutY="7.0" prefHeight="80.0" prefWidth="550.0" />
                            </children>
                         </AnchorPane>
                     </items>
