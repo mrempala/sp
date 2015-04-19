@@ -69,7 +69,7 @@
 
 /* Notification Messages */
 .notification {
-	-fx-background-color: lightgreen;
+	-fx-background-color: green;
 	-fx-font-weight: bold;
 }
 

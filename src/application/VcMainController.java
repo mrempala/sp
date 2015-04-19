@@ -57,7 +57,7 @@ public class VcMainController implements Initializable{
             VcSetup newProjectController = loader.<VcSetup>getController();
     	    newProjectController.setSequence(sequence);
     	    
-            Scene scene = new Scene(root, 390, 230);
+            Scene scene = new Scene(root, 410, 230);
             Stage stage = new Stage();
             stage.setTitle("Setup: Project Details");
             stage.setScene(scene);
@@ -230,7 +230,7 @@ public class VcMainController implements Initializable{
         // Register the sequence preview as an observer of the time line to get play and pause events
         seqPreviewController.timeLineController.addObserver(seqPreviewController);
         
-        Scene scene = new Scene(root, 1081, 500);
+        Scene scene = new Scene(root, 1081, 550);
         Stage stage = new Stage();
         stage.setTitle("Sequence Preview");
         stage.setScene(scene);

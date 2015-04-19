@@ -28,7 +28,7 @@
                       <AnchorPane id="SeqPreviewRtTop" minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                            <children>
                               <fx:include fx:id="visualSchematic" source="UI-Part-VisualSchematicView.fxml" />
-                              <HBox id="SeqEditorTimelineContainer" layoutX="19.0" layoutY="324.0" prefHeight="50.0" prefWidth="880.0">
+                              <HBox id="SeqEditorTimelineContainer" layoutX="19.0" layoutY="324.0" prefHeight="60.0" prefWidth="880.0">
                                  <children>
                                     <fx:include fx:id="timeLine" source="UI-Part-Timeline.fxml" />
                                  </children>
@@ -42,7 +42,7 @@
                               
                               <Label layoutX="150" layoutY="14.0" text="Enter Port Number:" />
                               <TextField fx:id="tfPortNum" layoutX="150" layoutY="30" prefHeight="25.0" prefWidth="35.0" />
-                              <Button layoutX="202.0" layoutY="34.0" mnemonicParsing="false" onAction="#setComPort" text="Set Com" />
+                              <Button layoutX="202.0" layoutY="30.0" mnemonicParsing="false" onAction="#setComPort" text="Set Com Port" />
                            </children>
                         </AnchorPane>
                     </items>

@@ -11,6 +11,7 @@
 	<ScrollPane prefHeight="150.0" prefWidth="760.0">
     <content>
 		<VBox fx:id="timelineContainer" id="Timeline" layoutX="40.0">
+			<Pane id="padding-pane" prefHeight="5.0" />
 			<Pane fx:id="timelinePane" prefHeight="0.0" prefWidth="675.0"  />
 		</VBox>
 	</content>

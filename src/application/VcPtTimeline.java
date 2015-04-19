@@ -94,25 +94,8 @@ public class VcPtTimeline extends Observable {
     	
     	timelineLength = stepSize * length;
     	
-    	if ((length/10000) >= 1) {
-    		mark = 1000;
-    	}
-    	else if ((length/5000) >= 1) {
-    		mark = 500;
-    	}
-    	else if ((length/2000) >= 1) {
-    		mark = 200;
-    	}
-    	else if ((length/1000) >= 1) {
-    		mark = 100;
-    	}
-    	else if((length/100) >= 1) {
-    		mark = 10;
-    	}
-    	else if ((length/10) >= 1){
-    		mark = 5;
-    	}
-    	else {
+    	mark = length / 10;
+    	if (mark == 0) {
     		mark = 1;
     	}
     	
