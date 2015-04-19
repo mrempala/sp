@@ -23,7 +23,7 @@ public class BBSendTimelineToUniverse implements IButtonBehavior {
 		//this.loopy = new Thread(this);
 		
 		try {
-			this.serialComm = new SerialComm("COM" + portNum);
+			this.serialComm = new SerialComm("COM" + this.portNum);
 			connected = true;
 		} catch (NoSuchPortException e) {
 			connected = false;
@@ -37,7 +37,7 @@ public class BBSendTimelineToUniverse implements IButtonBehavior {
 		this.timeLine = timeLine;
 		
 		try {
-			this.serialComm = new SerialComm("COM" + portNum);
+			this.serialComm = new SerialComm("COM" + this.portNum);
 			connected = true;
 		} catch (NoSuchPortException e) {
 			connected = false;

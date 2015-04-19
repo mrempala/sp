@@ -24,7 +24,6 @@ public class SerialComm implements SerialPortEventListener {
 	private int numEvents = 0;
 	private boolean armed = false;
 	private static boolean[] armedFB = new boolean[NUM_FB];
-	private int FBcount = 0;
 	private BufferedReader input;
 
 	/** The output stream to the port */
@@ -50,6 +49,7 @@ public class SerialComm implements SerialPortEventListener {
 		System.setProperty("gnu.io.rxtx.SerialPorts", comPort);
 
 		CommPortIdentifier portId = null;
+		@SuppressWarnings("rawtypes")
 		Enumeration portEnum = CommPortIdentifier.getPortIdentifiers();
 
 		// First, Find an instance of serial port as set in PORT_NAMES.
@@ -172,25 +172,7 @@ public class SerialComm implements SerialPortEventListener {
 		return sum;
 	}
 
-	private byte[] ping(byte box) {
-		int i = 0;
-		byte[] outBuffer = new byte[9];
-		outBuffer[i++] = (byte) 0xAA;
-		outBuffer[i++] = box;
-		outBuffer[i++] = 0x07;
-		outBuffer[i++] = (byte) 0x80;
-		outBuffer[i++] = (byte) 0x80;
-		outBuffer[i++] = 0x77; // ping command
-		outBuffer[i++] = 0x00;
-		outBuffer[i++] = (byte) (~byteSum(outBuffer, i - 1) + 1);
-		outBuffer[i++] = 0x0A;
-		return outBuffer;
-	}
-
-	private byte[] setBoxes(byte firebox, byte numBoxes, byte[] squibs)// set n
-																		// number
-																		// of
-																		// boxes.
+	private byte[] setBoxes(byte firebox, byte numBoxes, byte[] squibs)// set n number of boxes.
 	{
 		// clearMemory(outBuffer,
 		int i = 0;
@@ -208,11 +190,7 @@ public class SerialComm implements SerialPortEventListener {
 		}
 
 		outBuffer[2] = (byte) i;// pos of chksum
-		outBuffer[i++] = (byte) ((~byteSum(outBuffer, i - 1)) + 1); // the sum
-																	// from 0 to
-																	// the last
-																	// payload
-																	// byte
+		outBuffer[i++] = (byte) ((~byteSum(outBuffer, i - 1)) + 1); // the sum from 0 to the last payload byte
 		outBuffer[i++] = 0x0A;
 		return outBuffer;
 	}
@@ -229,8 +207,7 @@ public class SerialComm implements SerialPortEventListener {
 	}
 
 	private void fire() {
-		sendCommand((byte) 0xFF, (byte) 0xFA, (byte) 0x00); // every address,
-															// fire all
+		sendCommand((byte) 0xFF, (byte) 0xFA, (byte) 0x00); // every address, fire all
 	}
 
 	public void prepUniverse() throws Exception {
@@ -272,9 +249,7 @@ public class SerialComm implements SerialPortEventListener {
 			Thread.sleep(35);
 			return;
 		}
-		// Arms firebox and charge all attached lunchbox
-		// We will need to send a charge command for each connected firebox, not
-		// just 0x00, maybe we can arm all by sending 0xFF?
+
 		// Clear all marked FB
 		resetArmedFB();
 
@@ -294,10 +269,8 @@ public class SerialComm implements SerialPortEventListener {
 		armed = false;
 		while (!armed) {
 			armed = true;
-			// I think we will need to ping each firebox with squibs to be fired
-			// to make sure all are ready
+			
 			// Ping Firebox to see if charged & ready to fire
-
 			for (int i = 0; i < NUM_FB; i++) {
 				if (armedFB[i]) {
 					sendCommand((byte) i, (byte) 0x22, (byte) 0x00);

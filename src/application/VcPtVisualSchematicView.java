@@ -1,16 +1,13 @@
 package application;
 
 import java.net.URL;
-import java.util.List;
 import java.util.ResourceBundle;
-import java.util.ArrayList;
 
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
-import javafx.scene.effect.BlendMode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
