@@ -157,6 +157,9 @@ public class VcSequenceEditor extends VcMainController implements Observer {
 		else if (s.equals("alternate")){
 			numTimesteps = sequence.loadUniverseAlternate(u);
 		}
+		else if (s.equals("playMusic")) {
+			numTimesteps = sequence.loadUniverseMusic(u, rate, squibGroup);
+		}
 		else {
 			// Clear the timeline
 			sequence.getTimeLine().clear();
