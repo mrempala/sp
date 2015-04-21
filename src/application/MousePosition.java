@@ -90,7 +90,7 @@ public class MousePosition
 	
 	public void clear()
 	{
-		setStartX(0);
-		setStartY(0);
+		mStartX = mStartY = mEndX = mEndY = oX = oY = 0.0;
 	}
 }
+
