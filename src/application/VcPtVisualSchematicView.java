@@ -442,7 +442,7 @@ public class VcPtVisualSchematicView implements Initializable
 	   fireboxText.setY(y + 20);
 	   fireboxText.setText("Firebox " + Integer.toString(fb.getId()));
 	 
-		universeSchematic.getChildren().add(resetB);
+		//universeSchematic.getChildren().add(resetB);
 	   universeSchematic.getChildren().add(r);
 	   universeSchematic.getChildren().add(fireboxText);
         
