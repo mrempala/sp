@@ -19,3 +19,6 @@ hs_err_pid*
 
 # Removed XML files
 *.xml
+
+# Removed text files
+*.txt
