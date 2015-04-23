@@ -5,17 +5,27 @@
 
 <TabPane fx:controller="application.VcPtVisualSchematicView" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
 layoutX="20.0" layoutY="12.0" prefHeight="306.0" prefWidth="838.0" id="VisSchem" tabClosingPolicy="UNAVAILABLE">
-  <tabs>
-    <Tab text="Schematic">
-      <content>
-        <AnchorPane fx:id="schematicContainer" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" id="VisSchemSchematic" />
-      </content>
-    </Tab>
-    <Tab text="Visual">
-      <content>
-        <AnchorPane fx:id="visualContainer" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" id="VisSchemVisual" />
-      </content>
-    </Tab>
-  </tabs>
+ <tabs>
+   <Tab text="Schematic">
+     <content>
+      <VBox>
+       <AnchorPane fx:id="schematicContainer" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" id="VisSchemSchematic"/>
+       <Button layoutX = "15" layoutY = "25" mnemonicParsing = "false" text = "Origin" fx:id = "button_origin" />
+      </VBox>
+     </content>
+   </Tab>
+   <Tab text="Visual">
+     <content>
+      <VBox>
+       <AnchorPane fx:id="visualContainer" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" id="VisSchemVisual"/>
+       <HBox>
+        <Button layoutX = "15" layoutY = "25" mnemonicParsing = "false" text = "Reset" fx:id = "button_resetPositions" />
+        <Button layoutX = "15" layoutY = "40" mnemonicParsing = "false" text = "Deselect All" fx:id = "button_deselectAll" />  
+       </HBox>
+      </VBox>
+     </content>
+   </Tab>
+ </tabs>
 </TabPane>
+
 

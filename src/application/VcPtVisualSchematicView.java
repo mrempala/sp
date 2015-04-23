@@ -16,6 +16,7 @@ import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.geometry.Insets;
+
 import java.awt.MouseInfo;
 import java.awt.Point;
 
@@ -62,16 +63,6 @@ public class VcPtVisualSchematicView implements Initializable
 		
 		visualContainer.getChildren().clear();
 		
-		// reset button to reset all squibs to the default schematic view layout
-		Button resetB = new Button("Default");
-		
-		// deselect button deselects all squibs
-		Button deselectB = new Button("Deselect All");
-  	
-		VBox vertBox = new VBox(4);
-		vertBox.setPadding(new Insets(4.0)); // probably not going to work right! need new?
-		vertBox.getChildren().addAll(resetB, deselectB);
-		
 		// draw each squib in its correct location
 	      for (Firebox fb : universe.getFireboxList())
 	      {
@@ -86,7 +77,7 @@ public class VcPtVisualSchematicView implements Initializable
 		                r1.setWidth(10);
 		                r1.setHeight(15);
 		                r1.setFill(Color.GREY);
-		               
+		              
 		                if(s.getSelected() == 1)
 		                {
 		                	r1.setStroke(Color.BLUE);
@@ -95,9 +86,9 @@ public class VcPtVisualSchematicView implements Initializable
 		                {
 		                	r1.setStroke(Color.BLACK);
 		                }
-		              
+		             
 		                universeVisual.getChildren().add(r1);
-		              
+		             
 		                // squib becomes selected when clicked on so it can be moved
 		        		r1.setOnMouseClicked(new EventHandler<MouseEvent>()
 	  				{
@@ -124,7 +115,7 @@ public class VcPtVisualSchematicView implements Initializable
 		            }
 	          }
 	      }
-      
+    
 	   // draw selection box if user is holding down left button
 	      if(leftHeld == true)
 	      {
@@ -136,102 +127,20 @@ public class VcPtVisualSchematicView implements Initializable
 		        selectBox.setStroke(Color.RED);
 		        //selectBox.setFill(Color.TRANSPARENT); // make the selection box transparent
 		       	selectBox.setFill(Color.BLUE); // temp
-		      
+		     
 				//temp
+				System.out.println("s: x " + mouseInfo.getStartX() + mouseInfo.getEndX() + " y " + mouseInfo.getStartY() + mouseInfo.getEndX());
 		       	System.out.println("drawing selection box");
 		       	
 		        // add the selection box
 		        universeVisual.getChildren().add(selectBox);
 	      }
 
-      
+    
 	      // add the reset, origin, and deselect buttons
-	      universeVisual.getChildren().add(vertBox);
-	    
+	      //universeVisual.getChildren().add(vertBox);
+	   
 			visualContainer.getChildren().add(universeVisual);
-			
-			// when reset button is clicked, reset all squibs to default positions
-			// and deselect all squibs
-			resetB.setOnMouseClicked(new EventHandler<MouseEvent>()
-			{
-				@Override
-			    public void handle(MouseEvent t)
-			    {
-			    	if (!clickable)
-			    	{
-			    		return;
-			    	}
-			    	
-			    	// reset squibs
-			    	for (Firebox fb : universe.getFireboxList())
-			        {
-			            for (Lunchbox lb : fb.getLunchboxList())
-			            {
-				            for (Squib s : lb.getSquibList())
-				            {
-				            	s.setXPos(100 + (s.getLunchbox() * 100) + (12 * s.getSquib()));
-				            	s.setYPos(50 + (s.getFirebox() * 50));
-				            }
-				        }
-				    }
-			    	
-			    	// deselects all squibs
-					for (Firebox fb : universe.getFireboxList())
-					{
-						for (Lunchbox lb : fb.getLunchboxList())
-					    {
-							for (Squib s : lb.getSquibList())
-					        {
-								s.setSelected(0);
-					        }
-					    }
-					}
-			    	
-			    	numSelected = 0;
-			    	
-			    	// temp
-			    	System.out.println("All Squibs Deselected!");
-			    	
-			    	resetB.fire();
-			    	
-	           	universeVisual.getChildren().clear();
-	           	visualContainer.getChildren().clear();
-	           	
-	           	drawUniverseVisual();
-			    }
-			});
-			
-			// for now, when r is clicked, it deselects the squibs
-			deselectB.setOnMouseClicked(new EventHandler<MouseEvent>()
-			{
-			    @Override
-			    public void handle(MouseEvent t)
-			    {
-			    	if (!clickable)
-			    	{
-			    		return;
-			    	}
-			    	
-			    	// deselects all squibs
-					for (Firebox fb : universe.getFireboxList())
-					{
-						for (Lunchbox lb : fb.getLunchboxList())
-					    {
-							for (Squib s : lb.getSquibList())
-					        {
-								s.setSelected(0);
-					        }
-					    }
-					}
-			    	
-			    	numSelected = 0;
-			    	
-			    	// temp
-			    	System.out.println("All Squibs Deselected!");
-			    	
-			    	deselectB.fire();
-			    }
-			});
 
 			// sets the start of a mouse drag
 	      	visualContainer.setOnMouseClicked(new EventHandler<MouseEvent>()
@@ -249,11 +158,27 @@ public class VcPtVisualSchematicView implements Initializable
 		       		}
 		       		else
 		       		{
+		       			// if ctrl is not being held, clear previous selection
+			           	if(!t.isControlDown())
+			           	{
+			           		// deselects all squibs
+								for (Firebox fb : universe.getFireboxList())
+								{
+									for (Lunchbox lb : fb.getLunchboxList())
+								    {
+										for (Squib s : lb.getSquibList())
+								        {
+											s.setSelected(0);
+								        }
+								    }
+								}
+			           	}
+		           	
 		       			// get origin for potential selection box
 		       			Point mPoint = MouseInfo.getPointerInfo().getLocation();
 		       			mouseInfo.setStartX(mPoint.getX());
 				        mouseInfo.setStartY(mPoint.getY());
-				          
+				         
 				        leftHeld = true;
 		       		}
 	          	}
@@ -270,7 +195,7 @@ public class VcPtVisualSchematicView implements Initializable
 	          	if (!clickable)
 	          	{
 	          		return;
-	          	} //t.getButton() == MouseEvent.BUTTON3 might be the correct way
+	          	}
 	          	else if(t.getButton() == MouseButton.SECONDARY) // on right click
 	           {
 	           	//Point mPoint = MouseInfo.getPointerInfo().getLocation();
@@ -305,24 +230,29 @@ public class VcPtVisualSchematicView implements Initializable
 		                }
 	       			
 	       			mouseInfo.setStartX(mPoint.getX());
-		            	mouseInfo.setStartY(mPoint.getY());
+		            mouseInfo.setStartY(mPoint.getY());
 		            	
 	       			//mouseInfo.clear();
-	           	}                
+	           	}               
 	           	
-	           	universeVisual.getChildren().clear();
-	           	visualContainer.getChildren().clear();
-	           	
-	           	drawUniverseVisual();
-		            }
-		            else // it is a left click and being dragged, get update position
-		            {
-		            	mouseInfo.setEndX(mPoint.getX());
-			            mouseInfo.setEndY(mPoint.getY());
-		            }
+		           	universeVisual.getChildren().clear();
+		           	visualContainer.getChildren().clear();
+		           	
+		           	drawUniverseVisual();
+	            }
+	            else // it is a left click and being dragged, get update position
+	            {
+	            	// temp
+	            	System.out.println("updating drag selection...");
+	            	
+	            	mouseInfo.setEndX(mPoint.getX());
+		            mouseInfo.setEndY(mPoint.getY());
+		           
+		            // might need to call drawUniverseVisual(); here
+	            }
 	          }
 	      });
-	    
+	   
 	      visualContainer.setOnMouseReleased(new EventHandler<MouseEvent>()
 			{
 				double squibDifX;
@@ -337,27 +267,9 @@ public class VcPtVisualSchematicView implements Initializable
 	          	}
 
 				if(leftHeld == true)
-				{
-					/*
-					// if ctrl is not being held, clear previous selection
-		           	if(!t.isControlDown())
-		           	{
-		           		// deselects all squibs
-							for (Firebox fb : universe.getFireboxList())
-							{
-								for (Lunchbox lb : fb.getLunchboxList())
-							    {
-									for (Squib s : lb.getSquibList())
-							        {
-										s.setSelected(0);
-							        }
-							    }
-							}
-		           	}
-		    	   */
-					
+				{	
 		    	    numSelected = 0;
-		    	   
+		    	  
 					// select all squibs within the selection box
 					for (Firebox fb : universe.getFireboxList())
 		            {
@@ -377,7 +289,7 @@ public class VcPtVisualSchematicView implements Initializable
 		    	            }
 		    	        }
 		    	    }
-		        	   
+		        	  
 					leftHeld = false;
 					
 					drawUniverseVisual();
@@ -388,8 +300,9 @@ public class VcPtVisualSchematicView implements Initializable
 		}
 	
 	public void drawUniverseSchematic(){
-		// Clear any previously loaded universe schematic data
+
 		schematicContainer.getChildren().clear();
+		
 		
 		// x and y location to draw components, xt is used to reset x back to original value
 		int x, y, xt;
@@ -398,16 +311,16 @@ public class VcPtVisualSchematicView implements Initializable
 		x = 50 + (int)mouseInfo.offX();
 		y = 50 + (int)mouseInfo.offY();
 		xt = x;
-    
+  
 		// reset button to reset view to default origin
 		Button resetB = new Button("Reset");
 		
 		//Draw some schematic layout stuff
 
-      	boolean firstFirebox = true;
-      	for (Firebox fb : universe.getFireboxList()){
+     	boolean firstFirebox = true;
+     	for (Firebox fb : universe.getFireboxList()){
 		// Draw Firebox shape
-      	if (!firstFirebox){
+     	if (!firstFirebox){
 	  		//Draw schematic connector between FB's
 	          Line l = new Line();
 	          l.setStrokeWidth(2);
@@ -415,19 +328,19 @@ public class VcPtVisualSchematicView implements Initializable
 	          l.setStartY(y-20);
 	          l.setEndX(x + 40);
 	          l.setEndY(y - 1);
-	        
+	       
 	          Circle c = new Circle();
 	          c.setCenterX(x + 40);
 	          c.setCenterY(y - 1);
 	          c.setRadius(3);
 	          c.setFill(Color.BLACK);
-	        
+	       
 	          universeSchematic.getChildren().add(l);
 	          universeSchematic.getChildren().add(c);
-      	}
-     
+     	}
+   
 	   firstFirebox = false;
-	  
+	 
 	   Rectangle r = new Rectangle();
 	   r.setWidth(80);
 	   r.setHeight(30);
@@ -435,41 +348,40 @@ public class VcPtVisualSchematicView implements Initializable
 	   r.setY(y);
 	   r.setStroke(Color.BLACK);
 	   r.getStyleClass().add("universe-green");
-	  
+	 
 	   Text fireboxText = new Text();
 	   fireboxText.setFill(Color.BLACK);
 	   fireboxText.setX(x + 15);
 	   fireboxText.setY(y + 20);
 	   fireboxText.setText("Firebox " + Integer.toString(fb.getId()));
-	 
-		//universeSchematic.getChildren().add(resetB);
+	
 	   universeSchematic.getChildren().add(r);
 	   universeSchematic.getChildren().add(fireboxText);
-        
-          for (Lunchbox lb : fb.getLunchboxList())
-          {
-          	// Draw Lunchboxes //
-          	
-          	// Draw lunchbox connecting wire
+      
+         for (Lunchbox lb : fb.getLunchboxList())
+         {
+         	// Draw Lunchboxes //
+         	
+         	// Draw lunchbox connecting wire
 	            Line l2 = new Line();
 	            l2.setStrokeWidth(2);
 	            l2.setStartX(x + 80);
 	            l2.setStartY(y + 14);
 	            l2.setEndX(x + 90);
 	            l2.setEndY(y + 14);
-	          
+	         
 	            //Draw connecting circle
 	            Circle c2 = new Circle();
 	            c2.setCenterX(x + 90);
 	            c2.setCenterY(y + 14);
 	            c2.setRadius(3);
 	            c2.setFill(Color.BLACK);
-	          
+	         
 	            universeSchematic.getChildren().add(l2);
 	            universeSchematic.getChildren().add(c2);
-	          
+	         
 	            int squibcount = 0;
-	            
+	           
 	            for (Squib s : lb.getSquibList())
 	            {
 					// used to draw each squib in appropriate channel
@@ -490,14 +402,14 @@ public class VcPtVisualSchematicView implements Initializable
 					    t.setX(cX + 2);
 					    t.setY(y + 19);
 					    t.setText(Integer.toString(s.getSquib()));
-					  
+					 
 					    universeSchematic.getChildren().add(squibRectangle);
 					    universeSchematic.getChildren().add(t);
-					  
+					 
 					    //x += 10;
 					squibcount++;
 	            }
-	          
+	         
 	            // set squibcount to 0 to draw in all boxes
 	            squibcount = 0;
 	            // Draw blank squibs to keep alignment easy to maintain
@@ -509,12 +421,12 @@ public class VcPtVisualSchematicView implements Initializable
 		            squibRectangle.setHeight(15);
 		            squibRectangle.setStroke(Color.BLACK);
 		            squibRectangle.setFill(Color.TRANSPARENT);
-		          
+		         
 		            universeSchematic.getChildren().add(squibRectangle);
 		            x += 10;
 	            	squibcount++;
 	            }
-	          
+	         
 	            // Draw lunchbox label x-x
 	            Text id = new Text();
 		        id.setFill(Color.WHITESMOKE);
@@ -524,89 +436,144 @@ public class VcPtVisualSchematicView implements Initializable
 		        id.setY(y + 35);
 		        id.setText(lb.getGrandParent() + "-" + lb.getId());
 		        universeSchematic.getChildren().add(id);
-		      
+		     
 		        x += 13;
-          }
-      	x = xt;
-      	
-          y = y + 52;  
-      }
-    
-      schematicContainer.getChildren().add(universeSchematic);
-    
-   	// sets the start of a mouse drag
-      schematicContainer.setOnMouseClicked(new EventHandler<MouseEvent>()
-  	{
-          @Override
-          public void handle(MouseEvent t)
-          {
-          	if (!clickable)
-          	{
-          		return;
-          	}
-          	mouseInfo.start = true;    
-          }
-      });
-    
+         }
+     	x = xt;
+     	
+         y = y + 52; 
+     }
+  
+     schematicContainer.getChildren().add(universeSchematic);
+  
+  	// sets the start of a mouse drag
+     schematicContainer.setOnMouseClicked(new EventHandler<MouseEvent>()
+ 	{
+         @Override
+         public void handle(MouseEvent t)
+         {
+         	if (!clickable)
+         	{
+         		return;
+         	}
+         	mouseInfo.start = true;   
+         }
+     });
+  
 		// Setup an event listener to detect when mouse has been dragged
-      schematicContainer.setOnMouseDragged(new EventHandler<MouseEvent>()
+     schematicContainer.setOnMouseDragged(new EventHandler<MouseEvent>()
 		{
-          @Override
-          public void handle(MouseEvent t)
-          {
-          	if (!clickable)
-          	{
-          		return;
-          	}
+         @Override
+         public void handle(MouseEvent t)
+         {
+         	if (!clickable)
+         	{
+         		return;
+         	}
 
-          	Point mPoint = MouseInfo.getPointerInfo().getLocation();
-          	
-          	if(mouseInfo.start == true)
-          	{
+         	Point mPoint = MouseInfo.getPointerInfo().getLocation();
+         	
+         	if(mouseInfo.start == true)
+         	{
 	            	mouseInfo.setStartX(mPoint.getX());
 	            	mouseInfo.setStartY(mPoint.getY());
 	            	
 	            	mouseInfo.start = false;
-          	}
-          	else
-          	{
+         	}
+         	else
+         	{
 	            	mouseInfo.setEndX(mPoint.getX());
 	            	mouseInfo.setEndY(mPoint.getY());
 	            	mouseInfo.calcOff();
 	            	
 	            	mouseInfo.start = true;
-          	}
-          	
-          	//System.out.println("Mouse has been moved! ");
-          	//System.out.println(mouseInfo.getEndX() + " " + mouseInfo.getEndY());
-          	
-          	universeSchematic.getChildren().clear();
-          	schematicContainer.getChildren().clear();
-          	
-          	drawUniverseSchematic();
-          }
-      });
-     
-      // reset view to default (which is the origin)
-		resetB.setOnMouseClicked(new EventHandler<MouseEvent>()
-		{
-		    @Override
-		    public void handle(MouseEvent t)
-		    {
-		    	if (!clickable)
-		    	{
-		    		return;
-		    	}
-		    	
-				mouseInfo.clear();
-		    	
-		    	resetB.fire();
-		    	
-		    	drawUniverseSchematic();
-		    }
-		});
+         	}
+         	
+         	//System.out.println("Mouse has been moved! ");
+         	//System.out.println(mouseInfo.getEndX() + " " + mouseInfo.getEndY());
+         	
+         	universeSchematic.getChildren().clear();
+         	schematicContainer.getChildren().clear();
+         	
+         	drawUniverseSchematic();
+         }
+     });
+   
+
 	}
 	
+	// reset view to default (which is the origin)
+    @FXML
+    public void goOrigin() // probably need to move outside
+    {	
+    	mouseInfo.clear();
+	    drawUniverseSchematic();
+	}
+    
+	// when reset button is clicked, reset all squibs to default positions
+	// and deselect all squibs
+	@FXML
+	public void resetPos() // might need to move this outside
+	{   	
+    	// reset squibs
+    	for (Firebox fb : universe.getFireboxList())
+        {
+            for (Lunchbox lb : fb.getLunchboxList())
+            {
+	            for (Squib s : lb.getSquibList())
+	            {
+	            	s.setXPos(100 + (s.getLunchbox() * 100) + (12 * s.getSquib()));
+	            	s.setYPos(50 + (s.getFirebox() * 50));
+	            }
+	        }
+	    }
+    	
+    	// deselects all squibs
+		for (Firebox fb : universe.getFireboxList())
+		{
+			for (Lunchbox lb : fb.getLunchboxList())
+		    {
+				for (Squib s : lb.getSquibList())
+		        {
+					s.setSelected(0);
+		        }
+		    }
+		}
+    	
+    	numSelected = 0;
+    	
+    	// temp
+    	System.out.println("All Squibs Deselected!");
+	    	
+       	universeVisual.getChildren().clear();
+       	visualContainer.getChildren().clear();
+       	
+       	drawUniverseVisual();
+	}
+	
+	// for now, when r is clicked, it deselects the squibs
+	@FXML
+	public void deselect() // might need to move outside
+	{   	
+    	// deselects all squibs
+		for (Firebox fb : universe.getFireboxList())
+		{
+			for (Lunchbox lb : fb.getLunchboxList())
+		    {
+				for (Squib s : lb.getSquibList())
+		        {
+					s.setSelected(0);
+		        }
+		    }
+		}
+    	
+    	numSelected = 0;
+    	
+    	// temp
+    	System.out.println("All Squibs Deselected!");
+    	
+	}
+				
 	public void drawFiringSquib(TimeStep timestep, TimeStep previousTimestep){
 		schematicContainer.getChildren().clear();
 		firingSquibs.getChildren().clear();
@@ -623,7 +590,7 @@ public class VcPtVisualSchematicView implements Initializable
 	        squibRectangle.setStroke(Color.BLACK);
 
 	        squibRectangle.getStyleClass().add("universe-firing");
-	      
+	     
 	        Text t = new Text();
 	        t.setFill(Color.BLACK);
 	        t.setX(x + 95 + (squib.getLunchbox() * 93) + ((squib.getChannel() - 1) * 10));
@@ -645,9 +612,9 @@ public class VcPtVisualSchematicView implements Initializable
 		        squibRectangle.setWidth(10);
 		        squibRectangle.setHeight(15);
 		        squibRectangle.setStroke(Color.BLACK);
-		      
+		     
 		        squibRectangle.getStyleClass().add("universe-green");
-		      
+		     
 		        Text t = new Text();
 		        t.setFill(Color.BLACK);
 		        t.setX(x + 95 + (squib.getLunchbox() * 93) + ((squib.getChannel() - 1) * 10));
@@ -659,6 +626,7 @@ public class VcPtVisualSchematicView implements Initializable
 			}
 		}
 		schematicContainer.getChildren().add(universeSchematic);
-      schematicContainer.getChildren().add(firingSquibs);
+     schematicContainer.getChildren().add(firingSquibs);
 	}
 }
+
