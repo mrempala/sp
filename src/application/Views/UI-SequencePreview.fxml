@@ -41,7 +41,7 @@
                               <TextField fx:id="tfPortNum" layoutX="15" layoutY="25" prefHeight="25.0" prefWidth="35.0" />
                               <Button layoutX="65.0" layoutY="25.0" mnemonicParsing="false" onAction="#setComPort" text="Set Com Port" />
                               
-                              <Button layoutX="15" layoutY="60" mnemonicParsing="false" onAction="#sendToUniverse" text="Send to Universe" fx:id="buttonSendToUniverse"/>
+                              <Button layoutX="15" layoutY="60" mnemonicParsing="false" disable="true" onAction="#sendToUniverse" text="Send to Universe" fx:id="buttonSendToUniverse"/>
                               
                               <Label layoutX="215" layoutY="30" text="Universe" />
                               <Label layoutX="215" layoutY="45" text="feedback:" />

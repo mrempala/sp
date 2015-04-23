@@ -6,6 +6,9 @@ import java.util.Observer;
 import javafx.animation.KeyFrame;
 import javafx.animation.SequentialTransition;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -33,11 +36,11 @@ public class VcSequencePreview extends VcMainController implements Observer {
 	@FXML Button buttonSendToUniverse;
 	
 	@FXML TextField tfPortNum;
-	@FXML TextArea taUniverseFeedback;
+	@FXML public TextArea taUniverseFeedback;
    
-	private BBSendTimelineToUniverse button = new BBSendTimelineToUniverse("COM1"); 
+	private BBSendTimelineToUniverse bbSendToUniverse = new BBSendTimelineToUniverse("COM1"); 
 	private boolean portSet = false;
-	private String universeFeedback = "";
+	public static String universeFeedback = "";
 	
 	SequentialTransition animationTimeline = new SequentialTransition();
 	
@@ -92,21 +95,46 @@ public class VcSequencePreview extends VcMainController implements Observer {
 	
 	
 
-	@FXML public void sendToUniverse(ActionEvent event) {
+	@FXML public void sendToUniverse(ActionEvent event) {		
+		bbSendToUniverse.click(sequence.getTimeLine());
+		// Require the user to reset their port if they want to run a sequence again
+		buttonSendToUniverse.setDisable(true);
+		portSet = false;
+	}
+	
+	@FXML public void setComPort() {
+		// Reset the universe output string
+		universeFeedback = "";
 		
-		if (portSet) {
-			//buttonSendToUniverse.setDisable(true);
-			//lets pass the latest squence with each click
-			button.click(sequence.getTimeLine());
+		String port = tfPortNum.getText();
+		bbSendToUniverse = new BBSendTimelineToUniverse(port, sequence.getTimeLine());
+		
+		// Setup an event listener to see when the we have a message from the unvierse thread
+		BBSendTimelineToUniverse.universeMessageProperty.addListener(new ChangeListener<String>() {
+			@Override
+		      public void changed(final ObservableValue<? extends String> observable,
+		          final String oldValue, final String newValue) {
 
-			//buttonSendToUniverse.setDisable(false);
-			
-		} else {
-			//Prompt users with a message that port isn't set
-			universeFeedback += "Error: Port not set!" + System.getProperty("line.separator");
+		          Platform.runLater(new Runnable() {
+		            @Override
+		            public void run() {
+		              taUniverseFeedback.setText(newValue);
+		            }
+		          });          
+
+		      }
+		    });
+		portSet = bbSendToUniverse.isConnected();
+		if (portSet) {
+			universeFeedback += ("COM Port Set!" + System.getProperty("line.separator"));
 			taUniverseFeedback.setText(universeFeedback);
-			System.out.println("port not set");
+			buttonSendToUniverse.setDisable(false);
 		}
+		else {
+			//Prompt users with a message that port isn't set
+			universeFeedback += ("Error: Port not found or cannot connect to universe!" + System.getProperty("line.separator"));
+			taUniverseFeedback.setText(universeFeedback);
+		}		
 	}
 
 	@Override
@@ -118,14 +146,5 @@ public class VcSequencePreview extends VcMainController implements Observer {
 		else if (arg1.equals("Pause")){
 			pauseTimelineAnimation();
 		}
-	}
-
-	//Have another menu to set com and if com issue set don't allow them to click send to universe
-		//Add FXML controller
-		
-	@FXML public void setComPort() {
-		String port = tfPortNum.getText();
-		button = new BBSendTimelineToUniverse(port, sequence.getTimeLine());
-		portSet = button.isConnected();
 	}
 }

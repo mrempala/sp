@@ -25,6 +25,7 @@ public class SerialComm implements SerialPortEventListener {
 	private boolean armed = false;
 	private static boolean[] armedFB = new boolean[NUM_FB];
 	private BufferedReader input;
+	private boolean errorDetected = false;
 
 	/** The output stream to the port */
 	private OutputStream output;
@@ -115,6 +116,7 @@ public class SerialComm implements SerialPortEventListener {
 	 * Handle an event on the serial port. Read the data and print it.
 	 */
 	public synchronized void serialEvent(SerialPortEvent oEvent) {
+		data = new String();
 		if (oEvent.getEventType() == SerialPortEvent.DATA_AVAILABLE) {
 			try {
 				String inputLine = null;
@@ -135,6 +137,14 @@ public class SerialComm implements SerialPortEventListener {
 					numEvents++;
 				}
 
+				// Try to detect if we're getting a bad packet.
+				// The first byte should be AA (header)
+				if ( !(buffer[0].equals("AA")) ){
+					errorDetected = true;
+				}
+				
+				// Switch the firebox in the armedFB array back to false
+				// signifying that it is charged and ready
 				if (buffer[6].equals("2")) {
 					armedFB[Integer.parseInt(buffer[3])] = false;
 				}
@@ -142,8 +152,6 @@ public class SerialComm implements SerialPortEventListener {
 				System.out.println(data);
 
 				numEvents = 0;
-				data = new String();
-
 			} catch (Exception e) {
 				System.err.println(e.toString());
 			}
@@ -160,10 +168,8 @@ public class SerialComm implements SerialPortEventListener {
 		}
 	}
 
-	private byte byteSum(byte victim[], int pos) // sum the elements of an array
-													// from 0 upto and inclusing
-													// pos. IE: check checksum
-													// at pos.
+	// sum the elements of an array from 0 upto and inclusing pos. IE: check checksum at pos.
+	private byte byteSum(byte victim[], int pos) 
 	{
 		byte sum = 0;
 		for (int i = 0; i <= pos; i++) {
@@ -172,7 +178,8 @@ public class SerialComm implements SerialPortEventListener {
 		return sum;
 	}
 
-	private byte[] setBoxes(byte firebox, byte numBoxes, byte[] squibs)// set n number of boxes.
+	// set numBoxes number of boxes to be fired off given firebox
+	private byte[] setBoxes(byte firebox, byte numBoxes, byte[] squibs)
 	{
 		// clearMemory(outBuffer,
 		int i = 0;
@@ -236,7 +243,7 @@ public class SerialComm implements SerialPortEventListener {
 		}
 	}
 
-	public void runTimeStep(TimeStep step) throws Exception {
+	public String runTimeStep(TimeStep step) throws Exception {
 		// Temporary 2-d array to hold which lb's to fire on each fb
 		byte[][] lbsToFire = new byte[NUM_FB][NUM_LB];
 
@@ -247,7 +254,7 @@ public class SerialComm implements SerialPortEventListener {
 			// If there's no squibs to be fired, get out of here and don't arm
 			// anything
 			Thread.sleep(35);
-			return;
+			return "  Blank timestep found\n";
 		}
 
 		// Clear all marked FB
@@ -270,8 +277,17 @@ public class SerialComm implements SerialPortEventListener {
 		while (!armed) {
 			armed = true;
 			
+			if (errorDetected) {
+				errorDetected = false;
+				return "\nThere was a problem with the received packet.  " +
+						"Expected header to start with AA but received packet " +
+						data + "\n";
+			}
+			
 			// Ping Firebox to see if charged & ready to fire
 			for (int i = 0; i < NUM_FB; i++) {
+				// If firebox needs to be armed but hasn't been set to 
+				// false by serial event handler, ping the box again
 				if (armedFB[i]) {
 					sendCommand((byte) i, (byte) 0x22, (byte) 0x00);
 					armed = false;
@@ -280,25 +296,30 @@ public class SerialComm implements SerialPortEventListener {
 			}
 			ping++;
 			
+			// If we haven't received a response, assume FB-LB is broken or not there so exit
 			if (ping > 100) {
-				return;
+				return "\nERROR: Error in arming Fireboxes. \n" +
+						"   This is likely due to non-existent Firebox, but could be due a to malformed packet\n" +
+						"   Last packet received: " + data + "\n";
 			}
             
 			Thread.sleep(10);
 		}
 
+		// Reset our LB count in prep for sending arm commands
 		for (int i = 0; i < NUM_LB; i++) {
 			numLbs[i] = 0;
 		}
 
+		// Figure out which FB's are to be fired
+		// and figure out which which squib to fire on each LB
 		for (Squib s : step) {
 			lbsToFire[s.getFirebox()][s.getLunchbox()] = (byte) (s.getSquib() + 1); 
-			
-			armedFB[s.getFirebox()] = true; // Remark which fireboxes are to be
-											// fired
+			armedFB[s.getFirebox()] = true; // Remark which fireboxes are to be fired
 			numLbs[s.getFirebox()]++;
 		}
 
+		// Send commands to mark LB squibs for each FB to be fired 
 		for (int i = 0; i < NUM_FB; i++) {
 			if (armedFB[i]) {
 				sendData(setBoxes((byte) i, // FB address
@@ -309,12 +330,13 @@ public class SerialComm implements SerialPortEventListener {
 				Thread.sleep(5);
 			}
 		}
-		// sendData(setBoxes((byte) step.getSquibList().get(0).getFirebox(),
-		// (byte) 1,
-		// (byte) (step.getSquibList().get(0).getSquib() + 1)));
 		//Thread.sleep(50);
+		
+		// Bombs away
 		fire();
 		Thread.sleep(5);
 
+		// If everything fired as expected, just return an empty string
+		return "";
 	}
 }
