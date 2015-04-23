@@ -41,7 +41,7 @@ public class VcPtVisualSchematicView implements Initializable
 	public Boolean clickable = true;
 	public Boolean leftHeld = false; // whether or not to be drawin the selected box
 	
-	public double width, height = 0;
+	public double width, height, startX, startY = 0;
 	
 	MousePosition mouseInfo = new MousePosition();
 	
@@ -130,83 +130,76 @@ public class VcPtVisualSchematicView implements Initializable
 			{
 				if (height > 0)
 				{
-					selectBox.setX(mouseInfo.getStartX() - 688);
-					selectBox.setY(mouseInfo.getStartY() - 295);
+					startX = mouseInfo.getStartX() - 688;
+					startY = mouseInfo.getStartY() - 295;
 				}
 				else
 				{
-					selectBox.setX(mouseInfo.getStartX() - 688);
-					selectBox.setY(mouseInfo.getStartY() - 295 + height);
+					startX = mouseInfo.getStartX() - 688;
+					startY = mouseInfo.getStartY() - 295 + height;
 				}
 			}
 			else
 			{
 				if(height > 0)
 				{
-					selectBox.setX(mouseInfo.getStartX() - 688 + width);
-					selectBox.setY(mouseInfo.getStartY() - 295);
+					startX = mouseInfo.getStartX() - 688 + width;
+					startY = mouseInfo.getStartY() - 295;
 				}
 				else
 				{
-					selectBox.setX(mouseInfo.getStartX() - 688 + width);
-					selectBox.setY(mouseInfo.getStartY() - 295 + height);
+					startX = mouseInfo.getStartX() - 688 + width;
+					startY = mouseInfo.getStartY() - 295 + height;
 				}
 			}
 			
+			selectBox.setX(startX);
+			selectBox.setY(startY);
 			selectBox.setWidth(Math.abs(width)); // need to confirm if it works for negative values
 			selectBox.setHeight(Math.abs(height));
 			selectBox.setStroke(Color.RED);
 			selectBox.setFill(Color.TRANSPARENT); // make the selection box transparent
-			 
-			//temp
-			System.out.println(selectBox.getWidth() + " " + selectBox.getHeight());
-			System.out.println("s: x " + mouseInfo.getStartX() + " " + mouseInfo.getEndX() + " " + mouseInfo.getDifX() + " y " + mouseInfo.getStartY() + " " + mouseInfo.getEndY() + " " + mouseInfo.getDifY());
-			System.out.println("drawing selection box");
 			
 			// add the selection box
 			universeVisual.getChildren().add(selectBox);
 		}
-
-    
-	      // add the reset, origin, and deselect buttons
-	      //universeVisual.getChildren().add(vertBox);
 	   
-			visualContainer.getChildren().add(universeVisual);
+		visualContainer.getChildren().add(universeVisual);
 
-			// sets the start of a mouse drag
-	      	visualContainer.setOnMouseClicked(new EventHandler<MouseEvent>()
-	  		{
-	          	@Override
-	          	public void handle(MouseEvent t)
-	          	{
-	          	if (!clickable)
-	          	{
-	          		return;
-	          	}
-					else if(t.getButton() == MouseButton.SECONDARY) // on right click
-					{
-						mouseInfo.start = true;
-		       		}
-		       		else
-		       		{
-		       			// if ctrl is not being held, clear previous selection
-			           	if(!t.isControlDown())
-			           	{
-			           		// deselects all squibs
-								for (Firebox fb : universe.getFireboxList())
-								{
-									for (Lunchbox lb : fb.getLunchboxList())
-								    {
-										for (Squib s : lb.getSquibList())
-								        {
-											s.setSelected(0);
-								        }
-								    }
-								}
-			           	}               
-		       		}
-	          	}
-	      });
+		// sets the start of a mouse drag
+      	visualContainer.setOnMouseClicked(new EventHandler<MouseEvent>()
+  		{
+          	@Override
+          	public void handle(MouseEvent t)
+          	{
+          	if (!clickable)
+          	{
+          		return;
+          	}
+				else if(t.getButton() == MouseButton.SECONDARY) // on right click
+				{
+					mouseInfo.start = true;
+	       		}
+	       		else
+	       		{
+	       			// if ctrl is not being held, clear previous selection
+		           	if(!t.isControlDown())
+		           	{
+		           		// deselects all squibs
+							for (Firebox fb : universe.getFireboxList())
+							{
+								for (Lunchbox lb : fb.getLunchboxList())
+							    {
+									for (Squib s : lb.getSquibList())
+							        {
+										s.setSelected(0);
+							        }
+							    }
+							}
+		           	}               
+	       		}
+          	}
+  		});
 
 			// Setup an event listener to detect when mouse has been dragged
 	      	visualContainer.setOnMouseDragged(new EventHandler<MouseEvent>()
@@ -305,8 +298,8 @@ public class VcPtVisualSchematicView implements Initializable
 		                {
 		    	            for (Squib s : lb.getSquibList())
 		    	            {
-								squibDifX = s.getXPos() - mouseInfo.getStartX();
-								squibDifY = s.getYPos() - mouseInfo.getStartY();
+								squibDifX = s.getXPos() - startX;
+								squibDifY = s.getYPos() - startY;
 								
 								// if x position is within range & y position is within range
 								if(Math.abs(squibDifX) < Math.abs(mouseInfo.getDifX()) && Math.abs(squibDifY) < Math.abs(mouseInfo.getDifY()))
