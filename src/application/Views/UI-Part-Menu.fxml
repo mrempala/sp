@@ -16,6 +16,7 @@
          <MenuItem onAction="#Exit" text="Exit" />
       </items>
    </Menu>
+   <!-- 
    <Menu text="Edit">
       <items>
          <MenuItem text="Edit Sequence" />
@@ -23,6 +24,7 @@
          <MenuItem text="Check Universe Errors" />
       </items>
    </Menu>
+   -->
    <Menu text="Help">
       <items>
          <!-- 
@@ -30,7 +32,7 @@
          <MenuItem text="Online Manual" visible="false"/>
          <SeparatorMenuItem /> 
          -->
-         <MenuItem text="About" />
+         <MenuItem onAction="#showAboutWindow" text="About" />
       </items>
    </Menu>
 </menus>

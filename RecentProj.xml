@@ -3,36 +3,36 @@
  <object class="application.RecentProjects" id="RecentProjects0">
   <void property="recentProjectNames">
    <void method="add">
+    <string>1x1x8-Group.xml</string>
+   </void>
+   <void method="add">
+    <string>2x2x8.xml</string>
+   </void>
+   <void method="add">
+    <string>4x4x8.xml</string>
+   </void>
+   <void method="add">
+    <string>1x8x8.xml</string>
+   </void>
+   <void method="add">
     <string>1x1x8.xml</string>
-   </void>
-   <void method="add">
-    <string>1-1-8.xml</string>
-   </void>
-   <void method="add">
-    <string>4test.xml</string>
-   </void>
-   <void method="add">
-    <string>4test.xml</string>
-   </void>
-   <void method="add">
-    <string>3test.xml</string>
    </void>
   </void>
   <void property="recentProjectPaths">
    <void method="add">
-    <string>C:\Users\bandith\workspace\sp\1x1x8.xml</string>
+    <string>C:\Users\Eric\Desktop\sequences\1x1x8-Group.xml</string>
    </void>
    <void method="add">
-    <string>C:\Users\Eric\Desktop\1-1-8.xml</string>
+    <string>C:\Users\Eric\Desktop\sequences\2x2x8.xml</string>
    </void>
    <void method="add">
-    <string>C:\Users\Eric\Desktop\4test.xml</string>
+    <string>C:\Users\Eric\Desktop\sequences\4x4x8.xml</string>
    </void>
    <void method="add">
-    <string>C:\Users\Eric\Desktop\4test.xml</string>
+    <string>C:\Users\Eric\Desktop\sequences\1x8x8.xml</string>
    </void>
    <void method="add">
-    <string>C:\Users\Eric\Desktop\3test.xml</string>
+    <string>C:\Users\Eric\Desktop\sequences\1x1x8.xml</string>
    </void>
   </void>
  </object>

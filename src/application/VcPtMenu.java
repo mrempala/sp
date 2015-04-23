@@ -27,6 +27,10 @@ public class VcPtMenu extends VcMainController implements Initializable {
 		(new BBExit()).click();
 	}
 	
+	@FXML public void showAboutWindow(ActionEvent event) {
+		new VcAboutWindow();
+	}
+	
 	
 
 }
