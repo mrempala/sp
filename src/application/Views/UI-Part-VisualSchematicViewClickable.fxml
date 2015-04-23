@@ -10,7 +10,7 @@ layoutX="20.0" layoutY="12.0" prefHeight="306.0" prefWidth="757.0" id="VisSchem"
       <content>
        <VBox>
         <AnchorPane fx:id="schematicContainer" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" id="VisSchemSchematic"/>
-        <Button layoutX = "15" layoutY = "25" mnemonicParsing = "false" text = "Origin" fx:id = "button_origin" />
+        <Button layoutX = "15" layoutY = "25" mnemonicParsing = "false" text = "Origin" fx:id = "button_origin" onAction = "#goOrigin"/>
        </VBox>
       </content>
     </Tab>
@@ -19,8 +19,8 @@ layoutX="20.0" layoutY="12.0" prefHeight="306.0" prefWidth="757.0" id="VisSchem"
        <VBox>
         <AnchorPane fx:id="visualContainer" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" id="VisSchemVisual"/>
         <HBox>
-         <Button layoutX = "15" layoutY = "25" mnemonicParsing = "false" text = "Reset" fx:id = "button_resetPositions" />
-         <Button layoutX = "15" layoutY = "40" mnemonicParsing = "false" text = "Deselect All" fx:id = "button_deselectAll" />  
+         <Button layoutX = "15" layoutY = "25" mnemonicParsing = "false" text = "Reset" fx:id = "button_resetPositions" onAction = "#resetPos"/>
+         <Button layoutX = "15" layoutY = "40" mnemonicParsing = "false" text = "Deselect All" fx:id = "button_deselectAll" onAction = "#deselect"/>  
         </HBox>
        </VBox>
       </content>
