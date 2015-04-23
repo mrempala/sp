@@ -460,43 +460,44 @@ public class VcPtVisualSchematicView implements Initializable
          }
      });
   
-		// Setup an event listener to detect when mouse has been dragged
+     // Setup an event listener to detect when mouse has been dragged
      schematicContainer.setOnMouseDragged(new EventHandler<MouseEvent>()
 		{
-         @Override
-         public void handle(MouseEvent t)
-         {
-         	if (!clickable)
-         	{
-         		return;
-         	}
-
-         	Point mPoint = MouseInfo.getPointerInfo().getLocation();
-         	
-         	if(mouseInfo.start == true)
-         	{
-	            	mouseInfo.setStartX(mPoint.getX());
-	            	mouseInfo.setStartY(mPoint.getY());
-	            	
-	            	mouseInfo.start = false;
-         	}
-         	else
-         	{
-	            	mouseInfo.setEndX(mPoint.getX());
-	            	mouseInfo.setEndY(mPoint.getY());
-	            	mouseInfo.calcOff();
-	            	
-	            	mouseInfo.start = true;
-         	}
-         	
-         	//System.out.println("Mouse has been moved! ");
-         	//System.out.println(mouseInfo.getEndX() + " " + mouseInfo.getEndY());
-         	
-         	universeSchematic.getChildren().clear();
-         	schematicContainer.getChildren().clear();
-         	
-         	drawUniverseSchematic();
-         }
+	     	@Override
+		        public void handle(MouseEvent t)
+	     	{
+	     		Point mPoint = MouseInfo.getPointerInfo().getLocation();
+		          	
+	     		if (!clickable)
+	     		{
+	     			return;
+	     		}
+	     		else if(t.getButton() == MouseButton.SECONDARY) // on right click
+	     		{
+	     			if(mouseInfo.start == true)
+	     			{
+	     				mouseInfo.setStartX(mPoint.getX());
+			            	mouseInfo.setStartY(mPoint.getY());
+			            	
+			            	mouseInfo.start = false;
+	     			}
+	     			else
+	     			{
+			            	mouseInfo.setEndX(mPoint.getX());
+			            	mouseInfo.setEndY(mPoint.getY());
+			            	
+			            	mouseInfo.calcOff();
+		       			
+			       			mouseInfo.setStartX(mPoint.getX());
+				            mouseInfo.setStartY(mPoint.getY());
+	     			}               
+		           	
+			           	universeSchematic.getChildren().clear();
+			           	schematicContainer.getChildren().clear();
+			           	
+			           	drawUniverseSchematic();
+		            }
+	     	}
      });
    
 
@@ -507,7 +508,10 @@ public class VcPtVisualSchematicView implements Initializable
     public void goOrigin() // probably need to move outside
     {	
     	mouseInfo.clear();
-	    drawUniverseSchematic();
+    	
+    	schematicContainer.getChildren().clear();
+    	
+    	drawUniverseSchematic();
 	}
     
 	// when reset button is clicked, reset all squibs to default positions
@@ -572,6 +576,7 @@ public class VcPtVisualSchematicView implements Initializable
     	// temp
     	System.out.println("All Squibs Deselected!");
     	
+    	drawUniverseVisual();    	
 	}
 				
 	public void drawFiringSquib(TimeStep timestep, TimeStep previousTimestep){
