@@ -311,9 +311,6 @@ public class VcPtVisualSchematicView implements Initializable
 		x = 50 + (int)mouseInfo.offX();
 		y = 50 + (int)mouseInfo.offY();
 		xt = x;
-  
-		// reset button to reset view to default origin
-		Button resetB = new Button("Reset");
 		
 		//Draw some schematic layout stuff
 

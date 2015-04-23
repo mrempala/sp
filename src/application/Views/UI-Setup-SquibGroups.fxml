@@ -16,8 +16,9 @@ styleClass="root" id="Container">
                <children>
                		<Button fx:id="button_newGroup" layoutX="10" layoutY = "20" mnemonicParsing="false" text="New Group" onAction="#newSquibGroup" />
                		<Button fx:id="button_setGroup" layoutX="100" layoutY = "20" disable="true" mnemonicParsing="false" text="Set Group" onAction="#setSquibGroup" />
-               		<Label fx:id="label_message" layoutX="10" layoutY="50" text="" styleClass="notification" />
-               		<ListView layoutX="10" layoutY = "70" prefHeight="250.0" prefWidth="180.0" BorderPane.alignment="CENTER" fx:id="listview_squibGroups" />
+               		<Button fx:id="button_clearGroup" layoutX="100" layoutY = "50" disable="true" mnemonicParsing="false" text="Clear Group" onAction="#clearSquibGroup" />
+               		<Label fx:id="label_message" layoutX="10" layoutY="80" text="" styleClass="notification" />
+               		<ListView layoutX="10" layoutY = "100" prefHeight="250.0" prefWidth="180.0" BorderPane.alignment="CENTER" fx:id="listview_squibGroups" />
                </children>
           </AnchorPane>
           <BorderPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" id="SeqEditorRightPane">

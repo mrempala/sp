@@ -24,6 +24,7 @@ public class VcSetupSquibGroups extends VcMainController{
 	@FXML Button button_loadSequencePreview;
 	@FXML Button button_setGroup;
 	@FXML Button button_newGroup;
+	@FXML Button button_clearGroup;
 	@FXML Pane sceneContainer;
 	@FXML AnchorPane squibsToPlace;
 	@FXML Label label_message;
@@ -79,6 +80,9 @@ public class VcSetupSquibGroups extends VcMainController{
 		// Disable buttons to ensure user saves group before continuing
 		button_newGroup.setDisable(true);
 		button_loadSequencePreview.setDisable(true);
+		button_clearGroup.setDisable(false);
+		
+		label_message.setText("Set group before continuing!");
 	}
 	
 	@FXML
@@ -137,5 +141,26 @@ public class VcSetupSquibGroups extends VcMainController{
 		
 		// Redraw the universe for the up to date selection list
 		visualSchematicController.drawUniverseSchematic();
+	}
+	
+	@FXML
+	public void clearSquibGroup(){
+		// Add the newly created group to the sequence
+		Universe squibGroup = new Universe();
+		
+		// Clear the list of selected squibs in the visualSchematicController
+		visualSchematicController.selectedSquibs.clear();
+		
+		// Reset the selected squib group's universe
+		sequence.getSquibGroups().get(groupToEdit).setUniverse(squibGroup);
+		
+		// Redraw the universe with cleared groups
+		visualSchematicController.drawUniverseSchematic();
+		
+		label_message.setText("  Group " + groupToEdit + " cleared.  ");
+		
+		// Reenable buttons to let the user continue with setup
+		//button_newGroup.setDisable(false);
+		//button_loadSequencePreview.setDisable(false);
 	}
 }

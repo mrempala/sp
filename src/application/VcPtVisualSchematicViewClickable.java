@@ -254,6 +254,25 @@ public class VcPtVisualSchematicViewClickable extends VcPtVisualSchematicView {
 		        id.setX((x-(squibcount*10)) + 85 + squibcount*5);
 		        id.setY(y + 35);
 		        id.setText(lb.getGrandParent() + "-" + lb.getId());
+		        
+		        // Setup event handler for lunchbox text click
+		        id.setOnMouseClicked(new EventHandler<MouseEvent>()
+	                    {
+	                        @Override
+	                        public void handle(MouseEvent t) {
+	                        	if (!clickable){
+	                        		return;
+	                        	}
+	                            //r.setFill(Color.BLUE);
+	                            // Select each squib in the universe
+
+                            	for (Squib s : lb.getSquibList()){
+                            		selectedSquibs.add(s);
+                            	}
+	                            // Redraw the universe
+	                            drawUniverseSchematic();
+	                        }
+	                    });
 		        universeSchematic.getChildren().add(id);
 		        
 		        x += 13;
