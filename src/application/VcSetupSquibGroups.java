@@ -11,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.SplitPane;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
@@ -19,6 +20,7 @@ public class VcSetupSquibGroups extends VcMainController{
 
 	// Included VisualSchematic View reference
 	@FXML TabPane visualSchematic;
+	@FXML SplitPane splitpane_sPane;
 	@FXML VcPtVisualSchematicViewClickable visualSchematicController;
 	
 	@FXML Button button_loadSequencePreview;
@@ -162,5 +164,11 @@ public class VcSetupSquibGroups extends VcMainController{
 		// Reenable buttons to let the user continue with setup
 		//button_newGroup.setDisable(false);
 		//button_loadSequencePreview.setDisable(false);
+	}
+	
+	// returns the position of the split pane which is needed for the visual view
+	public double getSplitPanePosition()
+	{
+		return (splitpane_sPane.getDividerPositions())[0];
 	}
 }

@@ -10,7 +10,7 @@
 prefHeight="450.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
 styleClass="root" id="Container">
    <center>
-      <SplitPane dividerPositions="0.20641282565130262" prefHeight="160.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <SplitPane fx:id="splitpane_sPane" dividerPositions="0.20641282565130262" prefHeight="160.0" prefWidth="200.0" BorderPane.alignment="CENTER">
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" maxWidth="200" fx:id="squibsToPlace" >
                <children>

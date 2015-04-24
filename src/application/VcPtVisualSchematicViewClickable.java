@@ -66,20 +66,20 @@ public class VcPtVisualSchematicViewClickable extends VcPtVisualSchematicView {
         		{
         			if(mouseInfo.start == true)
         			{
-        				mouseInfo.setStartX(mPoint.getX());
-		            	mouseInfo.setStartY(mPoint.getY());
+        				mouseInfo.setStartX(t.getSceneX());
+		            	mouseInfo.setStartY(t.getSceneY());
 		            	
 		            	mouseInfo.start = false;
         			}
         			else
         			{
-		            	mouseInfo.setEndX(mPoint.getX());
-		            	mouseInfo.setEndY(mPoint.getY());
+		            	mouseInfo.setEndX(t.getSceneX());
+		            	mouseInfo.setEndY(t.getSceneY());
 		            	
 		            	mouseInfo.calcOff();
 	       			
-		       			mouseInfo.setStartX(mPoint.getX());
-			            mouseInfo.setStartY(mPoint.getY());
+		       			mouseInfo.setStartX(t.getSceneX());
+			            mouseInfo.setStartY(t.getSceneY());
         			}               
 	           	
 		           	universeSchematic.getChildren().clear();

@@ -40,6 +40,7 @@ public class VcPtVisualSchematicView implements Initializable
 	
 	public Boolean clickable = true;
 	public Boolean leftHeld = false; // whether or not to be drawin the selected box
+	public Boolean justClicked = false;
 	
 	public double width, height, startX, startY = 0;
 	
@@ -93,26 +94,28 @@ public class VcPtVisualSchematicView implements Initializable
 		             
 		                // squib becomes selected when clicked on so it can be moved
 		        		r1.setOnMouseClicked(new EventHandler<MouseEvent>()
-	  				{
-	  				    @Override
-	  				    public void handle(MouseEvent t)
-	  				    {
-	  				    	if (!clickable)
-	  				    	{
-	  				    		return;
-	  				    	}
-	  				    	
-					    		mouseInfo.start = true;
-
-					    		s.setSelected(1);
-					    		numSelected++;
-					    		
-					    		// temp
-					    		System.out.println("Selected squib info: f" + fb.getId() + " l" + lb.getId() + " s" + s.getSquib());
-
-					    		drawUniverseVisual();
-	  				    }
-	  				});
+		  				{
+		  				    @Override
+		  				    public void handle(MouseEvent t)
+		  				    {
+		  				    	if (!clickable)
+		  				    	{
+		  				    		return;
+		  				    	}
+		  				    	
+						    		mouseInfo.start = true;
+	
+						    		s.setSelected(1);
+						    		numSelected++;
+						    		
+						    		justClicked = true;
+						    		
+						    		// temp
+						    		System.out.println("Selected squib info: f" + fb.getId() + " l" + lb.getId() + " s" + s.getSquib());
+	
+						    		drawUniverseVisual();
+		  				    }
+		  				});
 		        		
 		            }
 	          }
@@ -125,31 +128,31 @@ public class VcPtVisualSchematicView implements Initializable
 			
 			width = mouseInfo.getDifX();
 			height = mouseInfo.getDifY();
-			  		
+			
 			if (width > 0)
 			{
 				if (height > 0)
 				{
-					startX = mouseInfo.getStartX() - 688;
-					startY = mouseInfo.getStartY() - 295;
+					startX = mouseInfo.getStartX() - 228;
+					startY = mouseInfo.getStartY() - 68;
 				}
 				else
 				{
-					startX = mouseInfo.getStartX() - 688;
-					startY = mouseInfo.getStartY() - 295 + height;
+					startX = mouseInfo.getStartX() - 228;
+					startY = mouseInfo.getStartY() - 68 + height;
 				}
 			}
 			else
 			{
 				if(height > 0)
 				{
-					startX = mouseInfo.getStartX() - 688 + width;
-					startY = mouseInfo.getStartY() - 295;
+					startX = mouseInfo.getStartX() - 228 + width;
+					startY = mouseInfo.getStartY() - 68;
 				}
 				else
 				{
-					startX = mouseInfo.getStartX() - 688 + width;
-					startY = mouseInfo.getStartY() - 295 + height;
+					startX = mouseInfo.getStartX() - 228 + width;
+					startY = mouseInfo.getStartY() - 68 + height;
 				}
 			}
 			
@@ -167,36 +170,41 @@ public class VcPtVisualSchematicView implements Initializable
 		visualContainer.getChildren().add(universeVisual);
 
 		// sets the start of a mouse drag
-      	visualContainer.setOnMouseClicked(new EventHandler<MouseEvent>()
+      	visualContainer.setOnMousePressed(new EventHandler<MouseEvent>()
   		{
           	@Override
           	public void handle(MouseEvent t)
           	{
-          	if (!clickable)
-          	{
-          		return;
-          	}
+	          	if (!clickable)
+	          	{
+	          		return;
+	          	}
 				else if(t.getButton() == MouseButton.SECONDARY) // on right click
 				{
 					mouseInfo.start = true;
 	       		}
 	       		else
 	       		{
-	       			// if ctrl is not being held, clear previous selection
-		           	if(!t.isControlDown())
-		           	{
+	       			if(!justClicked && !t.isControlDown())
+			        {
+		           		System.out.println("clearing selection on mouse click");
 		           		// deselects all squibs
-							for (Firebox fb : universe.getFireboxList())
-							{
-								for (Lunchbox lb : fb.getLunchboxList())
-							    {
-									for (Squib s : lb.getSquibList())
-							        {
-										s.setSelected(0);
-							        }
-							    }
-							}
-		           	}               
+						for (Firebox fb : universe.getFireboxList())
+						{
+							for (Lunchbox lb : fb.getLunchboxList())
+						    {
+								for (Squib s : lb.getSquibList())
+						        {
+									s.setSelected(0);
+						        }
+						    }
+						}
+			        }
+			        else
+			        {
+			        	justClicked = false;
+			        }
+		           	drawUniverseVisual();
 	       		}
           	}
   		});
@@ -219,15 +227,14 @@ public class VcPtVisualSchematicView implements Initializable
 			        
 		           	if(mouseInfo.start == true)
 		           	{
-		            	mouseInfo.setStartX(mPoint.getX());
-		            	mouseInfo.setStartY(mPoint.getY());
-			            	
+		            	mouseInfo.setStartX(t.getSceneX());
+		            	mouseInfo.setStartY(t.getSceneY());
 		            	mouseInfo.start = false;
 		           	}
 		           	else
 		           	{
-		            	mouseInfo.setEndX(mPoint.getX());
-		            	mouseInfo.setEndY(mPoint.getY());
+		            	mouseInfo.setEndX(t.getSceneX());
+		            	mouseInfo.setEndY(t.getSceneY());
 			            	
 		                for (Firebox fb : universe.getFireboxList())
 		                {
@@ -244,8 +251,8 @@ public class VcPtVisualSchematicView implements Initializable
 		                    }
 		                }
 		       			
-		       			mouseInfo.setStartX(mPoint.getX());
-			            mouseInfo.setStartY(mPoint.getY());
+		       			mouseInfo.setStartX(t.getSceneX());
+			            mouseInfo.setStartY(t.getSceneY());
 		           	}               
 	           	
 		           	universeVisual.getChildren().clear();
@@ -259,15 +266,15 @@ public class VcPtVisualSchematicView implements Initializable
 	            	{
 	            		leftHeld = true;
 	            		
-		       			mouseInfo.setStartX(mPoint.getX());
-				        mouseInfo.setStartY(mPoint.getY()); 
+		       			mouseInfo.setStartX(t.getSceneX());
+				        mouseInfo.setStartY(t.getSceneY()); 
 	            	}
 			        
 	            	// temp
 	            	System.out.println("updating drag selection...");
 	            	
-	            	mouseInfo.setEndX(mPoint.getX());
-		            mouseInfo.setEndY(mPoint.getY());
+	            	mouseInfo.setEndX(t.getSceneX());
+		            mouseInfo.setEndY(t.getSceneY());
 		           
 		            drawUniverseVisual();
 	            }
@@ -276,8 +283,6 @@ public class VcPtVisualSchematicView implements Initializable
 	   
 	      visualContainer.setOnMouseReleased(new EventHandler<MouseEvent>()
 			{
-				double squibDifX;
-				double squibDifY;
 				
 	          	@Override
 	          	public void handle(MouseEvent t)
@@ -298,11 +303,8 @@ public class VcPtVisualSchematicView implements Initializable
 		                {
 		    	            for (Squib s : lb.getSquibList())
 		    	            {
-								squibDifX = s.getXPos() - startX;
-								squibDifY = s.getYPos() - startY;
 								
-								// if x position is within range & y position is within range
-								if(Math.abs(squibDifX) < Math.abs(mouseInfo.getDifX()) && Math.abs(squibDifY) < Math.abs(mouseInfo.getDifY()))
+								if(s.getXPos() >= startX && s.getXPos() <= (startX + width) && s.getYPos() >= startY && s.getYPos() <= (startY + height))
 								{
 									s.setSelected(1);
 									numSelected++;
@@ -494,20 +496,20 @@ public class VcPtVisualSchematicView implements Initializable
 	     		{
 	     			if(mouseInfo.start == true)
 	     			{
-	     				mouseInfo.setStartX(mPoint.getX());
-			            	mouseInfo.setStartY(mPoint.getY());
+	     				mouseInfo.setStartX(t.getSceneX());
+			            	mouseInfo.setStartY(t.getSceneY());
 			            	
 			            	mouseInfo.start = false;
 	     			}
 	     			else
 	     			{
-			            	mouseInfo.setEndX(mPoint.getX());
-			            	mouseInfo.setEndY(mPoint.getY());
+			            	mouseInfo.setEndX(t.getSceneX());
+			            	mouseInfo.setEndY(t.getSceneY());
 			            	
 			            	mouseInfo.calcOff();
 		       			
-			       			mouseInfo.setStartX(mPoint.getX());
-				            mouseInfo.setStartY(mPoint.getY());
+			       			mouseInfo.setStartX(t.getSceneX());
+				            mouseInfo.setStartY(t.getSceneY());
 	     			}               
 		           	
 			           	universeSchematic.getChildren().clear();
