@@ -10,14 +10,14 @@ import javafx.scene.web.WebView;
 import javafx.stage.Stage;
  
  
-public class VcAboutWindow {
+public class VcWebWindow {
     private Scene scene;
     
-    VcAboutWindow() {
+    VcWebWindow(String title, String website) {
     	Stage stage = new Stage();
         // create the scene
-        stage.setTitle("About SOAP");
-        scene = new Scene(new Browser(),800,500, Color.web("#666970"));
+        stage.setTitle(title);
+        scene = new Scene(new Browser(website),800,500, Color.web("#666970"));
         stage.setScene(scene);
         //scene.getStylesheets().add("webviewsample/BrowserToolbar.css");        
         stage.show();
@@ -28,11 +28,11 @@ class Browser extends Region {
     final WebView browser = new WebView();
     final WebEngine webEngine = browser.getEngine();
      
-    public Browser() {
+    public Browser(String website) {
         //apply the styles
         getStyleClass().add("browser");
         // load the web page
-        webEngine.load("http://ericbskis.com/soap/?page_id=9");
+        webEngine.load(website);
         //add the web view to the scene
         getChildren().add(browser);
  

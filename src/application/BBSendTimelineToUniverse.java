@@ -55,10 +55,9 @@ public class BBSendTimelineToUniverse implements IButtonBehavior, Runnable {
 			
 			// Send each timestep to be fired
 			for (TimeStep t : timeLine) {
-				System.out.println(t);
+				//System.out.println(t);
 				threadMessage(serialComm.runTimeStep(t));
 			}
-			System.out.println("Done");
 		} catch (Exception e) {
 			System.out.println(e);
 			serialComm.close();
@@ -96,9 +95,6 @@ public class BBSendTimelineToUniverse implements IButtonBehavior, Runnable {
 				// Create a new thread to run the actual sequence so we can get feedback to the GUI
 				runningUniverse = new Thread(this);
 				runningUniverse.start();
-			
-                //serialComm.close();
-				System.out.println("done");
 				break;
 
 			case ON:

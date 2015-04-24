@@ -109,7 +109,7 @@ public class VcSequencePreview extends VcMainController implements Observer {
 		String port = tfPortNum.getText();
 		bbSendToUniverse = new BBSendTimelineToUniverse(port, sequence.getTimeLine());
 		
-		// Setup an event listener to see when the we have a message from the unvierse thread
+		// Setup an event listener to see when the we have a message from the universe thread
 		BBSendTimelineToUniverse.universeMessageProperty.addListener(new ChangeListener<String>() {
 			@Override
 		      public void changed(final ObservableValue<? extends String> observable,
