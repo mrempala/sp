@@ -7,15 +7,12 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
-import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
-import javafx.geometry.Insets;
 
 import java.awt.MouseInfo;
 import java.awt.Point;
@@ -73,50 +70,7 @@ public class VcPtVisualSchematicView implements Initializable
 	          {
 		            for (Squib s : lb.getSquibList())
 		            {
-		            	// create a rectangle to represent the squib
-		            	Rectangle r1 = new Rectangle();
-		        		r1.setX(s.getXPos());
-		        		r1.setY(s.getYPos());
-		                r1.setWidth(10);
-		                r1.setHeight(15);
-		                r1.setFill(Color.GREY);
-		              
-		                if(s.getSelected() == 1)
-		                {
-		                	r1.setStroke(Color.BLUE);
-		                }
-		                else
-		                {
-		                	r1.setStroke(Color.BLACK);
-		                }
-		             
-		                universeVisual.getChildren().add(r1);
-		             
-		                // squib becomes selected when clicked on so it can be moved
-		        		r1.setOnMouseClicked(new EventHandler<MouseEvent>()
-		  				{
-		  				    @Override
-		  				    public void handle(MouseEvent t)
-		  				    {
-		  				    	if (!clickable)
-		  				    	{
-		  				    		return;
-		  				    	}
-		  				    	
-						    		mouseInfo.start = true;
-	
-						    		s.setSelected(1);
-						    		numSelected++;
-						    		
-						    		justClicked = true;
-						    		
-						    		// temp
-						    		System.out.println("Selected squib info: f" + fb.getId() + " l" + lb.getId() + " s" + s.getSquib());
-	
-						    		drawUniverseVisual();
-		  				    }
-		  				});
-		        		
+		            	drawSquibVisual(fb, lb, s);
 		            }
 	          }
 	      }
@@ -124,47 +78,7 @@ public class VcPtVisualSchematicView implements Initializable
 		// draw selection box if user is holding down left button
 		if(leftHeld == true)
 		{
-			Rectangle selectBox = new Rectangle();
-			
-			width = mouseInfo.getDifX();
-			height = mouseInfo.getDifY();
-			
-			if (width > 0)
-			{
-				if (height > 0)
-				{
-					startX = mouseInfo.getStartX() - 228;
-					startY = mouseInfo.getStartY() - 68;
-				}
-				else
-				{
-					startX = mouseInfo.getStartX() - 228;
-					startY = mouseInfo.getStartY() - 68 + height;
-				}
-			}
-			else
-			{
-				if(height > 0)
-				{
-					startX = mouseInfo.getStartX() - 228 + width;
-					startY = mouseInfo.getStartY() - 68;
-				}
-				else
-				{
-					startX = mouseInfo.getStartX() - 228 + width;
-					startY = mouseInfo.getStartY() - 68 + height;
-				}
-			}
-			
-			selectBox.setX(startX);
-			selectBox.setY(startY);
-			selectBox.setWidth(Math.abs(width)); // need to confirm if it works for negative values
-			selectBox.setHeight(Math.abs(height));
-			selectBox.setStroke(Color.RED);
-			selectBox.setFill(Color.TRANSPARENT); // make the selection box transparent
-			
-			// add the selection box
-			universeVisual.getChildren().add(selectBox);
+			drawSelectionBox();
 		}
 	   
 		visualContainer.getChildren().add(universeVisual);
@@ -209,118 +123,207 @@ public class VcPtVisualSchematicView implements Initializable
           	}
   		});
 
-			// Setup an event listener to detect when mouse has been dragged
-	      	visualContainer.setOnMouseDragged(new EventHandler<MouseEvent>()
-			{
-	          @Override
-	          public void handle(MouseEvent t)
-	          {
-	          	Point mPoint = MouseInfo.getPointerInfo().getLocation();
-	          	
-	          	if (!clickable)
-	          	{
-	          		return;
-	          	}
-	          	else if(t.getButton() == MouseButton.SECONDARY) // on right click
-	            {    
-			        leftHeld = false;
-			        
-		           	if(mouseInfo.start == true)
-		           	{
-		            	mouseInfo.setStartX(t.getSceneX());
-		            	mouseInfo.setStartY(t.getSceneY());
-		            	mouseInfo.start = false;
-		           	}
-		           	else
-		           	{
-		            	mouseInfo.setEndX(t.getSceneX());
-		            	mouseInfo.setEndY(t.getSceneY());
-			            	
-		                for (Firebox fb : universe.getFireboxList())
-		                {
-		                    for (Lunchbox lb : fb.getLunchboxList())
-		                    {
-		        	            for (Squib s : lb.getSquibList())
-		        	            {
-		        	            	if(numSelected == 0 || s.getSelected() == 1)
-		        	            	{	        	            		
-					        			s.setXPos(s.getXPos() + mouseInfo.getDifX());
-					        			s.setYPos(s.getYPos() + mouseInfo.getDifY());
-		        	            	}
-		        	            }
-		                    }
-		                }
-		       			
-		       			mouseInfo.setStartX(t.getSceneX());
-			            mouseInfo.setStartY(t.getSceneY());
-		           	}               
-	           	
-		           	universeVisual.getChildren().clear();
-		           	visualContainer.getChildren().clear();
-		           	
-		           	drawUniverseVisual();
-	            }
-	            else // it is a left click and being dragged, get update position
-	            {
-	            	if(leftHeld == false)
-	            	{
-	            		leftHeld = true;
-	            		
-		       			mouseInfo.setStartX(t.getSceneX());
-				        mouseInfo.setStartY(t.getSceneY()); 
-	            	}
-			        
-	            	// temp
-	            	System.out.println("updating drag selection...");
-	            	
+		// Setup an event listener to detect when mouse has been dragged
+      	visualContainer.setOnMouseDragged(new EventHandler<MouseEvent>()
+		{
+          @Override
+          public void handle(MouseEvent t)
+          {
+          	
+          	if (!clickable)
+          	{
+          		return;
+          	}
+          	else if(t.getButton() == MouseButton.SECONDARY) // on right click
+            {    
+		        leftHeld = false;
+		        
+	           	if(mouseInfo.start == true)
+	           	{
+	            	mouseInfo.setStartX(t.getSceneX());
+	            	mouseInfo.setStartY(t.getSceneY());
+	            	mouseInfo.start = false;
+	           	}
+	           	else
+	           	{
 	            	mouseInfo.setEndX(t.getSceneX());
-		            mouseInfo.setEndY(t.getSceneY());
-		           
-		            drawUniverseVisual();
-	            }
-	          }
-	      });
+	            	mouseInfo.setEndY(t.getSceneY());
+		            	
+	                for (Firebox fb : universe.getFireboxList())
+	                {
+	                    for (Lunchbox lb : fb.getLunchboxList())
+	                    {
+	        	            for (Squib s : lb.getSquibList())
+	        	            {
+	        	            	if(numSelected == 0 || s.getSelected() == 1)
+	        	            	{	        	            		
+				        			s.setXPos(s.getXPos() + mouseInfo.getDifX());
+				        			s.setYPos(s.getYPos() + mouseInfo.getDifY());
+	        	            	}
+	        	            }
+	                    }
+	                }
+	       			
+	       			mouseInfo.setStartX(t.getSceneX());
+		            mouseInfo.setStartY(t.getSceneY());
+	           	}               
+           	
+	           	universeVisual.getChildren().clear();
+	           	visualContainer.getChildren().clear();
+	           	
+	           	drawUniverseVisual();
+            }
+            else // it is a left click and being dragged, get update position
+            {
+            	if(leftHeld == false)
+            	{
+            		leftHeld = true;
+            		
+	       			mouseInfo.setStartX(t.getSceneX());
+			        mouseInfo.setStartY(t.getSceneY()); 
+            	}
+		        
+            	// temp
+            	System.out.println("updating drag selection...");
+            	
+            	mouseInfo.setEndX(t.getSceneX());
+	            mouseInfo.setEndY(t.getSceneY());
+	           
+	            drawUniverseVisual();
+            }
+          }
+		});
 	   
-	      visualContainer.setOnMouseReleased(new EventHandler<MouseEvent>()
+      	visualContainer.setOnMouseReleased(new EventHandler<MouseEvent>()
+		{
+			@Override
+			public void handle(MouseEvent t)
 			{
-				
-	          	@Override
-	          	public void handle(MouseEvent t)
+				if (!clickable)
 				{
-	          	if (!clickable)
-	          	{
-	          		return;
-	          	}
-
+					return;
+				}
+				
 				if(leftHeld == true)
 				{	
-		    	    numSelected = 0;
-		    	  
+					numSelected = 0;
+				  
 					// select all squibs within the selection box
-					for (Firebox fb : universe.getFireboxList())
-		            {
-		                for (Lunchbox lb : fb.getLunchboxList())
-		                {
-		    	            for (Squib s : lb.getSquibList())
-		    	            {
-								
-								if(s.getXPos() >= startX && s.getXPos() <= (startX + width) && s.getYPos() >= startY && s.getYPos() <= (startY + height))
-								{
-									s.setSelected(1);
-									numSelected++;
-								}
-		    	            }
-		    	        }
-		    	    }
-		        	  
-					leftHeld = false;
-					
-					drawUniverseVisual();
+						for (Firebox fb : universe.getFireboxList())
+				        {
+				            for (Lunchbox lb : fb.getLunchboxList())
+				            {
+				            	for (Squib s : lb.getSquibList())
+					            {
+									if(s.getXPos() >= startX && s.getXPos() <= (startX + width) && s.getYPos() >= startY && s.getYPos() <= (startY + height))
+									{
+										s.setSelected(1);
+										numSelected++;
+									}
+					            }
+					        }
+					    }
+				    	  
+						leftHeld = false;
+						
+						drawUniverseVisual();
 				}
-	          }
-	      });
+			}
+		});
 
+	}
+	
+	private void drawSelectionBox()
+	{
+		Rectangle selectBox = new Rectangle();
+		
+		width = mouseInfo.getDifX();
+		height = mouseInfo.getDifY();
+		
+		if (width > 0)
+		{
+			if (height > 0)
+			{
+				startX = mouseInfo.getStartX() - 228;
+				startY = mouseInfo.getStartY() - 68;
+			}
+			else
+			{
+				startX = mouseInfo.getStartX() - 228;
+				startY = mouseInfo.getStartY() - 68 + height;
+			}
 		}
+		else
+		{
+			if(height > 0)
+			{
+				startX = mouseInfo.getStartX() - 228 + width;
+				startY = mouseInfo.getStartY() - 68;
+			}
+			else
+			{
+				startX = mouseInfo.getStartX() - 228 + width;
+				startY = mouseInfo.getStartY() - 68 + height;
+			}
+		}
+		
+		selectBox.setX(startX);
+		selectBox.setY(startY);
+		selectBox.setWidth(Math.abs(width)); // need to confirm if it works for negative values
+		selectBox.setHeight(Math.abs(height));
+		selectBox.setStroke(Color.RED);
+		selectBox.setFill(Color.TRANSPARENT); // make the selection box transparent
+		
+		// add the selection box
+		universeVisual.getChildren().add(selectBox);
+	}
+	
+	private void drawSquibVisual(Firebox fb, Lunchbox lb, Squib s)
+	{
+		// create a rectangle to represent the squib
+    	Rectangle r1 = new Rectangle();
+		r1.setX(s.getXPos());
+		r1.setY(s.getYPos());
+        r1.setWidth(10);
+        r1.setHeight(15);
+        r1.setFill(Color.GREY);
+      
+        if(s.getSelected() == 1)
+        {
+        	r1.setStroke(Color.BLUE);
+        }
+        else
+        {
+        	r1.setStroke(Color.BLACK);
+        }
+     
+        universeVisual.getChildren().add(r1);
+     
+        // squib becomes selected when clicked on so it can be moved
+		r1.setOnMouseClicked(new EventHandler<MouseEvent>()
+			{
+			    @Override
+			    public void handle(MouseEvent t)
+			    {
+			    	if (!clickable)
+			    	{
+			    		return;
+			    	}
+			    	
+		    		mouseInfo.start = true;
+
+		    		s.setSelected(1);
+		    		numSelected++;
+		    		
+		    		justClicked = true;
+		    		
+		    		// temp
+		    		System.out.println("Selected squib info: f" + fb.getId() + " l" + lb.getId() + " s" + s.getSquib());
+
+		    		drawUniverseVisual();
+			    }
+			});	
+	}
 	
 	public void drawUniverseSchematic(){
 
