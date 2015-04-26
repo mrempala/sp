@@ -149,7 +149,7 @@ public class VcPtVisualSchematicViewClickable extends VcPtVisualSchematicView {
             fireboxText.setFill(Color.BLACK);
             fireboxText.setX(x + 15);
             fireboxText.setY(y + 20);
-            fireboxText.setText("Firebox " + Integer.toString(fb.getId()));
+            fireboxText.setText("Firebox " + Integer.toString(fb.getId() + 1));
             
             universeSchematic.getChildren().add(r);
             universeSchematic.getChildren().add(fireboxText);
@@ -200,7 +200,7 @@ public class VcPtVisualSchematicViewClickable extends VcPtVisualSchematicView {
 		            t.setX(cX + 2);
 		            //t.setX(x + 95);
 		            t.setY(y + 19);
-		            t.setText(Integer.toString(s.getSquib()));
+		            t.setText(Integer.toString(s.getSquib() + 1));
 		            
 		            // Setup an event listener to detect when this rectangle is clicked
 		            t.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -256,7 +256,7 @@ public class VcPtVisualSchematicViewClickable extends VcPtVisualSchematicView {
 		        // essentially move cursor back to 0, and build offset from there.
 		        id.setX((x-(squibcount*10)) + 85 + squibcount*5);
 		        id.setY(y + 35);
-		        id.setText(lb.getGrandParent() + "-" + lb.getId());
+		        id.setText((lb.getGrandParent() + 1) + "-" + (lb.getId() + 1));
 		        
 		        // Setup event handler for lunchbox text click
 		        id.setOnMouseClicked(new EventHandler<MouseEvent>()
@@ -295,6 +295,7 @@ public class VcPtVisualSchematicViewClickable extends VcPtVisualSchematicView {
     	mouseInfo.clear();
     	
     	schematicContainer.getChildren().clear();
+       	universeSchematic.getChildren().clear();
     	
     	drawUniverseSchematic();
 	}

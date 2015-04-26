@@ -376,7 +376,7 @@ public class VcPtVisualSchematicView implements Initializable
 	   fireboxText.setFill(Color.BLACK);
 	   fireboxText.setX(x + 15);
 	   fireboxText.setY(y + 20);
-	   fireboxText.setText("Firebox " + Integer.toString(fb.getId()));
+	   fireboxText.setText("Firebox " + Integer.toString(fb.getId() + 1));
 	
 	   universeSchematic.getChildren().add(r);
 	   universeSchematic.getChildren().add(fireboxText);
@@ -424,7 +424,7 @@ public class VcPtVisualSchematicView implements Initializable
 					    t.setFill(Color.BLACK);
 					    t.setX(cX + 2);
 					    t.setY(y + 19);
-					    t.setText(Integer.toString(s.getSquib()));
+					    t.setText(Integer.toString(s.getSquib() + 1));
 					 
 					    universeSchematic.getChildren().add(squibRectangle);
 					    universeSchematic.getChildren().add(t);
@@ -457,7 +457,7 @@ public class VcPtVisualSchematicView implements Initializable
 		        // essentially move cursor back to 0, and build offset from there.
 		        id.setX((x-(squibcount*10)) + 85 + squibcount*5);
 		        id.setY(y + 35);
-		        id.setText(lb.getGrandParent() + "-" + lb.getId());
+		        id.setText((lb.getGrandParent()+1) + "-" + (lb.getId() + 1));
 		        universeSchematic.getChildren().add(id);
 		     
 		        x += 13;
@@ -533,6 +533,7 @@ public class VcPtVisualSchematicView implements Initializable
     	mouseInfo.clear();
     	
     	schematicContainer.getChildren().clear();
+    	universeSchematic.getChildren().clear();
     	
     	drawUniverseSchematic();
 	}
