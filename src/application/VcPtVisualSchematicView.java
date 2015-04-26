@@ -103,16 +103,7 @@ public class VcPtVisualSchematicView implements Initializable
 			        {
 		           		System.out.println("clearing selection on mouse click");
 		           		// deselects all squibs
-						for (Firebox fb : universe.getFireboxList())
-						{
-							for (Lunchbox lb : fb.getLunchboxList())
-						    {
-								for (Squib s : lb.getSquibList())
-						        {
-									s.setSelected(0);
-						        }
-						    }
-						}
+						deselect();
 			        }
 			        else
 			        {
@@ -129,7 +120,6 @@ public class VcPtVisualSchematicView implements Initializable
           @Override
           public void handle(MouseEvent t)
           {
-          	
           	if (!clickable)
           	{
           		return;
@@ -294,7 +284,7 @@ public class VcPtVisualSchematicView implements Initializable
         }
         else
         {
-        	r1.setStroke(Color.BLACK);
+        	r1.setStroke(Color.DARKGREY);
         }
      
         universeVisual.getChildren().add(r1);
@@ -528,7 +518,7 @@ public class VcPtVisualSchematicView implements Initializable
 	
 	// reset view to default (which is the origin)
     @FXML
-    public void goOrigin() // probably need to move outside
+    public void goOrigin()
     {	
     	mouseInfo.clear();
     	
@@ -541,7 +531,7 @@ public class VcPtVisualSchematicView implements Initializable
 	// when reset button is clicked, reset all squibs to default positions
 	// and deselect all squibs
 	@FXML
-	public void resetPos() // might need to move this outside
+	public void resetPos()
 	{   	
     	// reset squibs
     	for (Firebox fb : universe.getFireboxList())
@@ -557,16 +547,7 @@ public class VcPtVisualSchematicView implements Initializable
 	    }
     	
     	// deselects all squibs
-		for (Firebox fb : universe.getFireboxList())
-		{
-			for (Lunchbox lb : fb.getLunchboxList())
-		    {
-				for (Squib s : lb.getSquibList())
-		        {
-					s.setSelected(0);
-		        }
-		    }
-		}
+		deselect();
     	
     	numSelected = 0;
     	
@@ -579,9 +560,9 @@ public class VcPtVisualSchematicView implements Initializable
        	drawUniverseVisual();
 	}
 	
-	// for now, when r is clicked, it deselects the squibs
+	// it deselects the squibs
 	@FXML
-	public void deselect() // might need to move outside
+	public void deselect()
 	{   	
     	// deselects all squibs
 		for (Firebox fb : universe.getFireboxList())

@@ -290,13 +290,69 @@ public class VcPtVisualSchematicViewClickable extends VcPtVisualSchematicView {
 	
 	// reset view to default (which is the origin)
     @FXML
-    public void goOrigin() // probably need to move outside
+    public void goOrigin()
     {	
     	mouseInfo.clear();
     	
     	schematicContainer.getChildren().clear();
-       	universeSchematic.getChildren().clear();
+    	universeSchematic.getChildren().clear();
     	
     	drawUniverseSchematic();
+	}
+    
+	// when reset button is clicked, reset all squibs to default positions
+	// and deselect all squibs
+	@FXML
+	public void resetPos()
+	{   	
+    	// reset squibs
+    	for (Firebox fb : universe.getFireboxList())
+        {
+            for (Lunchbox lb : fb.getLunchboxList())
+            {
+	            for (Squib s : lb.getSquibList())
+	            {
+	            	s.setXPos(100 + (s.getLunchbox() * 100) + (12 * s.getSquib()));
+	            	s.setYPos(50 + (s.getFirebox() * 50));
+	            }
+	        }
+	    }
+    	
+    	// deselects all squibs
+		deselect();
+    	
+    	numSelected = 0;
+    	
+    	// temp
+    	System.out.println("All Squibs Deselected!");
+	    	
+       	universeVisual.getChildren().clear();
+       	visualContainer.getChildren().clear();
+       	
+       	drawUniverseVisual();
+	}
+	
+	// it deselects the squibs
+	@FXML
+	public void deselect()
+	{   	
+    	// deselects all squibs
+		for (Firebox fb : universe.getFireboxList())
+		{
+			for (Lunchbox lb : fb.getLunchboxList())
+		    {
+				for (Squib s : lb.getSquibList())
+		        {
+					s.setSelected(0);
+		        }
+		    }
+		}
+    	
+    	numSelected = 0;
+    	
+    	// temp
+    	System.out.println("All Squibs Deselected!");
+    	
+    	drawUniverseVisual();    	
 	}
 }
