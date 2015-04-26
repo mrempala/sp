@@ -17,6 +17,7 @@ import javafx.scene.text.Text;
 import java.awt.MouseInfo;
 import java.awt.Point;
 
+import javafx.scene.control.Label;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 
@@ -27,6 +28,7 @@ public class VcPtVisualSchematicView implements Initializable
 
 	@FXML AnchorPane visualContainer;
 	@FXML AnchorPane schematicContainer;
+	@FXML Label label_squibInfo;
 	
 	public Universe universe;
 	public Group universeSchematic;
@@ -267,7 +269,7 @@ public class VcPtVisualSchematicView implements Initializable
         r1.setWidth(10);
         r1.setHeight(15);
         r1.setFill(Color.GREY);
-      
+    	
         if(s.getSelected() == 1)
         {
         	r1.setStroke(Color.BLUE);
@@ -306,7 +308,35 @@ public class VcPtVisualSchematicView implements Initializable
 
 		    		drawUniverseVisual();
 			    }
-			});	
+			});
+		
+		// display squib information when hovered over
+		r1.setOnMouseMoved(new EventHandler<MouseEvent>()
+				{
+		    @Override
+		    public void handle(MouseEvent t)
+		    {
+		    	if (!clickable)
+		    	{
+		    		return;
+		    	}
+		    	
+		    	//label_squibInfo.setText("hi");
+
+		    	label_squibInfo.setText("Squib info: " + 
+										"\nFirebox:  " + fb.getId() + 
+										"\nLunchbox: " + lb.getId() + 
+										"\nSquib:	 " + s.getSquib() + 
+										"\nChannel:  " + s.getChannel()); 	
+		    	
+		    	//universeVisual.getChildren().add(label_squibInfo);
+		    	
+		    	//drawUniverseVisual();
+		    	
+		    	// temp
+		    	System.out.println("Squib info: f" + fb.getId() + " l" + lb.getId() + " s" + s.getSquib() + " c" + s.getChannel());
+		    }
+		});
 	}
 	
 	public void drawUniverseSchematic(){

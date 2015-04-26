@@ -20,6 +20,7 @@ layoutX="20.0" layoutY="12.0" prefHeight="306.0" prefWidth="757.0" id="VisSchem"
        <AnchorPane fx:id="visualContainer" minHeight="0.0" minWidth="0.0" prefHeight="300.0" prefWidth="200.0"/>
         <Button mnemonicParsing = "false" layoutX="10" layoutY="240" text = "Reset" fx:id = "button_resetPositions" onAction = "#resetPos"/>
         <Button mnemonicParsing = "false" layoutX="70" layoutY="240" text = "Deselect All" fx:id = "button_deselectAll" onAction = "#deselect"/> 
+        <Label mnemonicParsing = "false" layoutX="10" layoutY="10" text = "Squib Info: " fx:id = "label_squibInfo"/> 
       </AnchorPane>
      </content>
    </Tab>
