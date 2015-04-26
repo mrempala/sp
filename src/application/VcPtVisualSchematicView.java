@@ -195,7 +195,7 @@ public class VcPtVisualSchematicView implements Initializable
 				            {
 				            	for (Squib s : lb.getSquibList())
 					            {
-									if(s.getXPos() >= startX && s.getXPos() <= (startX + width) && s.getYPos() >= startY && s.getYPos() <= (startY + height) && s.getSelected() != 1)
+									if(s.getXPos() >= startX && s.getXPos() <= (startX + Math.abs(width)) && s.getYPos() >= startY && s.getYPos() <= (startY + Math.abs(height)) && s.getSelected() != 1)
 									{
 										s.setSelected(1);
 										numSelected++;
