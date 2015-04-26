@@ -28,7 +28,7 @@ public class VcPtMenu extends VcMainController implements Initializable {
 	}
 	
 	@FXML public void showAboutWindow(ActionEvent event) {
-		new VcWebWindow("About", "http://ericbskis.com/soap/?page_id=9");
+		new VcWebWindow("About", "http://ericbskis.com/soap");
 	}
 	
 	@FXML public void showUserManual(ActionEvent event) {
