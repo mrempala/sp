@@ -37,7 +37,6 @@ public class VcPtVisualSchematicView implements Initializable
 	
 	public Boolean clickable = true;
 	public Boolean leftHeld = false; // whether or not to be drawin the selected box
-	public Boolean justClicked = false;
 	
 	public double width, height, startX, startY = 0;
 	
@@ -93,23 +92,9 @@ public class VcPtVisualSchematicView implements Initializable
 	          	{
 	          		return;
 	          	}
-				else if(t.getButton() == MouseButton.SECONDARY) // on right click
+				else if(t.getButton() == MouseButton.SECONDARY || t.getButton() == MouseButton.PRIMARY) // on right click
 				{
 					mouseInfo.start = true;
-	       		}
-	       		else
-	       		{
-	       			if(!justClicked && !t.isControlDown())
-			        {
-		           		System.out.println("clearing selection on mouse click");
-		           		// deselects all squibs
-						deselect();
-			        }
-			        else
-			        {
-			        	justClicked = false;
-			        }
-		           	drawUniverseVisual();
 	       		}
           	}
   		});
@@ -196,7 +181,12 @@ public class VcPtVisualSchematicView implements Initializable
 				
 				if(leftHeld == true)
 				{	
-					numSelected = 0;
+	       			if(!t.isControlDown())
+			        {
+		           		System.out.println("clearing selection on mouse click");
+		           		// deselects all squibs
+						deselect();
+			        }
 				  
 					// select all squibs within the selection box
 						for (Firebox fb : universe.getFireboxList())
@@ -205,7 +195,7 @@ public class VcPtVisualSchematicView implements Initializable
 				            {
 				            	for (Squib s : lb.getSquibList())
 					            {
-									if(s.getXPos() >= startX && s.getXPos() <= (startX + width) && s.getYPos() >= startY && s.getYPos() <= (startY + height))
+									if(s.getXPos() >= startX && s.getXPos() <= (startX + width) && s.getYPos() >= startY && s.getYPos() <= (startY + height) && s.getSelected() != 1)
 									{
 										s.setSelected(1);
 										numSelected++;
@@ -300,12 +290,16 @@ public class VcPtVisualSchematicView implements Initializable
 			    		return;
 			    	}
 			    	
+	       			if(!t.isControlDown())
+			        {
+		           		// deselects all squibs
+						deselect();
+			        }
+	       			
 		    		mouseInfo.start = true;
 
 		    		s.setSelected(1);
 		    		numSelected++;
-		    		
-		    		justClicked = true;
 		    		
 		    		// temp
 		    		System.out.println("Selected squib info: f" + fb.getId() + " l" + lb.getId() + " s" + s.getSquib());
