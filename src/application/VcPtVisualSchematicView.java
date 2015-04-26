@@ -648,7 +648,7 @@ public class VcPtVisualSchematicView implements Initializable
 		        t.setFill(Color.BLACK);
 		        t.setX(x + 95 + (squib.getLunchbox() * 93) + ((squib.getChannel() - 1) * 10));
 		        t.setY(y + 19 + (squib.getFirebox() * 52));
-		        t.setText(Integer.toString(squib.getSquib()));
+		        t.setText(Integer.toString(squib.getSquib() + 1));
 		        //t.setText(Integer.toString(s.getSquib()));
 		        firingSquibs.getChildren().add(squibRectangle);
 		        firingSquibs.getChildren().add(t);

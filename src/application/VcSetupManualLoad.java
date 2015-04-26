@@ -140,7 +140,6 @@ public class VcSetupManualLoad extends VcMainController{
 		// Populate the universe based on users setting
 		// TODO: Move this call to openVisualOrganizer once testing done.
 		populateUniverse(rootTreeNode, 0);
-		button_openVisualOrganizer.setDisable(false);
 	}
 	
 	public void traverseTree (TreeItem<String> t){
@@ -189,6 +188,8 @@ public class VcSetupManualLoad extends VcMainController{
 			System.out.println("Adding element: " + universeItem + "  " + elementNum + "  " + parentNum + "  " + grandparentNum);
 			sequence.getUniverse().getFireboxList().get(grandparentNum).getLunchboxList().get(parentNum).addSquib(squib);
 			elementNum++;
+			
+			button_openVisualOrganizer.setDisable(false);
 		}
 	}
 }
