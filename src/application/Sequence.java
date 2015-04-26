@@ -115,6 +115,7 @@ public class Sequence implements java.io.Serializable {
 					t.getSquibList().add(s);
 					// Update the squibs firecount
 					s.setFirecount(s.getFirecount() + 1);
+					
 					// Check to see if the new timestep is valid
 					Object[] result = validate(t);
 					Integer newResult = (Integer) result[0];
@@ -180,6 +181,7 @@ public class Sequence implements java.io.Serializable {
 				int randSquib = randomGenerator.nextInt(numSquibs);
 				TimeStep t = new TimeStep();
 				t.getSquibList().add(tempSquibList.get(randSquib));
+				tempSquibList.get(randSquib).setFirecount(tempSquibList.get(randSquib).getFirecount() + 1);
 				Object[] result = validate(t);
 				Integer newResult = (Integer) result[0];
 				String error = (String) result[2];
@@ -239,6 +241,7 @@ public class Sequence implements java.io.Serializable {
 					Random randomGenerator = new Random();
 					int randSquib = randomGenerator.nextInt(numSquibs);
 					t.getSquibList().add(tempSquibList.get(randSquib));
+					tempSquibList.get(randSquib).setFirecount(tempSquibList.get(randSquib).getFirecount() + 1);
 				}
 			}
 			Object[] result = validate(t);
@@ -290,6 +293,8 @@ public class Sequence implements java.io.Serializable {
 
 				TimeStep t = new TimeStep();
 				t.getSquibList().add(s);
+				s.setFirecount(s.getFirecount() + 1);
+				
 				Object[] result = validate(t);
 				Integer newResult = (Integer) result[0];
 				String error = (String) result[2];
@@ -341,6 +346,8 @@ public class Sequence implements java.io.Serializable {
 					for (Squib s : l.getSquibList()) {
 						TimeStep t = new TimeStep();
 						t.getSquibList().add(s);
+						s.setFirecount(s.getFirecount() + 1);
+						
 						Object[] result = validate(t);
 						Integer newResult = (Integer) result[0];
 						String error = (String) result[2];
@@ -373,6 +380,7 @@ public class Sequence implements java.io.Serializable {
 						Squib s = l.getSquibList().get(j);
 						TimeStep t = new TimeStep();
 						t.getSquibList().add(s);
+						s.setFirecount(s.getFirecount() + 1);
 						Object[] result = validate(t);
 						Integer newResult = (Integer) result[0];
 						String error = (String) result[2];
@@ -421,6 +429,7 @@ public class Sequence implements java.io.Serializable {
 					if (l.getSquibList().size() > i) {
 						Squib s = l.getSquibList().get(i);
 						t.getSquibList().add(s);
+						s.setFirecount(s.getFirecount() + 1);
 						Object[] result = validate(t);
 						Integer newResult = (Integer) result[0];
 						String error = (String) result[2];
@@ -479,6 +488,7 @@ public class Sequence implements java.io.Serializable {
 							if (l.getSquibList().size() > 0) {
 								Squib s = l.getSquibList().get(0);
 								t.getSquibList().add(s);
+								s.setFirecount(s.getFirecount() + 1);
 								Object[] result = validate(t);
 								Integer newResult = (Integer) result[0];
 								String error = (String) result[2];
@@ -513,6 +523,7 @@ public class Sequence implements java.io.Serializable {
 							if (l.getSquibList().size() > 0) {
 								Squib s = l.getSquibList().get(0);
 								t.getSquibList().add(s);
+								s.setFirecount(s.getFirecount() + 1);
 								Object[] result = validate(t);
 								Integer newResult = (Integer) result[0];
 								String error = (String) result[2];
