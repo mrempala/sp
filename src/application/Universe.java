@@ -49,4 +49,14 @@ public class Universe implements java.io.Serializable {
 		return "Universe [fireboxList=" + fireboxList + "]";
 	}
 	
+	public void resetFirecount(){
+		for (Firebox f : fireboxList){
+			for (Lunchbox l : f.getLunchboxList()) {
+				for (Squib s : l.getSquibList()) {
+					s.setFirecount(0);
+				}
+			}
+		}
+	}
+	
 }

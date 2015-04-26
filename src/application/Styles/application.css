@@ -67,6 +67,13 @@
 	-fx-font-weight: bold;
 }
 
+/* Warning Messages */
+.warning {
+	-fx-background-color: yellow;
+	-fx-text-fill: #000;
+}
+
+
 /* Notification Messages */
 .notification {
 	-fx-background-color: green;

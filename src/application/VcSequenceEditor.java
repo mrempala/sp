@@ -17,6 +17,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ScrollBar;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
@@ -37,6 +38,10 @@ public class VcSequenceEditor extends VcMainController implements Observer {
 	@FXML Label labelOutput;
 	@FXML ScrollBar scroll_sequenceRate;
 	@FXML AnchorPane paneSquibGroupContainer;
+	@FXML ScrollPane spSquibGroupContainer;
+	@FXML AnchorPane paneSquibWarnings;
+	@FXML ScrollPane spSquibWarnings;
+	@FXML Label lblSquibWarning;
 	
 	// Included VisualSchematic View reference
 	@FXML TabPane visualSchematic;
@@ -119,6 +124,28 @@ public class VcSequenceEditor extends VcMainController implements Observer {
 		timeLineController.buildTimeline(sequence.getTimeLine().size());
 		// Update the groups playing overlays
 		timeLineController.updatePlayOverlays(sequence.getTimeLine().size(), numTimesteps, selectedGroup);
+		
+		// If the max firecount has been exceeded, create a window to alert the user
+		if (!sequence.getSquibsOverMaxFireCount().isEmpty()) {
+			// Shrink the existing scrollpane by half
+			spSquibGroupContainer.setPrefHeight(75);
+			
+			paneSquibWarnings.getChildren().clear();
+			
+			int yPos = 5;
+			for (Squib s : sequence.getSquibsOverMaxFireCount()){
+				Label lblSquib = new Label();
+				lblSquib.setText("Squib " + s.getFirebox() + "-" + s.getLunchbox() + "-" + s.getSquib());
+				lblSquib.setLayoutX(5);
+				lblSquib.setLayoutY(yPos);
+				
+				paneSquibWarnings.getChildren().add(lblSquib);
+				
+				yPos += 15;
+			}
+			spSquibWarnings.setVisible(true);
+			lblSquibWarning.setVisible(true);
+		}
 	}
 	
 	// Clear all animation data and rebuild the timeline
@@ -129,6 +156,11 @@ public class VcSequenceEditor extends VcMainController implements Observer {
 		timeLineController.clearGroupTimeline();
 		buildTimelineAnimation();
 		timeLineController.buildTimeline(sequence.getTimeLine().size());
+		spSquibWarnings.setVisible(false);
+		lblSquibWarning.setVisible(false);
+		spSquibGroupContainer.setPrefHeight(150);
+		sequence.getSquibsOverMaxFireCount().clear();
+		sequence.getUniverse().resetFirecount();
 	}
 	
 	// Load the currently selected animation

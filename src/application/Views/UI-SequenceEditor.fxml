@@ -37,7 +37,7 @@ styleClass="root" id="Container">
       				    </content>
       				</ScrollPane>
       				<Label text="Select group to apply sequence to:" layoutX="10.0" layoutY="220" />
-      				<ScrollPane layoutX="10.0" layoutY="250.0" prefHeight="150.0" prefWidth="170.0">
+      				<ScrollPane fx:id="spSquibGroupContainer" layoutX="10.0" layoutY="250.0" prefHeight="150.0" prefWidth="170.0">
         				<content>
         				<AnchorPane minHeight="0.0" minWidth="0.0" styleClass="scroll-container" fx:id="paneSquibGroupContainer">
         				<children>
@@ -47,6 +47,14 @@ styleClass="root" id="Container">
 		         				</toggleGroup>
 		      				</RadioButton>
 		      			</children>
+		      			</AnchorPane>
+		      			</content>
+		      		</ScrollPane>
+
+				   <Label fx:id="lblSquibWarning" text="WARNING: Max fire exceeded on:" styleClass="warning" visible="false" layoutX="10.0" layoutY="330" />
+				   <ScrollPane fx:id="spSquibWarnings" visible="false" layoutX="10.0" layoutY="350.0" prefHeight="70.0" prefWidth="170.0">
+        				<content>
+        				<AnchorPane minHeight="0.0" minWidth="0.0" styleClass="scroll-container" fx:id="paneSquibWarnings">
 		      			</AnchorPane>
 		      			</content>
 		      		</ScrollPane>

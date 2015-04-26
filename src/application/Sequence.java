@@ -7,6 +7,7 @@ import java.util.Random;
 
 public class Sequence implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
+	private final int MAX_FIRE_COUNT = 200;
 
 	private Universe universe;
 
@@ -19,6 +20,8 @@ public class Sequence implements java.io.Serializable {
 	// Note that the first element at squibGroups.get(0) should always
 	// be the group for the main universe
 	private List<SquibGroup> squibGroups = new ArrayList<SquibGroup>();
+	
+	private List<Squib> squibsOverMaxFireCount = new ArrayList<Squib>();
 
 	// TODO: As pointed out by Vance, these fields only make sense at a
 	// concert, we may need to generalize more or have a new layer
@@ -39,6 +42,7 @@ public class Sequence implements java.io.Serializable {
 	private void mergeTimelines() {
 		// Clear the old timeline
 		timeLine.clear();
+		squibsOverMaxFireCount.clear();
 
 		for (int i = 0; i < squibGroups.get(0).getTimeLine().size(); i++) {
 			// Create a new timestep to hold all firing squibs from the various
@@ -49,6 +53,13 @@ public class Sequence implements java.io.Serializable {
 				// timestep
 				for (Squib s : squibGroup.getTimeLine().get(i)) {
 					t.getSquibList().add(s);
+					
+					// Check on the firecount, alert user if over max count
+					if (s.getFirecount() > MAX_FIRE_COUNT && !squibsOverMaxFireCount.contains(s)) {
+						squibsOverMaxFireCount.add(s);
+						System.out.println("WARNING: Exceeding max fire count on Squib " + s.getFirebox() 
+											+ "-" + s.getLunchbox() + "-" + s.getSquib());
+					}
 				}
 			}
 			// TODO: Add some validation here to check for merge conflicts
@@ -100,7 +111,11 @@ public class Sequence implements java.io.Serializable {
 			for (Lunchbox l : f.getLunchboxList()) {
 				for (Squib s : l.getSquibList()) {
 					TimeStep t = new TimeStep();
+					// Add Squib to the timestep
 					t.getSquibList().add(s);
+					// Update the squibs firecount
+					s.setFirecount(s.getFirecount() + 1);
+					// Check to see if the new timestep is valid
 					Object[] result = validate(t);
 					Integer newResult = (Integer) result[0];
 					String error = (String) result[2];
@@ -111,7 +126,7 @@ public class Sequence implements java.io.Serializable {
 						// Add blank timesteps to adjust rate
 						numTimesteps += insertRatePadding(rate, squibGroup);
 
-						System.out.println("Inserted timestep");
+						//System.out.println("Inserted timestep");
 					} else {
 						System.out.println("Failed to insert" + error);
 					}
@@ -174,7 +189,7 @@ public class Sequence implements java.io.Serializable {
 
 					// Add blank timesteps to adjust rate
 					numTimesteps += insertRatePadding(rate, -1);
-					System.out.println("Inserted timestep");
+					//System.out.println("Inserted timestep");
 				} else {
 					System.out.println("Failed to insert" + error);
 				}
@@ -234,7 +249,7 @@ public class Sequence implements java.io.Serializable {
 				numTimesteps++;
 
 				numTimesteps += insertRatePadding(rate, -1);
-				System.out.println("Inserted timestep");
+				//System.out.println("Inserted timestep");
 			} else {
 				System.out.println("Failed to insert" + error);
 			}
@@ -285,7 +300,7 @@ public class Sequence implements java.io.Serializable {
 					// Add blank timesteps to adjust rate
 					numTimesteps += insertRatePadding(rate, squibGroup);
 
-					System.out.println("Inserted timestep");
+					//System.out.println("Inserted timestep");
 				} else {
 					System.out.println("Failed to insert" + error);
 				}
@@ -334,7 +349,7 @@ public class Sequence implements java.io.Serializable {
 							numTimesteps++;
 
 							numTimesteps += insertRatePadding(rate, -1);
-							System.out.println("Inserted timestep");
+							//System.out.println("Inserted timestep");
 						} else {
 							System.out.println("Failed to insert" + error);
 						}
@@ -365,7 +380,7 @@ public class Sequence implements java.io.Serializable {
 							squibGroups.get(squibGroup).getTimeLine().add(t);
 							numTimesteps++;
 							numTimesteps += insertRatePadding(rate, -1);
-							System.out.println("Inserted timestep");
+							//System.out.println("Inserted timestep");
 						} else {
 							System.out.println("Failed to insert" + error);
 						}
@@ -421,7 +436,7 @@ public class Sequence implements java.io.Serializable {
 							numTimesteps++;
 
 							numTimesteps += insertRatePadding(rate, -1);
-							System.out.println("Inserted timestep");
+							//System.out.println("Inserted timestep");
 						} else {
 							System.out.println("Failed to insert" + error);
 						}
@@ -477,7 +492,7 @@ public class Sequence implements java.io.Serializable {
 								if (newResult.intValue() == 0) {
 									timeLine.add(t);
 									numTimesteps++;
-									System.out.println("Inserted timestep");
+									//System.out.println("Inserted timestep");
 								} else {
 									System.out.println("Failed to insert"
 											+ error);
@@ -504,7 +519,7 @@ public class Sequence implements java.io.Serializable {
 								if (newResult.intValue() == 0) {
 									timeLine.add(t);
 									numTimesteps++;
-									System.out.println("Inserted timestep");
+									//System.out.println("Inserted timestep");
 								} else {
 									System.out.println("Failed to insert"
 											+ error);
@@ -632,5 +647,9 @@ public class Sequence implements java.io.Serializable {
 
 	public void setSquibGroups(List<SquibGroup> squibGroups) {
 		this.squibGroups = squibGroups;
+	}
+	
+	public List<Squib> getSquibsOverMaxFireCount() {
+		return squibsOverMaxFireCount;
 	}
 }
