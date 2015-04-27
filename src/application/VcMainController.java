@@ -223,6 +223,7 @@ public class VcMainController implements Initializable{
         seqPreviewController.PTMenuController.setUniverse(sequence.getUniverse());
         
         seqPreviewController.visualSchematicController.drawUniverseSchematic();
+        seqPreviewController.visualSchematicController.drawUniverseVisual();
         
         // Hack to get sequence into the sequence previewer
         seqPreviewController.buildTimelineAnimation();

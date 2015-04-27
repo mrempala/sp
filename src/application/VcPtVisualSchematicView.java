@@ -13,13 +13,12 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
-
-import java.awt.MouseInfo;
-import java.awt.Point;
-
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+
+import java.awt.MouseInfo;
+import java.awt.Point;
 
 import java.lang.Math;
 
@@ -281,7 +280,7 @@ public class VcPtVisualSchematicView implements Initializable
      
         universeVisual.getChildren().add(r1);
      
-        // squib becomes selected when clicked on so it can be moved
+        // squib toggles selected when clicked. if selected == 1, it can be moved
 		r1.setOnMouseClicked(new EventHandler<MouseEvent>()
 			{
 			    @Override
@@ -300,8 +299,18 @@ public class VcPtVisualSchematicView implements Initializable
 	       			
 		    		mouseInfo.start = true;
 
-		    		s.setSelected(1);
-		    		numSelected++;
+		    		// toggle selected
+		    		if(s.getSelected() == 0)
+		    		{
+		    			s.setSelected(1);
+		    			numSelected++;
+		    		}
+		    		else
+		    		{
+		    			s.setSelected(0);
+		    			numSelected--;
+		    		}
+		    		
 		    		
 		    		// temp
 		    		System.out.println("Selected squib info: f" + fb.getId() + " l" + lb.getId() + " s" + s.getSquib());
@@ -328,13 +337,6 @@ public class VcPtVisualSchematicView implements Initializable
 										"\nLunchbox: " + lb.getId() + 
 										"\nSquib:	 " + s.getSquib() + 
 										"\nChannel:  " + s.getChannel()); 	
-		    	
-		    	//universeVisual.getChildren().add(label_squibInfo);
-		    	
-		    	//drawUniverseVisual();
-		    	
-		    	// temp
-		    	System.out.println("Squib info: f" + fb.getId() + " l" + lb.getId() + " s" + s.getSquib() + " c" + s.getChannel());
 		    }
 		});
 	}
