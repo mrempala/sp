@@ -136,6 +136,10 @@ public class VcSequencePreview extends VcMainController implements Observer {
 			taUniverseFeedback.setText(universeFeedback);
 		}		
 	}
+	
+	public void stop() {
+		bbSendToUniverse.stop();
+	}
 
 	@Override
 	public void update(Observable arg0, Object arg1) {

@@ -5,6 +5,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -12,6 +13,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 public class VcMainController implements Initializable{
 
@@ -245,8 +247,19 @@ public class VcMainController implements Initializable{
         stage.show();
         seqPreviewController.setCurrentStage(stage);
         
+        stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent event) {
+                stop(seqPreviewController);
+            }
+        });
+        
         // Close the current window
         currentStage.close();
+	}
+	
+	private void stop(VcSequencePreview seqPreviewController) {
+		seqPreviewController.stop();
 	}
 	
 	

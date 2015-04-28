@@ -10,6 +10,7 @@ import javafx.beans.property.StringProperty;
 public class BBSendTimelineToUniverse implements IButtonBehavior, Runnable {
 	private String portNum;
 	private SerialComm serialComm;
+	private boolean stopWork = false;
 
 	private enum STATES {
 		ON, OFF
@@ -56,6 +57,9 @@ public class BBSendTimelineToUniverse implements IButtonBehavior, Runnable {
 			// Send each timestep to be fired
 			for (TimeStep t : timeLine) {
 				//System.out.println(t);
+				if (stopWork){
+					break;
+				}
 				threadMessage(serialComm.runTimeStep(t));
 			}
 		} catch (Exception e) {
@@ -64,6 +68,10 @@ public class BBSendTimelineToUniverse implements IButtonBehavior, Runnable {
 		}
 		serialComm.close();
 		threadMessage("Sequence finished!");
+	}
+	
+	public void stop(){
+		stopWork = true;
 	}
 
 	// Function to get message from run thread and pass along to main FXML gui

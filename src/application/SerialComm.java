@@ -316,8 +316,8 @@ public class SerialComm implements SerialPortEventListener {
 			ping++;
 			
 			// If we haven't received a response, assume FB-LB is broken or not there so exit
-			if (ping > 100) {
-				return "\nERROR: Firebox not armed after 100 pings. \n" +
+			if (ping > 15) {
+				return "ERROR: Firebox not armed after 15 pings. \n" +
 						"   This is likely due to non-existent or disabled Firebox, but could be due a to malformed packet\n" +
 						"   Last packet received: " + data + "\n";
 			}
