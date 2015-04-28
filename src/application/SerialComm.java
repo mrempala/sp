@@ -277,21 +277,22 @@ public class SerialComm implements SerialPortEventListener {
 		int ping = 0;
 		int sleep = 0;
 		armed = false;
+		// Reset universeResponse so we send at least 1 ping next time runTimeStep is called
+		universeResponse = true;
 		while (!armed) {
 			armed = true;
 			
 			// If we haven't received a response from the universe yet, don't do anything.
-			if (!universeResponse) {
+			// If we've slept for over 100 milliseconds, try to resent the packet
+			if (!universeResponse && sleep < 20) {
 				//System.out.println("Awaiting universe response...");
-				if (sleep > 100) {
-					return "\nERROR: No pong packet received from last ping within 500 milliseconds";
-				}
 				armed = false;
 				Thread.sleep(5);
 				sleep++;
 				continue;
 			}
 			universeResponse = false;
+			sleep = 0;
 			
 			if (errorDetected) {
 				errorDetected = false;
@@ -321,9 +322,6 @@ public class SerialComm implements SerialPortEventListener {
             
 			//Thread.sleep(10);
 		}
-
-		// Reset universeResponse so we send at least 1 ping next time runTimeStep is called
-		universeResponse = true;
 		
 		// Reset our LB count in prep for sending arm commands
 		for (int i = 0; i < NUM_LB; i++) {

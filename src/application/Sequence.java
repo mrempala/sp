@@ -88,7 +88,7 @@ public class Sequence implements java.io.Serializable {
 		// Insert blank timesteps to adjust the rate of the animation
 		// Use a decrementing loop becuase rate is value 1-10 and 10 is fastest
 		// (so we want 10-10=0 to be full speed
-		for (int i = 0; i > ((rate - 10) * 2); i--) {
+		for (int i = 0; i > ((rate - 10) * 3.1); i--) {
 			// Validate the timestep to properly decrement firbox's time to
 			// sleep
 			// but no need to check what validate returns as it is simply a
@@ -557,6 +557,7 @@ public class Sequence implements java.io.Serializable {
 		// multiply decimal value by 100
 		// and cast back to int to set the number of blank timesteps.
 		int numTimesteps = (int) ((1 / (float) rate) * 100);
+		
 		// Call insertBlanks with invalid group number -1 to insert blank
 		// timesteps into all squib groups
 		insertBlanks(-1, numTimesteps);

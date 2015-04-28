@@ -61,8 +61,8 @@ styleClass="root" id="Container">
       				
       				<ScrollBar fx:id="scroll_sequenceRate" layoutX="10.0" layoutY="440.0" min="1.0" max="10.0" value="10.0" prefHeight="14.0" prefWidth="170.0" />
       				<Label layoutX="10.0" layoutY="420.0" text="Rate:" />
-      				<Label layoutX="25.0" layoutY="455.0" text="1" />
-      				<Label layoutX="155.0" layoutY="455.0" text="10" />
+      				<Label layoutX="25.0" layoutY="455.0" text="Slow" />
+      				<Label layoutX="145.0" layoutY="455.0" text="Fast" />
       				
       				<Button layoutX="10" layoutY = "475" mnemonicParsing="false" text="Add sequence" onAction="#addAnimation"/>
       				<Button layoutX="110" layoutY = "475" mnemonicParsing="false" text="Clear" onAction="#clearAnimation"/>
