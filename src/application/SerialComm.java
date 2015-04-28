@@ -246,6 +246,7 @@ public class SerialComm implements SerialPortEventListener {
 	}
 
 	public String runTimeStep(TimeStep step) throws Exception {
+		String error = "";
 		// Temporary 2-d array to hold which lb's to fire on each fb
 		byte[][] lbsToFire = new byte[NUM_FB][NUM_LB];
 
@@ -289,6 +290,7 @@ public class SerialComm implements SerialPortEventListener {
 				armed = false;
 				Thread.sleep(5);
 				sleep++;
+				error += "WARNING: No response from universe.  Trying to ping again\n";
 				continue;
 			}
 			universeResponse = false;
@@ -296,9 +298,9 @@ public class SerialComm implements SerialPortEventListener {
 			
 			if (errorDetected) {
 				errorDetected = false;
-				return "\nERROR: There was a problem with the received packet.  " +
+				return error + "\nERROR: There was a problem with the received packet.  " +
 						"Expected header to start with AA but received packet " +
-						data + "\n   Try resetting the consol!!";
+						data + "\n   Try resetting the consol!!\n";
 			}
 			
 			// Ping Firebox to see if charged & ready to fire
