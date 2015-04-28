@@ -10,6 +10,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 public class VcMainController implements Initializable{
@@ -60,6 +61,7 @@ public class VcMainController implements Initializable{
             Scene scene = new Scene(root, 410, 230);
             Stage stage = new Stage();
             stage.setTitle("Setup: Project Details");
+            stage.getIcons().add(new Image(getClass().getResourceAsStream("Styles/dssp-square.png")));
             stage.setScene(scene);
             stage.show();
             newProjectController.setCurrentStage(stage);
@@ -89,6 +91,7 @@ public class VcMainController implements Initializable{
         Scene scene = new Scene(root, 300, 320);
         Stage stage = new Stage();
         stage.setTitle("Setup: Manual Universe Configuration");
+        stage.getIcons().add(new Image(getClass().getResourceAsStream("Styles/dssp-square.png")));
         stage.setScene(scene);
         stage.show();
         setupManualController.setCurrentStage(stage);
@@ -123,6 +126,7 @@ public class VcMainController implements Initializable{
         Scene scene = new Scene(root, 1280, 720);
         Stage stage = new Stage();
         stage.setTitle("Setup: Universe Visual Layout");
+        stage.getIcons().add(new Image(getClass().getResourceAsStream("Styles/dssp-square.png")));
         stage.setScene(scene);
         stage.show();
         setupVisualLayout.setCurrentStage(stage);
@@ -156,6 +160,7 @@ public class VcMainController implements Initializable{
         Scene scene = new Scene(root, 1000, 410);
         Stage stage = new Stage();
         stage.setTitle("Setup: Squib Groups");
+        stage.getIcons().add(new Image(getClass().getResourceAsStream("Styles/dssp-square.png")));
         stage.setScene(scene);
         stage.show();
         seqVisualLayoutController.setCurrentStage(stage);
@@ -196,6 +201,7 @@ public class VcMainController implements Initializable{
         Scene scene = new Scene(root, 1081, 550);
         Stage stage = new Stage();
         stage.setTitle("Sequence Selector");
+        stage.getIcons().add(new Image(getClass().getResourceAsStream("Styles/dssp-square.png")));
         stage.setScene(scene);
         stage.show();
         seqEditorController.setCurrentStage(stage);
@@ -234,6 +240,7 @@ public class VcMainController implements Initializable{
         Scene scene = new Scene(root, 1081, 550);
         Stage stage = new Stage();
         stage.setTitle("Sequence Preview");
+        stage.getIcons().add(new Image(getClass().getResourceAsStream("Styles/dssp-square.png")));
         stage.setScene(scene);
         stage.show();
         seqPreviewController.setCurrentStage(stage);
