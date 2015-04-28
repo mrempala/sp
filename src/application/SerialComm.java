@@ -26,6 +26,7 @@ public class SerialComm implements SerialPortEventListener {
 	private static boolean[] armedFB = new boolean[NUM_FB];
 	private BufferedReader input;
 	private boolean errorDetected = false;
+	private boolean universeResponse = false; // Flag to see if we've received a pong packet from the universe
 
 	/** The output stream to the port */
 	private OutputStream output;
@@ -62,7 +63,6 @@ public class SerialComm implements SerialPortEventListener {
 				portId = currPortId;
 				break;
 			}
-
 		}
 		if (portId == null) {
 			System.out.println("Could not find COM port.");
@@ -116,6 +116,7 @@ public class SerialComm implements SerialPortEventListener {
 	 * Handle an event on the serial port. Read the data and print it.
 	 */
 	public synchronized void serialEvent(SerialPortEvent oEvent) {
+		universeResponse = true;
 		data = new String();
 		if (oEvent.getEventType() == SerialPortEvent.DATA_AVAILABLE) {
 			try {
@@ -147,6 +148,7 @@ public class SerialComm implements SerialPortEventListener {
 				// signifying that it is charged and ready
 				if (buffer[6].equals("2")) {
 					armedFB[Integer.parseInt(buffer[3])] = false;
+					//System.out.println("Received a firebox ready");
 				}
 
 				System.out.println(data);
@@ -254,7 +256,7 @@ public class SerialComm implements SerialPortEventListener {
 			// If there's no squibs to be fired, get out of here and don't arm
 			// anything
 			Thread.sleep(35);
-			return "  Blank timestep found\n";
+			return "";
 		}
 
 		// Clear all marked FB
@@ -273,15 +275,29 @@ public class SerialComm implements SerialPortEventListener {
 		}
         
 		int ping = 0;
+		int sleep = 0;
 		armed = false;
 		while (!armed) {
 			armed = true;
 			
+			// If we haven't received a response from the universe yet, don't do anything.
+			if (!universeResponse) {
+				//System.out.println("Awaiting universe response...");
+				if (sleep > 100) {
+					return "\nERROR: No pong packet received from last ping within 500 milliseconds";
+				}
+				armed = false;
+				Thread.sleep(5);
+				sleep++;
+				continue;
+			}
+			universeResponse = false;
+			
 			if (errorDetected) {
 				errorDetected = false;
-				return "\nThere was a problem with the received packet.  " +
+				return "\nERROR: There was a problem with the received packet.  " +
 						"Expected header to start with AA but received packet " +
-						data + "\n";
+						data + "\n   Try resetting the consol!!";
 			}
 			
 			// Ping Firebox to see if charged & ready to fire
@@ -291,21 +307,24 @@ public class SerialComm implements SerialPortEventListener {
 				if (armedFB[i]) {
 					sendCommand((byte) i, (byte) 0x22, (byte) 0x00);
 					armed = false;
-					Thread.sleep(5);
+					//Thread.sleep(5);
 				}
 			}
 			ping++;
 			
 			// If we haven't received a response, assume FB-LB is broken or not there so exit
 			if (ping > 100) {
-				return "\nERROR: Error in arming Fireboxes. \n" +
-						"   This is likely due to non-existent Firebox, but could be due a to malformed packet\n" +
+				return "\nERROR: Firebox not armed after 100 pings. \n" +
+						"   This is likely due to non-existent or disabled Firebox, but could be due a to malformed packet\n" +
 						"   Last packet received: " + data + "\n";
 			}
             
-			Thread.sleep(10);
+			//Thread.sleep(10);
 		}
 
+		// Reset universeResponse so we send at least 1 ping next time runTimeStep is called
+		universeResponse = true;
+		
 		// Reset our LB count in prep for sending arm commands
 		for (int i = 0; i < NUM_LB; i++) {
 			numLbs[i] = 0;
