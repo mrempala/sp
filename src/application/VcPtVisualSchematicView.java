@@ -211,7 +211,6 @@ public class VcPtVisualSchematicView implements Initializable
 				}
 			}
 		});
-
 	}
 	
 	private void drawSelectionBox()
@@ -329,8 +328,6 @@ public class VcPtVisualSchematicView implements Initializable
 		    	{
 		    		return;
 		    	}
-		    	
-		    	//label_squibInfo.setText("hi");
 
 		    	label_squibInfo.setText("Squib info: " + 
 										"\nFirebox:  " + fb.getId() + 
