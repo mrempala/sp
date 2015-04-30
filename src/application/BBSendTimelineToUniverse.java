@@ -11,6 +11,7 @@ public class BBSendTimelineToUniverse implements IButtonBehavior, Runnable {
 	private String portNum;
 	private SerialComm serialComm;
 	private boolean stopWork = false;
+	private boolean pauseWork = false;
 
 	private enum STATES {
 		ON, OFF
@@ -55,12 +56,19 @@ public class BBSendTimelineToUniverse implements IButtonBehavior, Runnable {
 			serialComm.prepUniverse();
 			
 			// Send each timestep to be fired
-			for (TimeStep t : timeLine) {
+			for (int i = 0; i < timeLine.size(); i++) {
 				//System.out.println(t);
+				// If the window has been closed, break out of the loop
 				if (stopWork){
 					break;
 				}
-				threadMessage(serialComm.runTimeStep(t));
+				// If the system is in a paused state, return i to it's previous
+				// value and continue the loop
+				if (pauseWork) {
+					i--;
+					continue;
+				}
+				threadMessage(serialComm.runTimeStep(timeLine.get(i)));
 			}
 		} catch (Exception e) {
 			System.out.println(e);
@@ -72,6 +80,10 @@ public class BBSendTimelineToUniverse implements IButtonBehavior, Runnable {
 	
 	public void stop(){
 		stopWork = true;
+	}
+	
+	public void toggleFiring(boolean pauseWork){
+		this.pauseWork = pauseWork;
 	}
 
 	// Function to get message from run thread and pass along to main FXML gui

@@ -30,8 +30,8 @@ styleClass="root" id="Container">
 							<RadioButton layoutX="5.0" layoutY="100.0" mnemonicParsing="false" text="Random One per FB" toggleGroup="$sequenceSelection" userData="randomPerFireboxUniverseSequence" />
 							<!-- <RadioButton layoutX="20.0" layoutY="130.0" mnemonicParsing="false" text="Alternate Odd Even" toggleGroup="$sequenceSelection" userData="alternate" /> -->
 		      				<RadioButton layoutX="5.0" layoutY="130.0" mnemonicParsing="false" text="Random One at a Time" toggleGroup="$sequenceSelection" userData="randomUniverseSequence" />
-      				    	<RadioButton layoutX="5.0" layoutY="160.0" mnemonicParsing="false" text="Fur Elise" toggleGroup="$sequenceSelection" userData="playMusic" />
-      				    	<RadioButton layoutX="5.0" layoutY="190.0" mnemonicParsing="false" text="Pause Firing" toggleGroup="$sequenceSelection" userData="pauseFiring" />
+      				    	<!-- <RadioButton layoutX="5.0" layoutY="160.0" mnemonicParsing="false" text="Fur Elise" toggleGroup="$sequenceSelection" userData="playMusic" /> -->
+      				    	<RadioButton layoutX="5.0" layoutY="160.0" mnemonicParsing="false" text="Pause Firing" toggleGroup="$sequenceSelection" userData="pauseFiring" />
       				    </children>
       				    </AnchorPane>
       				    </content>

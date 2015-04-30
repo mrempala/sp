@@ -35,12 +35,16 @@ public class VcSequencePreview extends VcMainController implements Observer {
 	@FXML Label lbProjectName;
 	@FXML Label lbProjectDetails;
 	@FXML Button buttonSendToUniverse;
+	@FXML Button buttonToggleUniverseFire;
+	@FXML Button buttonSetComPort;
+	@FXML Button buttonCancelSequence;
 	
 	@FXML TextField tfPortNum;
 	@FXML public TextArea taUniverseFeedback;
    
 	private BBSendTimelineToUniverse bbSendToUniverse = new BBSendTimelineToUniverse("COM1"); 
 	private boolean portSet = false;
+	private boolean firingPaused = false;
 	public static String universeFeedback = "";
 	
 	SequentialTransition animationTimeline = new SequentialTransition();
@@ -100,6 +104,8 @@ public class VcSequencePreview extends VcMainController implements Observer {
 		bbSendToUniverse.click(sequence.getTimeLine());
 		// Require the user to reset their port if they want to run a sequence again
 		buttonSendToUniverse.setDisable(true);
+		buttonToggleUniverseFire.setDisable(false);
+		buttonCancelSequence.setDisable(false);
 		portSet = false;
 	}
 	
@@ -120,6 +126,12 @@ public class VcSequencePreview extends VcMainController implements Observer {
 		            @Override
 		            public void run() {
 		              taUniverseFeedback.setText(newValue);
+		              if (newValue.contains("finished")) {
+		            	  System.out.println("Thread finished!");
+		            	  buttonSetComPort.setDisable(false);
+		            	  buttonToggleUniverseFire.setDisable(true);
+		            	  buttonCancelSequence.setDisable(true);
+		              }
 		            }
 		          });          
 
@@ -130,6 +142,7 @@ public class VcSequencePreview extends VcMainController implements Observer {
 			universeFeedback += ("COM Port Set!" + System.getProperty("line.separator"));
 			taUniverseFeedback.setText(universeFeedback);
 			buttonSendToUniverse.setDisable(false);
+			buttonSetComPort.setDisable(true);
 		}
 		else {
 			//Prompt users with a message that port isn't set
@@ -146,6 +159,28 @@ public class VcSequencePreview extends VcMainController implements Observer {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	@FXML public void toggleUniverseFire(){
+		if (firingPaused){
+			buttonToggleUniverseFire.setText("Pause");
+			firingPaused = false;
+			bbSendToUniverse.toggleFiring(firingPaused);
+		}
+		else {
+			buttonToggleUniverseFire.setText("Resume");
+			firingPaused = true;
+			bbSendToUniverse.toggleFiring(firingPaused);
+		}
+	}
+	
+	@FXML public void cancelSequence() {
+		// Reset the pause button
+		buttonToggleUniverseFire.setText("Pause");
+		firingPaused = false;
+		
+		// And cancel the firing
+		stop();
 	}
 	
 	public void stop() {
