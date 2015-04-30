@@ -151,7 +151,7 @@ public class SerialComm implements SerialPortEventListener {
 					//System.out.println("Received a firebox ready");
 				}
 
-				System.out.println(data);
+				// System.out.println(data);
 
 				numEvents = 0;
 			} catch (Exception e) {

@@ -85,7 +85,7 @@ public class PtSquibGroupsTimeline {
         timelinePane.getChildren().clear();
         timelineGroup.getChildren().clear();
         
-    	System.out.println("Length: " + length);
+    	//System.out.println("Length: " + length);
     	
     	// Add the label to the timeline
 		timelinePane.getChildren().add(timelineLabel);

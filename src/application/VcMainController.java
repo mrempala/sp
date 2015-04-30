@@ -204,7 +204,6 @@ public class VcMainController implements Initializable{
         seqEditorController.setCurrentStage(stage);
         seqEditorController.PTMenuController.setCurrentStage(stage);
         
-        System.out.println("Close current stage");
         currentStage.close();
 	}
 	

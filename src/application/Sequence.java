@@ -57,8 +57,8 @@ public class Sequence implements java.io.Serializable {
 					// Check on the firecount, alert user if over max count
 					if (s.getFirecount() > MAX_FIRE_COUNT && !squibsOverMaxFireCount.contains(s)) {
 						squibsOverMaxFireCount.add(s);
-						System.out.println("WARNING: Exceeding max fire count on Squib " + s.getFirebox() 
-											+ "-" + s.getLunchbox() + "-" + s.getSquib());
+						//System.out.println("WARNING: Exceeding max fire count on Squib " + s.getFirebox() 
+						//					+ "-" + s.getLunchbox() + "-" + s.getSquib());
 					}
 				}
 			}
@@ -134,7 +134,7 @@ public class Sequence implements java.io.Serializable {
 				}
 			}
 		}
-		System.out.println(timeLine);
+		//System.out.println(timeLine);
 
 		// Insert a trailing blank time step to clear universe
 		TimeStep t = new TimeStep();
@@ -200,7 +200,7 @@ public class Sequence implements java.io.Serializable {
 
 		// TODO: Else statement Error, number of squibs found in universe is 0
 
-		System.out.println(timeLine);
+		//System.out.println(timeLine);
 
 		// Insert a trailing blank time step to clear universe
 		TimeStep t = new TimeStep();
@@ -258,7 +258,7 @@ public class Sequence implements java.io.Serializable {
 			}
 		}
 
-		System.out.println(timeLine);
+		//System.out.println(timeLine);
 
 		// Insert a trailing blank time step to clear universe
 		TimeStep t = new TimeStep();
@@ -399,7 +399,7 @@ public class Sequence implements java.io.Serializable {
 			}
 
 		}
-		System.out.println(timeLine);
+		//System.out.println(timeLine);
 
 		// Insert a trailing blank time step to clear universe
 		TimeStep t = new TimeStep();
@@ -454,7 +454,7 @@ public class Sequence implements java.io.Serializable {
 			}
 
 		}
-		System.out.println(timeLine);
+		//System.out.println(timeLine);
 		// Insert a trailing blank time step to clear universe
 		TimeStep t = new TimeStep();
 		squibGroups.get(squibGroup).getTimeLine().add(t);
@@ -478,7 +478,7 @@ public class Sequence implements java.io.Serializable {
 			t = new TimeStep();
 			// if i is even
 			if (i % 2 == 0) {
-				System.out.println("even");
+				//System.out.println("even");
 
 				for (Firebox f : universe.getFireboxList()) {
 					for (int j = 0; j < f.getLunchboxList().size(); j++) {
@@ -513,7 +513,7 @@ public class Sequence implements java.io.Serializable {
 				}
 			} else // if i is odd
 			{
-				System.out.println("odd");
+				//System.out.println("odd");
 
 				for (Firebox f : universe.getFireboxList()) {
 					for (int j = 0; j < f.getLunchboxList().size(); j++) {

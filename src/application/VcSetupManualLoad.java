@@ -81,7 +81,7 @@ public class VcSetupManualLoad extends VcMainController{
 		// Clear any previous error messages
 		label_errorMessage.textProperty().set("");
 		
-		System.out.println("\n\n" + currentTreeNode.getValue() + "\n\n" + elementToSet);
+		//System.out.println("\n\n" + currentTreeNode.getValue() + "\n\n" + elementToSet);
 		
 		// When clearing the same element twice in a row, tree item selection changed event is fired
 		// and selects the parent item.  For this reason we need to back up the currently selected
@@ -109,12 +109,12 @@ public class VcSetupManualLoad extends VcMainController{
 		}
 		
 		if (elementToSet.equals("Channel")) {
-			System.out.println(currentTreeNode.getParent().getValue());
+			//System.out.println(currentTreeNode.getParent().getValue());
 			for (TreeItem<String> s : currentTreeNode.getParent().getChildren()) {
 				for (TreeItem<String> s1 : s.getChildren()){
 					String currentValue[] = s1.getValue().split(" ");
 					int val = Integer.parseInt(currentValue[1]);
-					System.out.println(s1.getValue());
+					//System.out.println(s1.getValue());
 					if (val == value){
 						label_errorMessage.textProperty().set(" ERROR: Cannot have duplicate squib channels! ");
 						return;
@@ -143,7 +143,7 @@ public class VcSetupManualLoad extends VcMainController{
 	}
 	
 	public void traverseTree (TreeItem<String> t){
-		System.out.println(t.getValue());
+		//System.out.println(t.getValue());
 		for(TreeItem<String> s : t.getChildren()){
 			traverseTree(s);
 		}
@@ -153,9 +153,9 @@ public class VcSetupManualLoad extends VcMainController{
 		sequence.setUniverse(new Universe());
 		for(TreeItem<String> s : tree.getChildren()){
 			Firebox firebox = new Firebox(elementNum);
-			String universeItem = s.getValue();
+			//String universeItem = s.getValue();
 			
-			System.out.println("Adding element: " + universeItem + "  " + elementNum);
+			//System.out.println("Adding element: " + universeItem + "  " + elementNum);
 			sequence.getUniverse().addFirebox(firebox);
 			populateFirebox(s, 0, elementNum);
 			elementNum++;
@@ -164,10 +164,10 @@ public class VcSetupManualLoad extends VcMainController{
 	
 	private void populateFirebox(TreeItem<String> tree, int elementNum, int parentNum) {
 		for(TreeItem<String> s : tree.getChildren()){
-			String universeItem = s.getValue();
+			//String universeItem = s.getValue();
 			Lunchbox lunchbox = new Lunchbox(elementNum, parentNum);
 			
-			System.out.println("Adding element: " + universeItem + "  " + elementNum + "  " + parentNum);
+			//System.out.println("Adding element: " + universeItem + "  " + elementNum + "  " + parentNum);
 			sequence.getUniverse().getFireboxList().get(parentNum).addLunchbox(lunchbox);
 			populateLunchbox(s, 0, elementNum, parentNum);
 			elementNum++;
@@ -176,7 +176,7 @@ public class VcSetupManualLoad extends VcMainController{
 	
 	private void populateLunchbox(TreeItem<String> tree, int elementNum, int parentNum, int grandparentNum) {
 		for(TreeItem<String> s : tree.getChildren()){
-			String universeItem = s.getValue();
+			//String universeItem = s.getValue();
 
 			// Get the squib channel number out of the tree
 			String element = s.getChildren().get(0).getValue();
@@ -185,7 +185,7 @@ public class VcSetupManualLoad extends VcMainController{
 			
 			Squib squib = new Squib(grandparentNum, parentNum, elementNum, squibChannel);
 			
-			System.out.println("Adding element: " + universeItem + "  " + elementNum + "  " + parentNum + "  " + grandparentNum);
+			//System.out.println("Adding element: " + universeItem + "  " + elementNum + "  " + parentNum + "  " + grandparentNum);
 			sequence.getUniverse().getFireboxList().get(grandparentNum).getLunchboxList().get(parentNum).addSquib(squib);
 			elementNum++;
 			

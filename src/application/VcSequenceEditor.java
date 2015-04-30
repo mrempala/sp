@@ -250,7 +250,7 @@ public class VcSequenceEditor extends VcMainController implements Observer {
 	@Override
 	public void update(Observable arg0, Object arg1) {
 		if (arg1.equals("Play")){
-			System.out.println("Play button pressed");
+			//System.out.println("Play button pressed");
 			playTimelineAnimation();
 		}
 		else if (arg1.equals("Pause")){

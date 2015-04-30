@@ -25,7 +25,7 @@ public class RecentUpdater {
         	recentProjects = (RecentProjects) xmlDecoder.readObject();
         	xmlDecoder.close();
                  
-        	System.out.println("RecentRead Done");
+        	//System.out.println("RecentRead Done");
         } 
         catch (Exception e) {
         	System.out.println(e.getMessage());
@@ -42,8 +42,8 @@ public class RecentUpdater {
         	xmlEncoder.writeObject(recentProjects);
         	xmlEncoder.close();
             
-        	System.out.println(recentProjects.toString());
-        	System.out.println("RecentWrite Done");
+        	//System.out.println(recentProjects.toString());
+        	//System.out.println("RecentWrite Done");
         	
         } 
         catch (Exception e) {

@@ -41,7 +41,7 @@ public class VcSetupSquibGroups extends VcMainController{
 		listview_squibGroups.setItems(items);
 		listview_squibGroups.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
 		    public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-		        System.out.println("Selected item: " + newValue);
+		        //System.out.println("Selected item: " + newValue);
                 String elements[] = newValue.split(" ");
                 groupToEdit = Integer.parseInt(elements[1]);
                 selectSquibGroup(groupToEdit);
