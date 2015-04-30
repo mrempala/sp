@@ -76,7 +76,7 @@ public class VcSequencePreview extends VcMainController implements Observer {
 	            @Override
 	            public void handle(ActionEvent actionEvent) {
 	                visualSchematicController.drawFiringSquib(t, previousTimestep);
-	                System.out.println("Timeline time step");
+	                //System.out.println("Timeline time step");
 	            }
 	        });
 			Timeline tempTimeline = new Timeline();
@@ -127,9 +127,14 @@ public class VcSequencePreview extends VcMainController implements Observer {
 		            public void run() {
 		              taUniverseFeedback.setText(newValue);
 		              if (newValue.contains("finished")) {
-		            	  System.out.println("Thread finished!");
+		            	  //System.out.println("Thread finished!");
 		            	  buttonSetComPort.setDisable(false);
+		            	  
+		            	  // Update the pause/play button
 		            	  buttonToggleUniverseFire.setDisable(true);
+		            	  buttonToggleUniverseFire.setText("Pause");
+		            	  firingPaused = false;
+		            	  
 		            	  buttonCancelSequence.setDisable(true);
 		              }
 		            }
@@ -190,7 +195,7 @@ public class VcSequencePreview extends VcMainController implements Observer {
 	@Override
 	public void update(Observable arg0, Object arg1) {
 		if (arg1.equals("Play")){
-			System.out.println("Play button pressed");
+			//System.out.println("Play button pressed");
 			playTimelineAnimation();
 		}
 		else if (arg1.equals("Pause")){
