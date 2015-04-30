@@ -58,10 +58,12 @@ public class VcPtVisualSchematicView implements Initializable
 		this.universe = universe;
 	}
 	
+	@FXML
 	public void drawUniverseVisual()
 	{
-		universeVisual.getChildren().clear();
 		visualContainer.getChildren().clear();
+		universeVisual.getChildren().clear();
+		
 		
 		// draw each squib in its correct location
 	      for (Firebox fb : universe.getFireboxList())
@@ -158,13 +160,10 @@ public class VcPtVisualSchematicView implements Initializable
 	       			mouseInfo.setStartX(t.getSceneX());
 			        mouseInfo.setStartY(t.getSceneY()); 
             	}
-		        
-            	// temp
-            	System.out.println("updating drag selection...");
             	
             	mouseInfo.setEndX(t.getSceneX());
 	            mouseInfo.setEndY(t.getSceneY());
-	           
+	            
 	            drawUniverseVisual();
             }
           }
@@ -184,7 +183,6 @@ public class VcPtVisualSchematicView implements Initializable
 				{	
 	       			if(!t.isControlDown())
 			        {
-		           		System.out.println("clearing selection on mouse click");
 		           		// deselects all squibs
 						deselect();
 			        }
@@ -573,9 +571,6 @@ public class VcPtVisualSchematicView implements Initializable
 		deselect();
     	
     	numSelected = 0;
-    	
-    	// temp
-    	System.out.println("All Squibs Deselected!");
 	    	
        	universeVisual.getChildren().clear();
        	visualContainer.getChildren().clear();
@@ -600,9 +595,6 @@ public class VcPtVisualSchematicView implements Initializable
 		}
     	
     	numSelected = 0;
-    	
-    	// temp
-    	System.out.println("All Squibs Deselected!");
     	
     	drawUniverseVisual();    	
 	}

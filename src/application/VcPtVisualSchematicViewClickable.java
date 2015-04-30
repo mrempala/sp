@@ -322,9 +322,6 @@ public class VcPtVisualSchematicViewClickable extends VcPtVisualSchematicView {
 		deselect();
     	
     	numSelected = 0;
-    	
-    	// temp
-    	System.out.println("All Squibs Deselected!");
 	    	
        	universeVisual.getChildren().clear();
        	visualContainer.getChildren().clear();
@@ -349,9 +346,6 @@ public class VcPtVisualSchematicViewClickable extends VcPtVisualSchematicView {
 		}
     	
     	numSelected = 0;
-    	
-    	// temp
-    	System.out.println("All Squibs Deselected!");
     	
     	drawUniverseVisual();    	
 	}
