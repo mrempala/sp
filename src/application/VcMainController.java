@@ -174,19 +174,14 @@ public class VcMainController implements Initializable{
 	@FXML 
 	protected void openSequenceEditor(ActionEvent event) throws IOException{
 		Parent root;
-		//Parent root1;
     	// Load the next window
         FXMLLoader loader = new FXMLLoader(getClass().getResource("Views/UI-SequenceEditor.fxml"));
         root = (Parent)loader.load();
-       /* FXMLLoader loader1 = new FXMLLoader(getClass().getResource("Views/UI-Part-Menu.fxml"));
-        root1 = (Parent)loader1.load();
-        */
         // Get a reference to the VisualSchematic controller so we can pass a reference of the universe to it.
         VcSequenceEditor seqEditorController = loader.<VcSequenceEditor>getController();
        // VcPtMenu ptController = loader.<VcPtMenu>getController();
         seqEditorController.setSequence(sequence);
-        seqEditorController.PTMenuController.setSequence(sequence);
-        
+        seqEditorController.PTMenuController.setSequence(sequence);        
          
         seqEditorController.visualSchematicController.setUniverse(sequence.getUniverse());
         seqEditorController.PTMenuController.setUniverse(sequence.getUniverse());
@@ -208,7 +203,8 @@ public class VcMainController implements Initializable{
         stage.show();
         seqEditorController.setCurrentStage(stage);
         seqEditorController.PTMenuController.setCurrentStage(stage);
-       
+        
+        System.out.println("Close current stage");
         currentStage.close();
 	}
 	
@@ -246,6 +242,7 @@ public class VcMainController implements Initializable{
         stage.setScene(scene);
         stage.show();
         seqPreviewController.setCurrentStage(stage);
+        seqPreviewController.PTMenuController.setCurrentStage(stage);
         
         stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override

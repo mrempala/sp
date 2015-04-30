@@ -1,5 +1,6 @@
 package application;
 
+import java.io.IOException;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -135,6 +136,16 @@ public class VcSequencePreview extends VcMainController implements Observer {
 			universeFeedback += ("Error: Port not found or cannot connect to universe!" + System.getProperty("line.separator"));
 			taUniverseFeedback.setText(universeFeedback);
 		}		
+	}
+	
+	@FXML public void returnToSequenceEditor(ActionEvent event){
+		stop();
+		try {
+			openSequenceEditor(event);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public void stop() {

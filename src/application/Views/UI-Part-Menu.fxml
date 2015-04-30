@@ -16,15 +16,15 @@
          <MenuItem onAction="#Exit" text="Exit" />
       </items>
    </Menu>
-   <!-- 
-   <Menu text="Edit">
+   
+   <!--<Menu text="Edit">
       <items>
-         <MenuItem text="Edit Sequence" />
+         <MenuItem onAction="#openSequenceEditor" text="Edit Sequence" />
          <MenuItem text="Edit Universe Layout" />
          <MenuItem text="Check Universe Errors" />
       </items>
-   </Menu>
-   -->
+   </Menu>  -->
+ 
    <Menu text="Help">
       <items>
          <!-- 
