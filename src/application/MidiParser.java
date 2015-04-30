@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import javax.sound.midi.MidiEvent;
 import javax.sound.midi.MidiMessage;
 import javax.sound.midi.MidiSystem;
-import javax.sound.midi.Sequence;
 import javax.sound.midi.ShortMessage;
 import javax.sound.midi.Track;
 
@@ -19,17 +18,17 @@ public class MidiParser {
 	public ArrayList<Integer> run() throws Exception {
 		javax.sound.midi.Sequence sequence = MidiSystem.getSequence(new File(
 				"elise.mid"));
-		ArrayList<Integer> ticks = new ArrayList<Integer>();
+		//ArrayList<Integer> ticks = new ArrayList<Integer>();
 		ArrayList<Integer> keys = new ArrayList<Integer>();
 
-		int trackNumber = 0;
+		//int trackNumber = 0;
 		float resolution = sequence.getResolution();
 		float ticksPerSecond = (float) (resolution * 2.0);
 		long prev = 0;
         long dt = 0;
 		
 		for (Track track : sequence.getTracks()) {
-			trackNumber++;
+			//trackNumber++;
 			// System.out.println("Track " + trackNumber + ": size = " +
 			// track.size());
 			// System.out.println();
@@ -44,9 +43,9 @@ public class MidiParser {
 					// System.out.print("Channel: " + sm.getChannel() + " ");
 					if (sm.getCommand() == NOTE_ON) {
 						int key = sm.getData1();
-						int octave = (key / 12) - 1;
-						int note = key % 12;
-						String noteName = NOTE_NAMES[note];
+						//int octave = (key / 12) - 1;
+						//int note = key % 12;
+						//String noteName = NOTE_NAMES[note];
 						int velocity = sm.getData2();
 						
 						if (velocity > 0) {

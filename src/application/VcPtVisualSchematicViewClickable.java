@@ -12,8 +12,8 @@ import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
-import java.awt.MouseInfo;
-import java.awt.Point;
+//import java.awt.MouseInfo;
+//import java.awt.Point;
 
 public class VcPtVisualSchematicViewClickable extends VcPtVisualSchematicView {
 	
@@ -56,7 +56,7 @@ public class VcPtVisualSchematicViewClickable extends VcPtVisualSchematicView {
         	@Override
 	        public void handle(MouseEvent t)
         	{
-        		Point mPoint = MouseInfo.getPointerInfo().getLocation();
+        		//Point mPoint = MouseInfo.getPointerInfo().getLocation();
 	          	
         		if (!clickable)
         		{

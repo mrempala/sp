@@ -17,8 +17,8 @@ import javafx.scene.control.Label;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 
-import java.awt.MouseInfo;
-import java.awt.Point;
+//import java.awt.MouseInfo;
+//import java.awt.Point;
 
 import java.lang.Math;
 
@@ -502,7 +502,7 @@ public class VcPtVisualSchematicView implements Initializable
 	     	@Override
 		        public void handle(MouseEvent t)
 	     	{
-	     		Point mPoint = MouseInfo.getPointerInfo().getLocation();
+	     		//Point mPoint = MouseInfo.getPointerInfo().getLocation();
 		          	
 	     		if (!clickable)
 	     		{
