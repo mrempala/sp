@@ -118,6 +118,11 @@ public class SerialComm implements SerialPortEventListener {
 	public synchronized void serialEvent(SerialPortEvent oEvent) {
 		universeResponse = true;
 		data = new String();
+		
+		// Reset buffer
+		for (int i = 0; i < 9; i++) {
+			buffer[i] = "";
+		}
 		if (oEvent.getEventType() == SerialPortEvent.DATA_AVAILABLE) {
 			try {
 				String inputLine = null;
@@ -141,7 +146,26 @@ public class SerialComm implements SerialPortEventListener {
 				// Try to detect if we're getting a bad packet.
 				// The first byte should be AA (header)
 				if ( !(buffer[0].equals("AA")) ){
-					errorDetected = true;
+					//errorDetected = true;
+					System.out.println("Packet Order Error Detected");
+					int packetStart = 0;
+					// String[] tempBuffer = new String[9];
+					for (int j = 0; j < 9; j++) {
+						if (buffer[j].equals("AA")){
+							packetStart = j;
+							break;
+						}
+						//tempBuffer[j] = buffer[j];
+					}
+					System.out.println(packetStart);
+					rotateArray(buffer, packetStart);
+					//System.out.println("Fixed packet: " + buffer);
+					
+					for (int j = 0; j < 9; j++) {
+						System.out.println(buffer[j]);
+					}
+					
+					
 				}
 				
 				// Switch the firebox in the armedFB array back to false
@@ -151,13 +175,24 @@ public class SerialComm implements SerialPortEventListener {
 					//System.out.println("Received a firebox ready");
 				}
 
-				// System.out.println(data);
+				System.out.println(data);
 
 				numEvents = 0;
 			} catch (Exception e) {
 				System.err.println(e.toString());
 			}
 		}
+	}
+	
+	private void rotateArray(String[] array, int index){
+		String[] result;
+		
+		result = new String[9];
+		
+		System.arraycopy(array, index, result, 0, array.length - index);
+		System.arraycopy(array, 0, result, array.length - index, index);
+		System.arraycopy(result, 0, array, 0, array.length);
+		
 	}
 
 	private void sendData(byte[] data) {
