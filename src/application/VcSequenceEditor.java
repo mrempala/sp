@@ -245,6 +245,7 @@ public class VcSequenceEditor extends VcMainController implements Observer {
 		
 		// Redraw universe to avoid drawing firing squib from previous sequence
 		visualSchematicController.drawUniverseSchematic();
+		visualSchematicController.drawUniverseVisual();
 	}
 
 	@Override

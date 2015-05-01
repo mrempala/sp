@@ -72,7 +72,7 @@ public class VcPtVisualSchematicView implements Initializable
 	          {
 		            for (Squib s : lb.getSquibList())
 		            {
-		            	drawSquibVisual(fb, lb, s);
+		            	drawSquibVisual(s.getFirebox(), s.getLunchbox(), s, Color.GREY);
 		            }
 	          }
 	      }
@@ -256,15 +256,20 @@ public class VcPtVisualSchematicView implements Initializable
 		universeVisual.getChildren().add(selectBox);
 	}
 	
-	private void drawSquibVisual(Firebox fb, Lunchbox lb, Squib s)
+	private void drawSquibVisual(int fb, int lb, Squib s, Color c)
 	{
+		if(c == Color.ORANGE)
+		{
+			System.out.println("ORANGE");
+		}
+		
 		// create a rectangle to represent the squib
     	Rectangle r1 = new Rectangle();
 		r1.setX(s.getXPos());
 		r1.setY(s.getYPos());
         r1.setWidth(10);
         r1.setHeight(15);
-        r1.setFill(Color.GREY);
+        r1.setFill(c);
     	
         if(s.getSelected() == 1)
         {
@@ -310,7 +315,7 @@ public class VcPtVisualSchematicView implements Initializable
 		    		
 		    		
 		    		// temp
-		    		System.out.println("Selected squib info: f" + fb.getId() + " l" + lb.getId() + " s" + s.getSquib());
+		    		System.out.println("Selected squib info: f" + fb + " l" + lb + " s" + s.getSquib());
 
 		    		drawUniverseVisual();
 			    }
@@ -328,8 +333,8 @@ public class VcPtVisualSchematicView implements Initializable
 		    	}
 
 		    	label_squibInfo.setText("Squib info: " + 
-										"\nFirebox:  " + fb.getId() + 
-										"\nLunchbox: " + lb.getId() + 
+										"\nFirebox:  " + fb + 
+										"\nLunchbox: " + lb + 
 										"\nSquib:	 " + s.getSquib() + 
 										"\nChannel:  " + s.getChannel()); 	
 		    }
@@ -601,6 +606,7 @@ public class VcPtVisualSchematicView implements Initializable
 				
 	public void drawFiringSquib(TimeStep timestep, TimeStep previousTimestep){
 		schematicContainer.getChildren().clear();
+		visualContainer.getChildren().clear();
 		firingSquibs.getChildren().clear();
 		
 		//Draw squibs to be fired
@@ -624,6 +630,9 @@ public class VcPtVisualSchematicView implements Initializable
 	        //t.setText(Integer.toString(s.getSquib()));
 	        firingSquibs.getChildren().add(squibRectangle);
 	        firingSquibs.getChildren().add(t);
+	        
+	        // for the visual container
+	        drawSquibVisual(squib.getFirebox(), squib.getLunchbox(), squib, Color.ORANGE);
 		}
 		
 		//Redraw previously drawn squibs to their old state
@@ -648,10 +657,14 @@ public class VcPtVisualSchematicView implements Initializable
 		        //t.setText(Integer.toString(s.getSquib()));
 		        firingSquibs.getChildren().add(squibRectangle);
 		        firingSquibs.getChildren().add(t);
+		        
+		     // for the visual container
+		        drawSquibVisual(squib.getFirebox(), squib.getLunchbox(), squib, Color.GREY);
 			}
 		}
 		schematicContainer.getChildren().add(universeSchematic);
-     schematicContainer.getChildren().add(firingSquibs);
+		visualContainer.getChildren().add(universeVisual);
+		schematicContainer.getChildren().add(firingSquibs);
 	}
 }
 
