@@ -16,27 +16,22 @@ public class SerialComm implements SerialPortEventListener {
 	private static final int PACKET_SIZE = 9;
 	private static final int NUM_FB = 16;
 	private static final int NUM_LB = 12;
+	/** Milliseconds to block while waiting for port open */
+	private static final int TIME_OUT = 2000;
+	/** Default bits per second for COM port. */
+	private static final int DATA_RATE = 250000;
 	
 	private String comPort;
 	private SerialPort serialPort;
 	private String data;
 	private String[] buffer;
-	private int numEvents = 0;
 	private boolean armed = false;
-	private static boolean[] armedFB = new boolean[NUM_FB];
-	private BufferedReader input;
 	private boolean errorDetected = false;
 	private boolean universeResponse = false; // Flag to see if we've received a pong packet from the universe
-
+	private static boolean[] armedFB = new boolean[NUM_FB];
+	private BufferedReader input;
 	/** The output stream to the port */
 	private OutputStream output;
-
-	/** Milliseconds to block while waiting for port open */
-	private static final int TIME_OUT = 2000;
-
-	/** Default bits per second for COM port. */
-
-	private static final int DATA_RATE = 250000;
 
 	public SerialComm(String comPort) throws NoSuchPortException {
 		data = new String();
@@ -69,7 +64,6 @@ public class SerialComm implements SerialPortEventListener {
 			throw new NoSuchPortException();
 
 		}
-
 		try {
 			// open serial port, and use class name for the appName.
 			serialPort = (SerialPort) portId.open(this.getClass().getName(),
@@ -94,11 +88,10 @@ public class SerialComm implements SerialPortEventListener {
 		}
 
 		try {
-			Thread.sleep(2000);
+			Thread.sleep(100);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-
 	}
 
 	/**
@@ -118,6 +111,8 @@ public class SerialComm implements SerialPortEventListener {
 	public synchronized void serialEvent(SerialPortEvent oEvent) {
 		universeResponse = true;
 		data = new String();
+		System.out.println("\nSerial event!");
+		long oldReadTime, newReadTime;
 		
 		// Reset buffer
 		for (int i = 0; i < 9; i++) {
@@ -127,45 +122,70 @@ public class SerialComm implements SerialPortEventListener {
 			try {
 				String inputLine = null;
 				int i = 0;
-
-				if (input.ready()) {
+				
+				// Make sure input is ready
+				if (input.ready()){
 					inputLine = input.readLine();
-					data += inputLine + "|";
-					buffer[i++] = inputLine;
-					numEvents++;
+					oldReadTime = System.currentTimeMillis();
+					
+					// If we received a valid start packet, start parsing the packet
+					if (inputLine.equals("AA")) {
+						data += inputLine + "|";
+						buffer[i++] = inputLine;
+						
+						// Try to get the remaining 8 bytes of the packet
+						for (int j = 0; j < 8; j++) {
+							if (input.ready()){
+								inputLine = input.readLine();
+								data += inputLine + "|";
+								buffer[i++] = inputLine;
+								
+								// Debug stuff for timing, sometimes big delay between reads
+								newReadTime = System.currentTimeMillis();
+								long delay = newReadTime - oldReadTime;
+								if (delay > 1) {
+									System.out.println("Lag in read time of " + delay + " milliseconds on packet byte " + (j+1));
+								}
+								oldReadTime = newReadTime;
+							}
+						}
+					}
+					
+					// Otherwise read from the input stream until we hit the end of packet character
+					// This *attempts* to make sure we hit AA the next time input is ready
+					else {
+						System.out.println(inputLine);
+						while (!inputLine.equals("A")){
+							inputLine = input.readLine();
+							System.out.println(inputLine);
+						}
+					}
 				}
+				System.out.println(data);
 
-				while (numEvents < 9) {
-					inputLine = input.readLine();
-					data += inputLine + "|";
-					buffer[i++] = inputLine;
-
-					numEvents++;
-				}
-
-				// Try to detect if we're getting a bad packet.
+				// Detect if we're getting a bad packet.
 				// The first byte should be AA (header)
-				if ( !(buffer[0].equals("AA")) ){
+				// This should be resolved, but just in case we'll leave it for now
+				if ( !(buffer[0].equals("AA")) && !(buffer[8].equals("")) ){
 					//errorDetected = true;
 					System.out.println("Packet Order Error Detected");
 					int packetStart = 0;
-					// String[] tempBuffer = new String[9];
+					
+					// Find the proper start of the packet
 					for (int j = 0; j < 9; j++) {
 						if (buffer[j].equals("AA")){
 							packetStart = j;
 							break;
 						}
-						//tempBuffer[j] = buffer[j];
 					}
-					System.out.println(packetStart);
-					rotateArray(buffer, packetStart);
-					//System.out.println("Fixed packet: " + buffer);
 					
+					// Fixes the order of the packet
+					rotateArray(buffer, packetStart);
+					
+					// Double check the fixed packet's structure
 					for (int j = 0; j < 9; j++) {
 						System.out.println(buffer[j]);
-					}
-					
-					
+					}					
 				}
 				
 				// Switch the firebox in the armedFB array back to false
@@ -174,10 +194,7 @@ public class SerialComm implements SerialPortEventListener {
 					armedFB[Integer.parseInt(buffer[3])] = false;
 					//System.out.println("Received a firebox ready");
 				}
-
-				System.out.println(data);
-
-				numEvents = 0;
+				
 			} catch (Exception e) {
 				System.err.println(e.toString());
 			}
@@ -266,9 +283,8 @@ public class SerialComm implements SerialPortEventListener {
 	private void armFB(byte address) {
 		sendCommand(address, (byte) 0xA2, (byte) 0x01);
 		try {
-			Thread.sleep(5);
+			Thread.sleep(15);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -323,7 +339,7 @@ public class SerialComm implements SerialPortEventListener {
 			if (!universeResponse && sleep < 20) {
 				//System.out.println("Awaiting universe response...");
 				armed = false;
-				Thread.sleep(5);
+				Thread.sleep(15);
 				sleep++;
 				error += "WARNING: No response from universe.  Trying to ping again\n";
 				continue;
@@ -368,6 +384,7 @@ public class SerialComm implements SerialPortEventListener {
 		// Figure out which FB's are to be fired
 		// and figure out which which squib to fire on each LB
 		for (Squib s : step) {
+			// TODO: I think we should use s.getChannel(), not the squib id number
 			lbsToFire[s.getFirebox()][s.getLunchbox()] = (byte) (s.getSquib() + 1); 
 			armedFB[s.getFirebox()] = true; // Remark which fireboxes are to be fired
 			numLbs[s.getFirebox()]++;
