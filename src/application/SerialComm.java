@@ -25,6 +25,7 @@ public class SerialComm implements SerialPortEventListener {
 	private SerialPort serialPort;
 	private String data;
 	private String[] buffer;
+	private int bufferPosition = 0;
 	private boolean armed = false;
 	private boolean errorDetected = false;
 	private boolean universeResponse = false; // Flag to see if we've received a pong packet from the universe
@@ -110,13 +111,15 @@ public class SerialComm implements SerialPortEventListener {
 	 */
 	public synchronized void serialEvent(SerialPortEvent oEvent) {
 		universeResponse = true;
-		data = new String();
 		System.out.println("\nSerial event!");
 		long oldReadTime, newReadTime;
 		
-		// Reset buffer
-		for (int i = 0; i < 9; i++) {
-			buffer[i] = "";
+		// Reset buffer if full packet was read last step
+		if (bufferPosition == 0){
+			data = new String();
+			for (int i = 0; i < 9; i++) {
+				buffer[i] = "";
+			}
 		}
 		if (oEvent.getEventType() == SerialPortEvent.DATA_AVAILABLE) {
 			try {
@@ -133,9 +136,12 @@ public class SerialComm implements SerialPortEventListener {
 						data += inputLine + "|";
 						buffer[i++] = inputLine;
 						
+						bufferPosition++;
+						
 						// Try to get the remaining 8 bytes of the packet
 						for (int j = 0; j < 8; j++) {
 							if (input.ready()){
+								bufferPosition++;
 								inputLine = input.readLine();
 								data += inputLine + "|";
 								buffer[i++] = inputLine;
@@ -151,18 +157,42 @@ public class SerialComm implements SerialPortEventListener {
 						}
 					}
 					
-					// Otherwise read from the input stream until we hit the end of packet character
+					// Otherwise read from the input stream and patch two packets together
 					// This *attempts* to make sure we hit AA the next time input is ready
 					else {
-						// TODO: Maybe try to read into a temp buffer and complete the previous packet						
-						System.out.println(inputLine);
-						while (!inputLine.equals("A")){
-							inputLine = input.readLine();
+						// If the buffer position didn't get reset, we received a partial packet
+						if (bufferPosition > 0){
+							System.out.println("Appending packet to end of last packet received...");
+							
+							// Start reading the remaining packet from where we left off in the last serial iteration
+							data += inputLine + "|";
+							buffer[bufferPosition] = inputLine;
 							System.out.println(inputLine);
+							
+							bufferPosition++;
+							
+							for (int j = bufferPosition; j < 9; j++){
+								inputLine = input.readLine();
+								System.out.println(inputLine);
+								data += inputLine + "|";
+								buffer[j] = inputLine;
+								bufferPosition++;
+							}
+						}
+						else {
+							while (!inputLine.equals("A")){
+								inputLine = input.readLine();
+								System.out.println("Dumping remaining input buffer: " + inputLine);
+							}
 						}
 					}
 				}
 				System.out.println(data);
+				System.out.println("Buffer position: " + bufferPosition);
+				
+				if (bufferPosition >= 9) {
+					bufferPosition = 0;
+				}
 
 				// Detect if we're getting a bad packet.
 				// The first byte should be AA (header)
