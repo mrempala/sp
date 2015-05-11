@@ -154,6 +154,7 @@ public class SerialComm implements SerialPortEventListener {
 					// Otherwise read from the input stream until we hit the end of packet character
 					// This *attempts* to make sure we hit AA the next time input is ready
 					else {
+						// TODO: Maybe try to read into a temp buffer and complete the previous packet						
 						System.out.println(inputLine);
 						while (!inputLine.equals("A")){
 							inputLine = input.readLine();

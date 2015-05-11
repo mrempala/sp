@@ -258,10 +258,10 @@ public class VcPtVisualSchematicView implements Initializable
 	
 	private void drawSquibVisual(int fb, int lb, Squib s, Color c)
 	{
-		if(c == Color.ORANGE)
+		/*if(c == Color.ORANGE)
 		{
 			System.out.println("ORANGE");
-		}
+		}*/
 		
 		// create a rectangle to represent the squib
     	Rectangle r1 = new Rectangle();
