@@ -69,10 +69,11 @@ public class VcSetupSquibGroups extends VcMainController{
 		visualSchematicController.clickable = true;
 		
 		// Clear the selected squibs
-		visualSchematicController.selectedSquibs.clear();
+		visualSchematicController.deselect();
 		
 		// Redraw the universe to erase previous selections
 		visualSchematicController.drawUniverseSchematic();
+		visualSchematicController.drawUniverseVisual();
 		groupToEdit = groupCount;
 		groupCount++;
 		
@@ -91,22 +92,34 @@ public class VcSetupSquibGroups extends VcMainController{
 	public void setSquibGroup(){
 		// Add the newly created group to the sequence
 		Universe squibGroup = new Universe();
-		int fb = 0;
-		int lb = 0;
+		int fbNum = 0;
+		int lbNum = 0;
 		
 		// For each selected squib add to the squib group universe
-		for (Squib squib : visualSchematicController.selectedSquibs){
-			while (squibGroup.getFireboxList().size() <= squib.getFirebox()) {
-				Firebox firebox = new Firebox(fb);
-				squibGroup.getFireboxList().add(firebox);
-				fb++;
+		for (Firebox fb : visualSchematicController.universe.getFireboxList())
+		{
+			for (Lunchbox lb : fb.getLunchboxList())
+			{
+				for (Squib squib : lb.getSquibList())
+				{
+					if(squib.getSelected() == 1)
+					{
+						while (squibGroup.getFireboxList().size() <= squib.getFirebox())
+						{
+							Firebox firebox = new Firebox(fbNum);
+							squibGroup.getFireboxList().add(firebox);
+							fbNum++;
+						}
+						while (squibGroup.getFireboxList().get(squib.getFirebox()).getLunchboxList().size() <= squib.getLunchbox())
+						{
+							Lunchbox lunchbox = new Lunchbox(lbNum, fbNum);
+							squibGroup.getFireboxList().get(squib.getFirebox()).getLunchboxList().add(lunchbox);
+							lbNum++;
+						}
+						squibGroup.getFireboxList().get(squib.getFirebox()).getLunchboxList().get(squib.getLunchbox()).getSquibList().add(squib);
+					}
+				}
 			}
-			while (squibGroup.getFireboxList().get(squib.getFirebox()).getLunchboxList().size() <= squib.getLunchbox()){
-				Lunchbox lunchbox = new Lunchbox(lb, fb);
-				squibGroup.getFireboxList().get(squib.getFirebox()).getLunchboxList().add(lunchbox);
-				lb++;
-			}
-			squibGroup.getFireboxList().get(squib.getFirebox()).getLunchboxList().get(squib.getLunchbox()).getSquibList().add(squib);
 		}
 		
 		squibGroup.traverseUniverse();
@@ -125,24 +138,40 @@ public class VcSetupSquibGroups extends VcMainController{
 		button_newGroup.setDisable(false);
 		button_loadSequencePreview.setDisable(false);
 	}
-	
+
 	public void selectSquibGroup(int index){
 		Universe u = sequence.getSquibGroups().get(index).getSquibs();
 		
 		// Clear any previously selected squibs
-		visualSchematicController.selectedSquibs.clear();
+		visualSchematicController.deselect();
 		
 		// And select the squibs from the given group
-		for (Firebox fb : u.getFireboxList()){
-			for (Lunchbox lb : fb.getLunchboxList()){
-				for (Squib s : lb.getSquibList()){
-					visualSchematicController.selectedSquibs.add(s);
+		for (Firebox fb : u.getFireboxList())
+		{
+			for (Lunchbox lb : fb.getLunchboxList())
+			{
+				for (Squib s : lb.getSquibList())
+				{
+					for (Firebox uFb : visualSchematicController.universe.getFireboxList())
+					{
+						for(Lunchbox uLb : uFb.getLunchboxList())
+						{
+							for(Squib uS : uLb.getSquibList())
+							{
+								if(uS.getFirebox() == s.getFirebox() && uS.getLunchbox() == s.getLunchbox() && uS.getSquib() == s.getSquib())
+								{
+									uS.setSelected(1);
+								}
+							}
+						}
+					}
 				}
 			}
 		}
 		
 		// Redraw the universe for the up to date selection list
 		visualSchematicController.drawUniverseSchematic();
+		visualSchematicController.drawUniverseVisual();
 	}
 	
 	@FXML
@@ -151,13 +180,14 @@ public class VcSetupSquibGroups extends VcMainController{
 		Universe squibGroup = new Universe();
 		
 		// Clear the list of selected squibs in the visualSchematicController
-		visualSchematicController.selectedSquibs.clear();
+		visualSchematicController.deselect();
 		
 		// Reset the selected squib group's universe
 		sequence.getSquibGroups().get(groupToEdit).setUniverse(squibGroup);
 		
 		// Redraw the universe with cleared groups
 		visualSchematicController.drawUniverseSchematic();
+		visualSchematicController.drawUniverseVisual();
 		
 		label_message.setText("  Group " + groupToEdit + " cleared.  ");
 		

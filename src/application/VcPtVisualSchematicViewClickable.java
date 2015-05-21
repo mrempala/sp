@@ -17,8 +17,6 @@ import javafx.scene.text.Text;
 
 public class VcPtVisualSchematicViewClickable extends VcPtVisualSchematicView {
 	
-	// TODO: Figure out where this list of squibs should go, probably shouldn't stay here
-	public ArrayList<Squib> selectedSquibs = new ArrayList<Squib>();
 	public Boolean clickable = true;
 	
 	MousePosition mouseInfo = new MousePosition();
@@ -137,7 +135,8 @@ public class VcPtVisualSchematicViewClickable extends VcPtVisualSchematicView {
                             // Select each squib in the universe
                             for (Lunchbox lb : fb.getLunchboxList()){
                             	for (Squib s : lb.getSquibList()){
-                            		selectedSquibs.add(s);
+                            		s.setSelected(1);
+                            		numSelected += 1;
                             	}
                             }
                             // Redraw the universe
@@ -150,7 +149,7 @@ public class VcPtVisualSchematicViewClickable extends VcPtVisualSchematicView {
             fireboxText.setX(x + 15);
             fireboxText.setY(y + 20);
             fireboxText.setText("Firebox " + Integer.toString(fb.getId() + 1));
-            
+            fireboxText.setMouseTransparent(true);
             universeSchematic.getChildren().add(r);
             universeSchematic.getChildren().add(fireboxText);
             
@@ -191,7 +190,7 @@ public class VcPtVisualSchematicViewClickable extends VcPtVisualSchematicView {
 		            squibRectangle.setStroke(Color.BLACK);
 		            // TODO: Change color here when simulating firing if squib is dead
 		            squibRectangle.getStyleClass().add("universe-green");
-		            if (selectedSquibs.contains(s)){
+		            if (s.getSelected() == 1){
 		            	squibRectangle.getStyleClass().add("universe-selected");
 		            }
 
@@ -209,13 +208,15 @@ public class VcPtVisualSchematicViewClickable extends VcPtVisualSchematicView {
 		                        	if (!clickable){
 		                        		return;
 		                        	}
-		                            if (selectedSquibs.contains(s)){
+		                            if (s.getSelected() == 1){
 		                            	squibRectangle.getStyleClass().remove("universe-selected");
-		                            	selectedSquibs.remove(s);
+		                            	s.setSelected(0);
+		                            	numSelected -= 1;
 		                            }
 		                            else {
 		                            	squibRectangle.getStyleClass().add("universe-selected");
-		                            	selectedSquibs.add(s);
+		                            	s.setSelected(1);
+		                            	numSelected += 1;
 		                            }
 		                        }
 		            });
@@ -260,22 +261,26 @@ public class VcPtVisualSchematicViewClickable extends VcPtVisualSchematicView {
 		        
 		        // Setup event handler for lunchbox text click
 		        id.setOnMouseClicked(new EventHandler<MouseEvent>()
-	                    {
-	                        @Override
-	                        public void handle(MouseEvent t) {
-	                        	if (!clickable){
-	                        		return;
-	                        	}
-	                            //r.setFill(Color.BLUE);
-	                            // Select each squib in the universe
+                {
+                    @Override
+                    public void handle(MouseEvent t)
+                    {
+                    	if (!clickable)
+                    	{
+                    		return;
+                    	}
+                        //r.setFill(Color.BLUE);
+                        // Select each squib in the universe
 
-                            	for (Squib s : lb.getSquibList()){
-                            		selectedSquibs.add(s);
-                            	}
-	                            // Redraw the universe
-	                            drawUniverseSchematic();
-	                        }
-	                    });
+                    	for (Squib s : lb.getSquibList())
+                    	{
+                    		s.setSelected(1);
+                    		numSelected += 1;
+                    	}
+                        // Redraw the universe
+                        drawUniverseSchematic();
+                    }
+                });
 		        universeSchematic.getChildren().add(id);
 		        
 		        x += 13;
@@ -325,7 +330,7 @@ public class VcPtVisualSchematicViewClickable extends VcPtVisualSchematicView {
 	    	
        	universeVisual.getChildren().clear();
        	visualContainer.getChildren().clear();
-       	
+
        	drawUniverseVisual();
 	}
 	
