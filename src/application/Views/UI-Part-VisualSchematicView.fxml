@@ -9,8 +9,8 @@ layoutX="20.0" layoutY="12.0" prefHeight="306.0" prefWidth="838.0" id="VisSchem"
    <Tab text="Schematic">
      <content>
        <AnchorPane id="VisSchemSchematic">
-       <AnchorPane fx:id="schematicContainer" minHeight="1000.0" minWidth="1000.0" prefHeight="300.0" prefWidth="200.0" />
-       <Button mnemonicParsing = "false" layoutX="10" layoutY="240" text = "Origin" fx:id = "button_origin" onAction = "#goOrigin"/>
+       	<AnchorPane fx:id="schematicContainer" minHeight="1000.0" minWidth="1000.0" prefHeight="300.0" prefWidth="200.0" />
+       	<Button mnemonicParsing = "false" layoutX="10" layoutY="240" text = "Origin" fx:id = "button_origin" onAction = "#goOrigin"/>
        </AnchorPane>
      </content>
    </Tab>

@@ -125,24 +125,31 @@ public class VcPtVisualSchematicViewClickable extends VcPtVisualSchematicView {
             
             // Setup an event listener to detect when this rectangle is clicked
             r.setOnMouseClicked(new EventHandler<MouseEvent>()
+            {
+                @Override
+                public void handle(MouseEvent t)
+                {
+                	if (!clickable)
+                	{
+                		return;
+                	}
+                	
+                    r.setFill(Color.BLUE);
+                    // Select each squib in the universe
+                    for (Lunchbox lb : fb.getLunchboxList())
                     {
-                        @Override
-                        public void handle(MouseEvent t) {
-                        	if (!clickable){
-                        		return;
-                        	}
-                            r.setFill(Color.BLUE);
-                            // Select each squib in the universe
-                            for (Lunchbox lb : fb.getLunchboxList()){
-                            	for (Squib s : lb.getSquibList()){
-                            		s.setSelected(1);
-                            		numSelected += 1;
-                            	}
-                            }
-                            // Redraw the universe
-                            drawUniverseSchematic();
-                        }
-                    });
+                    	for (Squib s : lb.getSquibList())
+                    	{
+                    		s.setSelected(1);
+                    		numSelected += 1;
+                    	}
+                    }
+                    
+                    // Redraw the universe
+                    drawUniverseSchematic();
+                    drawUniverseVisual();
+                }
+            });
             
             Text fireboxText = new Text();
             fireboxText.setFill(Color.BLACK);
@@ -279,6 +286,7 @@ public class VcPtVisualSchematicViewClickable extends VcPtVisualSchematicView {
                     	}
                         // Redraw the universe
                         drawUniverseSchematic();
+                        drawUniverseVisual();
                     }
                 });
 		        universeSchematic.getChildren().add(id);
@@ -287,7 +295,8 @@ public class VcPtVisualSchematicViewClickable extends VcPtVisualSchematicView {
             }
         	x = xt;
         	
-            y = y + 52;    
+            y = y + 52;
+            
         }
         
         schematicContainer.getChildren().add(universeSchematic);
@@ -352,6 +361,7 @@ public class VcPtVisualSchematicViewClickable extends VcPtVisualSchematicView {
     	
     	numSelected = 0;
     	
-    	drawUniverseVisual();    	
+    	drawUniverseVisual();
+    	drawUniverseSchematic();
 	}
 }
